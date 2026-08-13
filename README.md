@@ -1,5 +1,18 @@
 # ABLE Initiatives website
 
+## What ABLE does (read before editing copy)
+
+ABLE Initiatives makes **educational resources free and open to every student**.
+It delivers that through workshops, webinars, and guest speaker sessions across
+three branches: ABLE Preps (college and test prep), ABLE Health, and ABLE Business.
+
+**ABLE does not match students one-on-one with mentors.** The site's original copy
+described a mentor-matching service in detail across all ten pages — "we match you
+with a mentor", "1:1 mentor matching", "avg. mentor response time" — and none of it
+was accurate. It has all been rewritten. When editing copy, don't reintroduce
+mentorship-pairing or tutoring-matching framing; the correct framing is access to
+free resources and open sessions.
+
 Static site, no build step. Open `index.html` directly or serve the folder with any static server:
 
 ```
@@ -97,9 +110,14 @@ blanks them while the section is off-screen and only when `html.js` is present.
 - [ ] **Replace the `mailto:` intake links** on `get-involved.html` with a real form
       (Google Forms, Tally). `mailto:` often does nothing on school Chromebooks, and a
       form gives you an actual roster.
-- [ ] **Verify the homepage stats.** "~2 days avg. mentor response time" and
-      "1:1 mentor matching" are specific enough to be checked. Soften them if they
-      aren't measured.
+- [ ] **Check the rewritten member roles** on `get-involved.html`. The old roles
+      ("Subject mentor", "College consultant") described one-on-one work ABLE
+      doesn't do. They now read Workshop leader / Resource creator / Speaker
+      coordinator / Operations & outreach — a best guess at what volunteers
+      actually do. Correct them if that's off; the same four names also appear
+      inside the "Become a member" mailto body.
+- [ ] **Confirm "4 free events run"** on the homepage stat strip stays current as
+      you run more events. It should match the number of entries in the timeline.
 
 ## Gallery
 

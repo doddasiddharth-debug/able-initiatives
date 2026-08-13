@@ -2,33 +2,55 @@
    ABLE Initiatives: shared styles
    ========================================================================== */
 
+/* Palette derived from the logo: the "A" monogram samples to indigo #1818A8
+   shading to navy #303060, and the swoosh to gold #F0C048. The previous coral
+   accent (#FF5A36) appeared nowhere in the mark, and failed WCAG contrast at
+   3.1:1 for white text on the Donate button. */
 :root {
-  --bg: #F7F7FB;
-  --bg-alt: #ECEDF6;
+  --bg: #F7F8FD;
+  --bg-alt: #E9EBF8;
   --paper: #FFFFFF;
-  --ink: #14151F;
-  --ink-soft: #4E5165;
-  --muted: #8B8EA3;
-  --line: #E2E3F0;
-  --line-strong: #CDCFE6;
+  --ink: #14143A;
+  --ink-soft: #4A4D70;
+  /* Darkened from the original soft grey, which sat at 3.1:1 and failed WCAG AA
+     for the small print it is used on (captions, dates, source credits, footer).
+     This is the lightest value clearing 4.5:1 against both --bg and --bg-alt. */
+  --muted: #63688C;
+  --line: #E0E3F2;
+  --line-strong: #C7CBE6;
 
-  --accent: #FF5A36;
-  --accent-dark: #E2431E;
-  --accent-tint: #FFE3DA;
+  --accent: #2B2BC4;
+  --accent-dark: #1B1B8F;
+  --accent-tint: #E4E4FA;
+  /* Text placed on top of --accent. A light accent (e.g. gold) needs dark text,
+     so this has to travel with the palette rather than being hardcoded white. */
+  --accent-ink: #FFFFFF;
+  /* The sticky header tint. Previously a hardcoded cream that didn't match any
+     other colour on the page. */
+  --header-bg: rgba(247, 248, 253, 0.88);
 
-  --sat: #3B6FF5;
-  --sat-tint: #E7EDFE;
+  /* Dark blocks (CTA band, contact panel, primary button, skip link). These were
+     all reusing --ink, which conflates "darkest text colour" with "dark panel
+     background". On a dark palette those two roles need to move in opposite
+     directions, so they are separate knobs. */
+  --panel: #14143A;
+  --on-panel: #FFFFFF;
+  --on-panel-soft: #AFB4D8;
+  --on-panel-line: #3A3E7A;
+
+  --sat: #2B2BC4;
+  --sat-tint: #E4E4FA;
   --health: #10B76E;
   --health-tint: #DEF7EA;
-  --business: #F0A324;
-  --business-tint: #FCEBCD;
+  --business: #F0C048;
+  --business-tint: #FCF1D5;
 
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 18px;
 
-  --shadow-sm: 0 1px 2px rgba(20, 21, 31, 0.06);
-  --shadow-md: 0 8px 24px rgba(20, 21, 31, 0.09);
+  --shadow-sm: 0 1px 2px rgba(20, 20, 58, 0.07);
+  --shadow-md: 0 8px 24px rgba(20, 20, 58, 0.10);
 
   --container: 1160px;
 
@@ -52,8 +74,8 @@ html { scroll-behavior: smooth; }
   left: 12px;
   top: -100px;
   z-index: 200;
-  background: var(--ink);
-  color: #fff;
+  background: var(--panel);
+  color: var(--on-panel);
   padding: 12px 20px;
   border-radius: var(--radius-sm);
   font-size: 14.5px;
@@ -153,9 +175,9 @@ a { color: inherit; text-decoration: none; }
   white-space: nowrap;
 }
 .btn:hover { transform: translateY(-1px); }
-.btn-primary { background: var(--ink); color: #fff; }
+.btn-primary { background: var(--panel); color: var(--on-panel); }
 .btn-primary:hover { background: var(--accent-dark); }
-.btn-accent { background: var(--accent); color: #fff; }
+.btn-accent { background: var(--accent); color: var(--accent-ink); }
 .btn-accent:hover { background: var(--accent-dark); }
 .btn-outline { background: transparent; color: var(--ink); border-color: var(--line-strong); }
 .btn-outline:hover { border-color: var(--ink); }
@@ -167,7 +189,7 @@ a { color: inherit; text-decoration: none; }
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(250, 247, 241, 0.88);
+  background: var(--header-bg);
   backdrop-filter: saturate(180%) blur(10px);
   border-bottom: 1px solid var(--line);
 }
@@ -787,15 +809,19 @@ a { color: inherit; text-decoration: none; }
 .role-list span { color: var(--ink-soft); }
 
 .contact-panel {
-  background: var(--ink);
+  background: var(--panel);
   color: #E4E5F0;
   border-radius: var(--radius-lg);
   padding: 40px;
   text-align: center;
 }
-.contact-panel h3 { color: #fff; }
+.contact-panel h3 { color: var(--on-panel); }
+/* The eyebrow sits on the dark panel, so it needs the on-panel scale rather
+   than the page-background accent, which would nearly disappear here. */
+.contact-panel .eyebrow { color: var(--on-panel-soft); }
+.contact-panel .eyebrow::before { background: var(--on-panel-soft); }
 .contact-panel a.btn-accent { margin-top: 10px; }
-.contact-panel .muted { color: #A9AFB9; }
+.contact-panel .muted { color: var(--on-panel-soft); }
 
 /* ---------- events / gallery ---------- */
 .event-card {
@@ -922,7 +948,7 @@ a { color: inherit; text-decoration: none; }
 .use-num {
   font-family: var(--font-display);
   font-weight: 700;
-  color: var(--accent);
+  color: var(--accent-dark);
   font-size: 15px;
   width: 30px; height: 30px;
   border-radius: 50%;
@@ -941,7 +967,7 @@ a { color: inherit; text-decoration: none; }
 
 /* ---------- CTA band ---------- */
 .cta-band {
-  background: var(--ink);
+  background: var(--panel);
   border-radius: var(--radius-lg);
   padding: 56px;
   display: flex;
@@ -950,8 +976,12 @@ a { color: inherit; text-decoration: none; }
   gap: 32px;
   flex-wrap: wrap;
 }
-.cta-band h2 { color: #fff; margin-bottom: 6px; }
-.cta-band p { color: #A9AFB9; margin-bottom: 0; }
+.cta-band h2 { color: var(--on-panel); margin-bottom: 6px; }
+.cta-band p { color: var(--on-panel-soft); margin-bottom: 0; }
+/* Outline buttons sitting on a dark panel. Replaces a hardcoded inline style
+   that was duplicated in the markup and invisible to the palette. */
+.btn-on-dark { color: var(--on-panel); border-color: var(--on-panel-line); }
+.btn-on-dark:hover { border-color: var(--on-panel); }
 .cta-band .actions { display: flex; gap: 12px; flex-wrap: wrap; }
 
 /* ---------- footer ---------- */
@@ -991,6 +1021,57 @@ a { color: inherit; text-decoration: none; }
 }
 @media (max-width: 900px) {
   .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+
+/* ---------- global education stats ---------- */
+.world-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.world-stat {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 30px 26px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+}
+.world-num {
+  font-family: var(--font-display);
+  font-size: 46px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--accent-dark);
+  margin-bottom: 14px;
+}
+.world-stat p {
+  font-size: 15px;
+  color: var(--ink);
+  margin-bottom: 16px;
+  flex: 1;
+}
+/* Sourcing every figure is the whole point of this section: an uncited stat on
+   a nonprofit site is a liability, not a credential. */
+.world-stat cite {
+  font-style: normal;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.world-note {
+  max-width: 720px;
+  margin: 40px auto 0;
+  text-align: center;
+  color: var(--ink-soft);
+}
+@media (max-width: 860px) {
+  .world-grid { grid-template-columns: 1fr; }
+  .world-num { font-size: 38px; }
 }
 
 /* ---------- event timeline ---------- */
