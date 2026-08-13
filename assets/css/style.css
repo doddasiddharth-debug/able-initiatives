@@ -440,6 +440,10 @@ a { color: inherit; text-decoration: none; }
    .btn-primary would disappear into the scrim. */
 .btn-on-image { background: #fff; color: var(--panel); }
 .btn-on-image:hover { background: var(--business); color: var(--panel); }
+/* .btn-on-dark's border is tuned for the flat navy CTA band; over a photograph
+   that dark indigo edge all but disappears, so lift it here. */
+.hero-banner .btn-outline { border-color: rgba(255, 255, 255, 0.45); }
+.hero-banner .btn-outline:hover { border-color: #fff; }
 
 @media (max-width: 720px) {
   .hero-banner {

@@ -52,6 +52,7 @@ assets/images/
                                useful for a social preview image later.
               logo-health.png, logo-business.png
                                branch marks, also transparent
+  photos/     hero.jpg — the homepage hero banner background
   gallery/    health-workshop/, preps-webinar/, business-workshop/, preps-workshop/
   team/       one headshot per director
 ```
@@ -100,6 +101,21 @@ Several variables exist specifically so that inversion stays possible:
 
 Inverting the palette is only possible because every logo is transparent — opaque
 logos render as white slabs on a dark page.
+
+### The hero banner
+The homepage opens with a full-bleed photo (`photos/hero.jpg`) under a gradient
+scrim, with the headline over it. Two things to preserve if you swap the photo:
+
+- The scrim is a **gradient, not a flat overlay** — heaviest bottom-left behind
+  the text, lifting toward the top-right so the photo is still legible. A flat
+  overlay either washes out the image or leaves text unreadable over bright areas.
+- **Re-check contrast after changing the photo.** With the current image the
+  worst background pixel behind the white text measures 5.7:1, and the gold
+  eyebrow 4.6:1 — that one is only just over the 4.5:1 minimum, so a brighter
+  photo would push it under. Darken the scrim if you swap in a lighter image.
+
+The section also carries its own dark `background`, so if the photo ever fails to
+load the white text still lands on something dark instead of the light page.
 
 ## Homepage sections that need updating as ABLE grows
 
