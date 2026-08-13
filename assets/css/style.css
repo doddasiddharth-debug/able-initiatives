@@ -3,8 +3,8 @@
    ========================================================================== */
 
 /* Palette derived from the logo: the "A" monogram samples to indigo #1818A8
-   shading to navy #303060, and the swoosh to gold #F0C048. The previous coral
-   accent (#FF5A36) appeared nowhere in the mark, and failed WCAG contrast at
+   shading to navy #303060, and the swoosh to gold #F0C048. The original coral
+   accent (#FF5A36) appeared nowhere in the mark and failed WCAG contrast at
    3.1:1 for white text on the Donate button. */
 :root {
   --bg: #F7F8FD;
@@ -13,8 +13,7 @@
   --ink: #14143A;
   --ink-soft: #4A4D70;
   /* Darkened from the original soft grey, which sat at 3.1:1 and failed WCAG AA
-     for the small print it is used on (captions, dates, source credits, footer).
-     This is the lightest value clearing 4.5:1 against both --bg and --bg-alt. */
+     for the small print it is used on (captions, dates, source credits, footer). */
   --muted: #63688C;
   --line: #E0E3F2;
   --line-strong: #C7CBE6;
@@ -22,17 +21,15 @@
   --accent: #2B2BC4;
   --accent-dark: #1B1B8F;
   --accent-tint: #E4E4FA;
-  /* Text placed on top of --accent. A light accent (e.g. gold) needs dark text,
-     so this has to travel with the palette rather than being hardcoded white. */
+  /* Text on --accent, and on a branch colour. Both flip together with the
+     palette, which is why they are variables rather than a hardcoded #fff. */
   --accent-ink: #FFFFFF;
-  /* The sticky header tint. Previously a hardcoded cream that didn't match any
-     other colour on the page. */
+  --on-brand: #FFFFFF;
   --header-bg: rgba(247, 248, 253, 0.88);
 
-  /* Dark blocks (CTA band, contact panel, primary button, skip link). These were
-     all reusing --ink, which conflates "darkest text colour" with "dark panel
-     background". On a dark palette those two roles need to move in opposite
-     directions, so they are separate knobs. */
+  /* Dark blocks (CTA band, contact panel, primary button, skip link). Kept
+     separate from --ink so the palette can be inverted without rewriting rules:
+     --ink is "text colour", --panel is "dark surface". */
   --panel: #14143A;
   --on-panel: #FFFFFF;
   --on-panel-soft: #AFB4D8;
@@ -57,6 +54,8 @@
   --font-display: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-body: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
+
+
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -211,12 +210,13 @@ a { color: inherit; text-decoration: none; }
   color: var(--ink);
   white-space: nowrap;
 }
+/* No background or border: those framed an opaque logo. The transparent
+   monogram sits straight on the header. The tinted box moves to the fallback,
+   which still needs to read as a deliberate placeholder. */
 .brand-mark {
   width: 34px;
   height: 34px;
   border-radius: 9px;
-  background: var(--bg-alt);
-  border: 1px solid var(--line);
   color: var(--muted);
   display: flex;
   align-items: center;
@@ -225,22 +225,27 @@ a { color: inherit; text-decoration: none; }
   overflow: hidden;
   flex-shrink: 0;
 }
-/* The nav mark reuses the full org logo file, but that logo is a wide lockup
-   ("A" monogram + wordmark) which turns into an illegible smudge at 34px. So
-   scale it up and pin it top-left, which frames just the "A" monogram: the
-   logo is 1280x685 and the monogram occupies the leading 470x470, so the
-   image is sized to 1280/470 of the square and the box clips the rest.
-   Doing it here rather than shipping a second cropped file keeps a single
-   source of truth for the logo, and keeps the JS error-fallback working. */
+/* logo-main.png is the bare "A" monogram on a transparent background, so it
+   simply fits the square. (This previously scaled a wide lockup to 272% and
+   pinned it top-left to crop the monogram out of it.) */
 .brand-mark img {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 272.34%;
-  height: auto;
-  max-width: none;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 2px;
 }
-.brand-mark-fallback { display: none; align-items: center; justify-content: center; }
+.brand-mark-fallback {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  inset: 0;
+  background: var(--bg-alt);
+  border: 1px solid var(--line);
+  border-radius: 9px;
+}
 .nav-links {
   display: flex;
   align-items: center;
@@ -336,29 +341,24 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ---------- big logo banner (top of homepage) ---------- */
-.logo-banner { padding: 44px 0 0; }
+/* The white card, border and shadow here existed only to contain a logo whose
+   white JPG background would otherwise have shown as a rectangle. The monogram
+   is transparent now, so it sits directly on the page. The frame is also no
+   longer 16/7: that matched the old wide lockup, and would strand a square
+   monogram in a band of empty space. */
+.logo-banner { padding: 52px 0 8px; }
 .logo-banner-frame {
-  max-width: 460px;
+  max-width: 168px;
   margin: 0 auto;
-  aspect-ratio: 16 / 7;
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
   position: relative;
-  overflow: hidden;
-  box-shadow: var(--shadow-sm);
 }
 .logo-banner-frame img {
-  position: absolute;
-  inset: 0;
   width: 100%;
-  height: 100%;
-  object-fit: contain;
-  padding: 30px;
+  height: auto;
 }
 .logo-banner-fallback {
-  position: absolute;
-  inset: 0;
+  /* Static, not absolute: the frame no longer has an intrinsic height of its
+     own, so an out-of-flow fallback would render zero-height. */
   display: none;
   flex-direction: column;
   align-items: center;
@@ -371,8 +371,8 @@ a { color: inherit; text-decoration: none; }
   width: 60px;
   height: 60px;
   border-radius: 15px;
-  background: var(--ink);
-  color: #fff;
+  background: var(--panel);
+  color: var(--on-panel);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -387,6 +387,71 @@ a { color: inherit; text-decoration: none; }
   padding: 2px 6px;
   border-radius: 4px;
   font-size: 11.5px;
+}
+
+/* ---------- hero banner (full-bleed photo + headline) ---------- */
+.hero-banner {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: flex-end;
+  min-height: clamp(440px, 62vh, 660px);
+  padding: 72px 0 64px;
+  overflow: hidden;
+  /* The text on top is white. If the photo fails to load there would otherwise
+     be nothing behind it but the light page background, so the section carries
+     its own dark ground as a floor. */
+  background: #0B0B20;
+}
+.hero-banner-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+}
+/* The scrim. A flat overlay would either wash out the photo or leave the text
+   unreadable where the image is bright, so it is a gradient: heaviest behind the
+   text at the bottom-left, lifting towards the top right where the photo is
+   worth seeing. The floor keeps the lightest area dark enough for white text. */
+.hero-banner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(to top, rgba(11, 11, 32, 0.94) 0%, rgba(11, 11, 32, 0.72) 45%, rgba(11, 11, 32, 0.55) 100%),
+    linear-gradient(to right, rgba(11, 11, 32, 0.55) 0%, rgba(11, 11, 32, 0) 65%);
+}
+.hero-banner-content { position: relative; max-width: var(--container); }
+.hero-banner-content > * { max-width: 760px; }
+.hero-banner h1 {
+  font-size: clamp(36px, 5.4vw, 60px);
+  color: #fff;
+  margin-bottom: 22px;
+  text-wrap: balance;
+}
+.hero-banner .eyebrow { color: var(--business); }
+.hero-banner .eyebrow::before { background: var(--business); }
+.hero-banner .lede { color: #E6E8F5; margin-bottom: 32px; }
+.hero-banner .hero-note { color: #B9BEDC; }
+/* A white button reads as the primary action on a dark photo; the navy
+   .btn-primary would disappear into the scrim. */
+.btn-on-image { background: #fff; color: var(--panel); }
+.btn-on-image:hover { background: var(--business); color: var(--panel); }
+
+@media (max-width: 720px) {
+  .hero-banner {
+    min-height: 0;
+    padding: 56px 0 48px;
+    align-items: center;
+  }
+  /* Weight the scrim evenly on small screens, where the text covers most of
+     the frame and there is no "clear" side of the photo left to protect. */
+  .hero-banner::after {
+    background: linear-gradient(to top, rgba(11, 11, 32, 0.94) 0%, rgba(11, 11, 32, 0.82) 100%);
+  }
 }
 
 /* ---------- hero ---------- */
@@ -624,13 +689,63 @@ a { color: inherit; text-decoration: none; }
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 16px;
-  color: #fff;
+  color: var(--on-brand);
 }
-.logo-slot.sat { background: var(--sat); }
-.logo-slot.health { background: var(--health); }
-.logo-slot.business { background: var(--business); }
+/* The large logo plate on each branch page. The branch logos are transparent
+   PNGs, so this simply follows the palette. */
+.branch-logo-plate {
+  width: 170px;
+  height: 170px;
+  margin: 0 auto 16px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+}
+.branch-logo-plate img { width: 100%; height: 100%; object-fit: contain; padding: 20px; }
+/* Shown only when the logo file is absent, so it needs the branch colour to sit
+   on rather than the white plate. */
+.branch-logo-plate .logo-slot-fallback {
+  position: absolute;
+  inset: 0;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 34px;
+  color: var(--on-brand);
+}
+.branch-logo-plate.sat .logo-slot-fallback { background: var(--sat); color: #FFFFFF; }
+.branch-logo-plate.health .logo-slot-fallback { background: var(--health); color: var(--panel); }
+.branch-logo-plate.business .logo-slot-fallback { background: var(--business); color: var(--panel); }
+
+/* The branch logos are full-colour transparent PNGs (indigo, red, green), so
+   the chip needs a neutral ground: a red Health mark on a green tile clashes.
+   The branch colour moves to the fallback, which is the only part that still
+   needs it. */
+.logo-slot { background: var(--paper); border: 1px solid var(--line); }
+.logo-slot .logo-slot-fallback {
+  position: absolute;
+  inset: 0;
+  align-items: center;
+  justify-content: center;
+  color: var(--on-brand);
+}
+/* Text colour is set per branch rather than from --on-brand: indigo is dark
+   enough for white, but the green and gold are not (white on gold is 1.7:1).
+   These only render when a logo file is missing, which is precisely when they
+   need to be legible. */
+.logo-slot.sat .logo-slot-fallback { background: var(--sat); color: #FFFFFF; }
+.logo-slot.health .logo-slot-fallback { background: var(--health); color: var(--panel); }
+.logo-slot.business .logo-slot-fallback { background: var(--business); color: var(--panel); }
 .logo-slot img {
-  width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0;
+  width: 100%; height: 100%; object-fit: contain; padding: 4px;
+  position: absolute; inset: 0;
 }
 
 .logo-slot-lg {
@@ -751,8 +866,8 @@ a { color: inherit; text-decoration: none; }
   width: 100%;
   aspect-ratio: 1;
   border-radius: var(--radius-md);
-  background: linear-gradient(155deg, var(--ink) 0%, #33344d 100%);
-  color: #fff;
+  background: linear-gradient(155deg, var(--panel) 0%, var(--line-strong) 100%);
+  color: var(--on-panel);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1367,8 +1482,8 @@ a { color: inherit; text-decoration: none; }
   left: 50%;
   bottom: 28px;
   transform: translate(-50%, 12px);
-  background: var(--ink);
-  color: #fff;
+  background: var(--panel);
+  color: var(--on-panel);
   padding: 12px 20px;
   border-radius: 999px;
   font-size: 13.5px;

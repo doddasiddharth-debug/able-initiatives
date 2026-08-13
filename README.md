@@ -42,7 +42,16 @@ photo if that host went down; don't reintroduce remote image URLs.
 
 ```
 assets/images/
-  logos/      logo-main.jpg, logo-health.jpg, logo-business.jpg
+  logos/      logo-main.png    the "A" monogram, transparent background — used
+                               everywhere (header, footer, homepage banner,
+                               apple-touch-icon)
+              logo-lockup.jpg  the older monogram + ".B.L.E. Initiatives"
+                               wordmark, on an opaque white background. Not
+                               referenced by any page; kept because it is the
+                               only asset carrying the wordmark, which is
+                               useful for a social preview image later.
+              logo-health.png, logo-business.png
+                               branch marks, also transparent
   gallery/    health-workshop/, preps-webinar/, business-workshop/, preps-workshop/
   team/       one headshot per director
 ```
@@ -53,12 +62,44 @@ Every `<img>` that can be missing carries `data-fallback`, paired with a
 broken. Add new images with `width`, `height`, `loading="lazy"` and `decoding="async"`
 — the dimensions prevent the page from jumping as photos load.
 
-### The header/footer logo mark
-The small square mark in the header and footer reuses `logos/logo-main.jpg`. Because
-that logo is a wide lockup ("A" monogram + wordmark) that turns to mush at 34px, the
-CSS scales it up and pins it top-left so only the monogram shows — see `.brand-mark img`
-in `style.css`. If the logo file is ever replaced with different proportions, that
-`width: 272.34%` needs recalculating (it is `logo width ÷ monogram width`).
+### The logo
+`logos/logo-main.png` is the "A" monogram on a transparent background, and it is
+used at every size: the 34px header/footer mark, the homepage banner, and the
+apple-touch-icon.
+
+Transparency is what makes this simple, and it is worth preserving. The previous
+logo was an opaque JPG, which forced two workarounds that have now been deleted:
+the header mark scaled the image to 272% and pinned it top-left to crop the
+monogram out of a wide lockup, and the homepage banner wrapped the logo in a white
+card purely so its white background looked deliberate. Both are gone — the mark
+is a plain `object-fit: contain`, and the banner logo sits directly on the page.
+
+If you replace the logo, keep it transparent and roughly square. A different
+aspect ratio means updating the `width`/`height` attributes on the banner `<img>`
+in `index.html` (currently 784×725), which is what reserves the right space while
+the image loads.
+
+### Palette
+The site runs a **light indigo palette** with gold as the branch accent, and the
+whole thing lives in CSS variables at the top of `style.css` — changing the scheme
+means editing that one block. A dark navy variant was built and tested against the
+same markup, so inverting it is a palette edit rather than a rewrite.
+
+Several variables exist specifically so that inversion stays possible:
+
+- `--ink` means "highest contrast against the page", so here it is the *light*
+  end of the scale. Anything needing "a dark block with light text on it" uses
+  `--panel` / `--on-panel` instead. Don't put `color: #fff` on a `var(--ink)`
+  background; on this palette that is white on near-white.
+- `--accent-dark` is used for small text on the page background, so on a dark
+  palette it is *lighter* than `--accent`, not darker.
+- `--on-brand` is the text colour on a branch colour (`--sat`/`--health`/
+  `--business`), which flips with the theme the same way `--accent-ink` does.
+- Shadows need to be far denser on a dark ground; light-theme shadow values are
+  invisible there.
+
+Inverting the palette is only possible because every logo is transparent — opaque
+logos render as white slabs on a dark page.
 
 ## Homepage sections that need updating as ABLE grows
 
@@ -96,8 +137,12 @@ blanks them while the section is off-screen and only when `html.js` is present.
       point at `assets/images/logos/logo-preps.png`, which doesn't exist yet and falls
       back to "PR" initials. Drop the real file in at that exact path and it appears
       everywhere automatically, no HTML edits.
-- [ ] **Team headshots.** `assets/images/team/{siddharth-dodda,eric-huang,helen-wan,rhythm-kasat,monsf-tibin}.jpg`
-      — currently all showing initials.
+- [x] ~~Team headshots~~ — all eight are in `assets/images/team/`.
+- [x] ~~Transparent branch logos~~ — Health and Business are transparent PNGs now.
+- [ ] **Branch colours no longer match the branch logos.** The ABLE Health logo is
+      red but `--health` is green; the ABLE Business logo is green but `--business`
+      is gold. That shows up on the card top-borders, the timeline markers, and the
+      event badges. Either restyle the logos or re-point those two variables.
 - [ ] **Preps Workshop photos** (Aug 3): `assets/images/gallery/preps-workshop/1.jpg` and `2.png`.
 - [ ] **Payment processor.** The "Donate now" button is a `mailto:`. Once a processor is
       set up (Zeffy is 0% for nonprofits; Givebutter and Stripe also work), swap the
