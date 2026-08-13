@@ -196,17 +196,17 @@ a { color: inherit; text-decoration: none; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 28px;
+  padding: 20px 28px;
   max-width: var(--container);
   margin: 0 auto;
 }
 .brand {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 13px;
   font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 19px;
+  font-weight: 700;
+  font-size: 22px;
   color: var(--ink);
   white-space: nowrap;
 }
@@ -214,9 +214,9 @@ a { color: inherit; text-decoration: none; }
    monogram sits straight on the header. The tinted box moves to the fallback,
    which still needs to read as a deliberate placeholder. */
 .brand-mark {
-  width: 34px;
-  height: 34px;
-  border-radius: 9px;
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
   color: var(--muted);
   display: flex;
   align-items: center;
@@ -234,7 +234,6 @@ a { color: inherit; text-decoration: none; }
   width: 100%;
   height: 100%;
   object-fit: contain;
-  padding: 2px;
 }
 .brand-mark-fallback {
   display: none;
@@ -244,7 +243,7 @@ a { color: inherit; text-decoration: none; }
   inset: 0;
   background: var(--bg-alt);
   border: 1px solid var(--line);
-  border-radius: 9px;
+  border-radius: 12px;
 }
 .nav-links {
   display: flex;
@@ -332,61 +331,12 @@ a { color: inherit; text-decoration: none; }
 }
 
 @media (max-width: 560px) {
-  .nav { padding: 13px 18px; }
-  .brand { font-size: 17px; }
-  .brand-mark { width: 30px; height: 30px; }
+  .nav { padding: 14px 18px; }
+  .brand { font-size: 18px; }
+  .brand-mark { width: 42px; height: 42px; }
   /* Donate stays reachable inside the menu; drop the top-bar button so the
      brand name fits on one line on narrow phones. */
   .nav-actions .btn-accent { display: none; }
-}
-
-/* ---------- big logo banner (top of homepage) ---------- */
-/* The white card, border and shadow here existed only to contain a logo whose
-   white JPG background would otherwise have shown as a rectangle. The monogram
-   is transparent now, so it sits directly on the page. The frame is also no
-   longer 16/7: that matched the old wide lockup, and would strand a square
-   monogram in a band of empty space. */
-.logo-banner { padding: 52px 0 8px; }
-.logo-banner-frame {
-  max-width: 168px;
-  margin: 0 auto;
-  position: relative;
-}
-.logo-banner-frame img {
-  width: 100%;
-  height: auto;
-}
-.logo-banner-fallback {
-  /* Static, not absolute: the frame no longer has an intrinsic height of its
-     own, so an out-of-flow fallback would render zero-height. */
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  gap: 10px;
-  padding: 20px;
-}
-.logo-banner-mark {
-  width: 60px;
-  height: 60px;
-  border-radius: 15px;
-  background: var(--panel);
-  color: var(--on-panel);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 24px;
-}
-.logo-banner-fallback p { font-size: 12.5px; color: var(--muted); margin: 0; }
-.logo-banner-fallback code {
-  background: var(--bg-alt);
-  border: 1px solid var(--line);
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-size: 11.5px;
 }
 
 /* ---------- hero banner (full-bleed photo + headline) ---------- */
@@ -421,7 +371,7 @@ a { color: inherit; text-decoration: none; }
   inset: 0;
   z-index: -1;
   background:
-    linear-gradient(to top, rgba(11, 11, 32, 0.94) 0%, rgba(11, 11, 32, 0.72) 45%, rgba(11, 11, 32, 0.55) 100%),
+    linear-gradient(to top, rgba(11, 11, 32, 0.95) 0%, rgba(11, 11, 32, 0.82) 45%, rgba(11, 11, 32, 0.72) 100%),
     linear-gradient(to right, rgba(11, 11, 32, 0.55) 0%, rgba(11, 11, 32, 0) 65%);
 }
 .hero-banner-content { position: relative; max-width: var(--container); }
@@ -434,6 +384,22 @@ a { color: inherit; text-decoration: none; }
 }
 .hero-banner .eyebrow { color: var(--business); }
 .hero-banner .eyebrow::before { background: var(--business); }
+/* Spells out the acronym, with the initials picked out in gold so the letters
+   read as A.B.L.E. without needing to write the dotted form separately. It is
+   plain text, so a screen reader still reads the phrase normally. */
+.hero-acronym {
+  font-family: var(--font-display);
+  font-size: clamp(17px, 2vw, 22px);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: #E6E8F5;
+  margin: -6px 0 24px;
+}
+.hero-acronym .ini {
+  color: var(--business);
+  font-weight: 800;
+  font-size: 1.18em;
+}
 .hero-banner .lede { color: #E6E8F5; margin-bottom: 32px; }
 .hero-banner .hero-note { color: #B9BEDC; }
 /* A white button reads as the primary action on a dark photo; the navy

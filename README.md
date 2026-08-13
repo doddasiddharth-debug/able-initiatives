@@ -109,13 +109,23 @@ scrim, with the headline over it. Two things to preserve if you swap the photo:
 - The scrim is a **gradient, not a flat overlay** — heaviest bottom-left behind
   the text, lifting toward the top-right so the photo is still legible. A flat
   overlay either washes out the image or leaves text unreadable over bright areas.
-- **Re-check contrast after changing the photo.** With the current image the
-  worst background pixel behind the white text measures 5.7:1, and the gold
-  eyebrow 4.6:1 — that one is only just over the 4.5:1 minimum, so a brighter
-  photo would push it under. Darken the scrim if you swap in a lighter image.
+- **Re-check contrast after changing the photo.** Contrast here depends on the
+  photo's pixels, not on CSS values, so it has to be measured against the render.
+  Current worst-case behind the text: headline 9.7:1, gold eyebrow 6.1:1, lede
+  10.0:1. The eyebrow is the tightest — when the separate logo banner was removed
+  and the hero moved up under the nav, that line landed over the ceiling lights
+  and dropped to 3.7:1, which is why the scrim's top stop is 0.72 rather than the
+  0.55 it started at. Swap in a brighter photo and it needs raising again.
 
 The section also carries its own dark `background`, so if the photo ever fails to
 load the white text still lands on something dark instead of the light page.
+
+The banner sits directly under the nav — there is deliberately no logo block
+between them. The header carries the logo instead, at 52px.
+
+`.hero-acronym` spells out A.B.L.E. (Advancing Better Learning Empowerment) with
+the initials picked out in gold. It is plain text, so screen readers read the
+phrase normally rather than announcing four separate letters.
 
 ## Homepage sections that need updating as ABLE grows
 
