@@ -1,6 +1,13 @@
 // ABLE Initiatives: shared behavior
 
+// Marks that scripting is available, so CSS can safely hide things it intends
+// to animate in later. Anything gated behind `html.js` degrades to its plain
+// state when this file fails to load. Set before DOMContentLoaded to avoid a
+// flash of the un-animated layout.
+document.documentElement.classList.add("js");
+
 document.addEventListener("DOMContentLoaded", () => {
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   // Mobile nav toggle
   const header = document.querySelector(".site-header");
   const toggle = document.querySelector(".nav-toggle");
@@ -83,6 +90,80 @@ document.addEventListener("DOMContentLoaded", () => {
     revealEls.forEach((el) => el.classList.add("in-view"));
   }
 
+  // Count-up stats.
+  //
+  // Deliberately conservative. The real figure is already in the markup, and
+  // every exit path here restores that exact string, so a stalled frame loop,
+  // an unsupported browser, or a reduced-motion preference all leave the true
+  // number on screen. A stat counter frozen at "0" reads as an org that has
+  // achieved nothing, which is far worse than no animation at all.
+  const statNums = document.querySelectorAll(".stat-num");
+  if (statNums.length && "IntersectionObserver" in window && !reduceMotion.matches) {
+    const parse = (text) => {
+      // Ratios like "1:1" have no sensible in-between frames.
+      if (text.indexOf(":") !== -1) return null;
+      const m = text.match(/^(\D*?)([\d.,]+)(.*)$/);
+      if (!m) return null;
+      const value = parseFloat(m[2].replace(/,/g, ""));
+      // Zero targets ("$0") have nothing to count towards.
+      if (!isFinite(value) || value <= 0) return null;
+      return {
+        prefix: m[1],
+        value: value,
+        suffix: m[3],
+        decimals: (m[2].split(".")[1] || "").length,
+        // Keep thousands separators through the animation, so "1,200" doesn't
+        // count up as "1200" and snap back to a comma on the last frame.
+        grouped: m[2].indexOf(",") !== -1,
+      };
+    };
+
+    const countUp = (el, spec, original) => {
+      const duration = 900;
+      const startedAt = performance.now();
+      let settled = false;
+      const settle = () => {
+        if (settled) return;
+        settled = true;
+        el.textContent = original;
+      };
+      const step = (now) => {
+        const t = Math.min(1, (now - startedAt) / duration);
+        const eased = 1 - Math.pow(1 - t, 3);
+        if (t < 1) {
+          const n = spec.value * eased;
+          const shown = spec.grouped
+            ? n.toLocaleString("en-US", {
+                minimumFractionDigits: spec.decimals,
+                maximumFractionDigits: spec.decimals,
+              })
+            : n.toFixed(spec.decimals);
+          el.textContent = spec.prefix + shown + spec.suffix;
+          requestAnimationFrame(step);
+        } else {
+          settle();
+        }
+      };
+      requestAnimationFrame(step);
+      // Backstop for a backgrounded tab, where rAF never fires.
+      setTimeout(settle, duration + 800);
+    };
+
+    const statIo = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          statIo.unobserve(entry.target);
+          const original = entry.target.textContent.trim();
+          const spec = parse(original);
+          if (spec) countUp(entry.target, spec, original);
+        });
+      },
+      { threshold: 0.4 }
+    );
+    statNums.forEach((el) => statIo.observe(el));
+  }
+
   // Donate amount chips. The selected amount is written into the mailto so the
   // team receives it, rather than only being recorded in a dataset nothing reads.
   const chips = document.querySelectorAll(".amount-chip[data-amount]");
@@ -120,8 +201,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Sliding photo carousel
-  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-
   document.querySelectorAll(".carousel").forEach((carousel) => {
     const slides = Array.from(carousel.querySelectorAll(".carousel-slide"));
     const dots = Array.from(carousel.querySelectorAll(".carousel-dots .dot"));

@@ -47,6 +47,33 @@ CSS scales it up and pins it top-left so only the monogram shows — see `.brand
 in `style.css`. If the logo file is ever replaced with different proportions, that
 `width: 272.34%` needs recalculating (it is `logo width ÷ monogram width`).
 
+## Homepage sections that need updating as ABLE grows
+
+**Event timeline** (`index.html`, "Our first season"). Add a new `<li class="timeline-item BRANCH">`
+in date order, where `BRANCH` is `sat`, `health`, or `business` — that class colours
+the marker and must match the `event-branch` span inside. Keep the `datetime`
+attribute in `YYYY-MM-DD` form; it's the machine-readable version search engines read.
+Also update the "Four events" count in the section intro.
+
+**Guest speakers** (`index.html`). Copy a `.speaker-card` block. With one speaker the
+card lays out horizontally on purpose; adding a second automatically switches the
+section to a normal grid, no CSS changes needed.
+
+**Animated stat counters.** Any `.stat-num` on the site counts up when scrolled into
+view. It reads the final value straight out of the markup and restores that exact
+string when the animation ends, so the number in the HTML is always the source of
+truth. Values with no sensible midpoint are skipped automatically: ratios containing
+a colon (`1:1`) and zero targets (`$0`). Formats that do animate include `3`, `100%`,
+`~2 days`, `4.5 hrs`, and `1,200 students`.
+
+This is deliberately defensive, and worth preserving if you edit it. A well-known
+nonprofit site this design borrowed from currently displays **"0 patients aided
+since 2020"** because its counter animation breaks before reaching the real figure.
+Every failure path here — no `IntersectionObserver`, reduced-motion preference,
+backgrounded tab, JS not loading at all — leaves the true number on screen instead.
+The progress bars work the same way: their real widths are inline, and CSS only
+blanks them while the section is off-screen and only when `html.js` is present.
+
 ## Still to do
 
 - [ ] **Confirm the contact address.** Every contact link points at

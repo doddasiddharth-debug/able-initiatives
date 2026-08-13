@@ -515,6 +515,13 @@ a { color: inherit; text-decoration: none; }
 .progress-row-head span { font-family: var(--font-display); font-size: 20px; font-weight: 600; color: var(--accent-dark); }
 .progress-track { height: 9px; border-radius: 999px; background: var(--bg-alt); border: 1px solid var(--line); overflow: hidden; }
 .progress-fill { height: 100%; border-radius: 999px; background: var(--accent); transition: width 1s ease; }
+/* Fill the bars as their section scrolls in. The true width lives inline, and
+   this only ever overrides it while the section is still hidden, so if JS
+   never runs (no `js` class) or motion is unwelcome, the bars render at their
+   real value immediately instead of being stuck empty. */
+@media (prefers-reduced-motion: no-preference) {
+  html.js .reveal:not(.in-view) .progress-fill { width: 0 !important; }
+}
 .progress-row p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
 
 /* ---------- cost comparison bar chart ---------- */
@@ -985,6 +992,118 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 900px) {
   .footer-grid { grid-template-columns: 1fr 1fr; }
 }
+
+/* ---------- event timeline ---------- */
+.timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  max-width: 780px;
+}
+.timeline-item {
+  position: relative;
+  padding: 0 0 34px 38px;
+}
+.timeline-item:last-child { padding-bottom: 0; }
+/* The spine is drawn per item rather than once down the whole list, so it stops
+   at the final marker instead of trailing past it. */
+.timeline-item:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 21px;
+  bottom: -7px;
+  width: 2px;
+  background: var(--line-strong);
+  border-radius: 1px;
+}
+.timeline-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 7px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--muted);
+  border: 3px solid var(--bg-alt);
+  box-shadow: 0 0 0 2px var(--line-strong);
+}
+.timeline-item.sat::before { background: var(--sat); box-shadow: 0 0 0 2px var(--sat); }
+.timeline-item.health::before { background: var(--health); box-shadow: 0 0 0 2px var(--health); }
+.timeline-item.business::before { background: var(--business); box-shadow: 0 0 0 2px var(--business); }
+.timeline-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+.timeline-date { font-size: 13px; color: var(--muted); }
+.timeline-body h3 { font-size: 19px; margin-bottom: 6px; }
+.timeline-body p { font-size: 14.5px; margin-bottom: 0; max-width: 60ch; }
+
+@media (max-width: 560px) {
+  .timeline-item { padding-left: 30px; padding-bottom: 28px; }
+  .timeline-body h3 { font-size: 17px; }
+}
+
+/* ---------- guest speakers ---------- */
+.speaker-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 380px));
+  gap: 28px;
+}
+.speaker-card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+}
+.speaker-photo {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  background: var(--bg-alt);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.speaker-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+/* With a single speaker the card would sit alone in a wide grid looking like a
+   gap. Lay that one case out horizontally so it reads as deliberate; it reverts
+   to the normal grid as soon as a second speaker is added. */
+@media (min-width: 760px) {
+  .speaker-card:only-child { grid-column: 1 / -1; max-width: 700px; flex-direction: row; }
+  .speaker-card:only-child .speaker-photo { flex: 0 0 250px; aspect-ratio: auto; }
+  .speaker-card:only-child .speaker-body { display: flex; flex-direction: column; justify-content: center; }
+}
+.speaker-body { padding: 22px 24px 24px; }
+.speaker-body h3 { font-size: 18px; margin-bottom: 2px; }
+.speaker-body p { font-size: 14.5px; }
+.speaker-org {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent-dark);
+  margin-bottom: 12px;
+}
+.speaker-event {
+  font-size: 12.5px;
+  color: var(--muted);
+  margin-bottom: 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+.speaker-note {
+  font-size: 14px;
+  color: var(--muted);
+  margin: 32px 0 0;
+}
+.speaker-note a { color: var(--accent-dark); font-weight: 600; text-decoration: underline; }
 
 /* ---------- reveal-on-scroll ---------- */
 .reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.5s ease, transform 0.5s ease; }
