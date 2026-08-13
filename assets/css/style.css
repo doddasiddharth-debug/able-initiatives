@@ -39,6 +39,43 @@
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 
+/* ---------- accessibility ---------- */
+/* Keyboard users need to see where they are. :focus-visible keeps this off
+   mouse clicks, so it costs the pointer experience nothing. */
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+.skip-link {
+  position: absolute;
+  left: 12px;
+  top: -100px;
+  z-index: 200;
+  background: var(--ink);
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: var(--radius-sm);
+  font-size: 14.5px;
+  font-weight: 600;
+  transition: top 0.15s ease;
+}
+.skip-link:focus { top: 12px; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  /* The reveal animation is the only thing hiding this content, so make sure
+     it is shown outright rather than transitioned into view. */
+  .reveal { opacity: 1; transform: none; }
+  .btn:hover { transform: none; }
+}
+
 body {
   margin: 0;
   background: var(--bg);
@@ -166,7 +203,21 @@ a { color: inherit; text-decoration: none; }
   overflow: hidden;
   flex-shrink: 0;
 }
-.brand-mark img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+/* The nav mark reuses the full org logo file, but that logo is a wide lockup
+   ("A" monogram + wordmark) which turns into an illegible smudge at 34px. So
+   scale it up and pin it top-left, which frames just the "A" monogram: the
+   logo is 1280x685 and the monogram occupies the leading 470x470, so the
+   image is sized to 1280/470 of the square and the box clips the rest.
+   Doing it here rather than shipping a second cropped file keeps a single
+   source of truth for the logo, and keeps the JS error-fallback working. */
+.brand-mark img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 272.34%;
+  height: auto;
+  max-width: none;
+}
 .brand-mark-fallback { display: none; align-items: center; justify-content: center; }
 .nav-links {
   display: flex;
@@ -228,6 +279,12 @@ a { color: inherit; text-decoration: none; }
     transform: translateY(-8px);
     opacity: 0;
     pointer-events: none;
+    /* Without visibility the closed menu is invisible but still focusable, so
+       tabbing on a phone lands you in links you can't see. It is deliberately
+       left out of the transition: delaying it to preserve the fade-out makes
+       correctness depend on a timer, and the menu simply disappearing is a
+       fine trade for a guarantee that it is never focusable while closed. */
+    visibility: hidden;
     transition: opacity 0.18s ease, transform 0.18s ease;
     border-top: 1px solid var(--line);
     border-bottom: 1px solid var(--line);
@@ -237,7 +294,12 @@ a { color: inherit; text-decoration: none; }
   }
   .nav-links a { width: 100%; padding: 14px 0; border-bottom: 1px solid var(--line); font-size: 17px; }
   .nav-links li:last-child a { border-bottom: none; }
-  .site-header.nav-open .nav-links { opacity: 1; transform: translateY(0); pointer-events: auto; }
+  .site-header.nav-open .nav-links {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+    visibility: visible;
+  }
   .nav-toggle { display: flex; }
   .nav-actions .btn-outline { display: none; }
 }
@@ -431,6 +493,16 @@ a { color: inherit; text-decoration: none; }
   box-shadow: var(--shadow-sm);
 }
 .donut-wrap svg { flex-shrink: 0; }
+/* The 150px donut plus the legend's minimum content width is wider than a
+   phone, which pushed the whole page into horizontal scroll. Stack them. */
+@media (max-width: 600px) {
+  .donut-wrap {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 22px;
+    padding: 24px;
+  }
+}
 .donut-legend { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
 .donut-legend li { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--ink-soft); }
 .donut-legend .swatch { width: 11px; height: 11px; border-radius: 3px; flex-shrink: 0; }
@@ -830,7 +902,11 @@ a { color: inherit; text-decoration: none; }
   background: var(--bg);
   cursor: pointer;
   font-size: 15px;
+  font-family: inherit;
+  line-height: inherit;
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
 }
+.amount-chip:hover { border-color: var(--ink); }
 .amount-chip.selected { border-color: var(--accent); background: var(--accent-tint); color: var(--accent-dark); }
 .donate-footnote { font-size: 12.5px; color: var(--muted); margin-top: 14px; text-align: center; }
 
@@ -995,6 +1071,29 @@ a { color: inherit; text-decoration: none; }
 .carousel-arrow:hover { background: rgba(27, 42, 58, 0.7); }
 .carousel-arrow.prev { left: 18px; }
 .carousel-arrow.next { right: 18px; }
+/* Top-right: the caption gradient occupies the bottom edge and the arrows
+   take the vertical middle. */
+.carousel-pause {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  z-index: 3;
+  min-width: 30px;
+  height: 30px;
+  padding: 0 9px;
+  border-radius: 999px;
+  border: none;
+  background: rgba(27, 42, 58, 0.45);
+  color: #fff;
+  font-size: 11px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease;
+}
+.carousel-pause:hover { background: rgba(27, 42, 58, 0.7); }
 @media (max-width: 640px) {
   .carousel { aspect-ratio: 4 / 5; }
   .carousel-arrow { width: 32px; height: 32px; font-size: 15px; }

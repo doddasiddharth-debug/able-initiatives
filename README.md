@@ -1,48 +1,90 @@
 # ABLE Initiatives website
 
-Static site, no build step. Open `index.html` directly or serve the folder with any static server.
+Static site, no build step. Open `index.html` directly or serve the folder with any static server:
+
+```
+python3 -m http.server 8000
+```
 
 ## Pages
 - `index.html`: Home
-- `about.html`: About
-- `programs.html`: Programs (ABLE Preps / Health / Business)
-- `get-involved.html`: How to get involved
+- `about.html`: About + team
+- `programs.html`: All three branches on one page
+- `preps.html` / `health.html` / `business.html`: One page per branch
+- `get-involved.html`: Students, members, and chapter leads
 - `events.html`: Photo gallery (grouped by event)
 - `donate.html`: Donate
+- `404.html`: Not-found page
 
-## Adding your logo
-- **Big logo banner** at the very top of the homepage: drop a file at `assets/images/logos/logo-main.png` (any aspect ratio; it's scaled to fit, not cropped).
-- **Small nav mark**: the square next to "ABLE Initiatives" in the header/footer is already an image slot (it falls back to a neutral picture icon until a file is added). Drop a file at `assets/images/logos/logo-mark.png` and it'll appear there automatically, no HTML edits needed.
+Shared styles live in `assets/css/style.css`, shared behavior in `assets/js/main.js`.
+There is no templating, so **the header and footer are duplicated in every page** —
+a nav change is a ten-file edit. Use find-and-replace across all `*.html`, and check
+the result with `grep` before committing.
 
-## Adding branch logos
-Drop image files into `assets/images/logos/` using these exact names and they'll appear automatically (they currently fall back to colored initials):
-- `logo-preps.png`
-- `logo-health.png`
-- `logo-business.png`
+## Images
 
-## Adding photos
-- **Homepage hero photo**: `assets/images/photos/hero.jpg`
-- **About page "why we exist" photo**: `assets/images/photos/why-we-exist.jpg`
-- **Team headshots** (about.html): `assets/images/team/siddharth-dodda.jpg`, `eric-huang.jpg`, `helen-wan.jpg`, `rhythm-kasat.jpg`, `monsf-tibin.jpg`
-## Photo gallery (events.html)
-The gallery on `events.html` is grouped into 4 real events. The homepage carousel and the scattered photos on `get-involved.html` / `donate.html` pull from the same set of photos.
+All photos and logos are committed under `assets/images/` and served from this repo.
+They used to be hotlinked from a free image host, which meant the site lost every
+photo if that host went down; don't reintroduce remote image URLs.
 
-| Event | Date | Photos | Status |
-|---|---|---|---|
-| ABLE Health Workshop | July 16 | 1 (panel, woman speaking + 2 students seated) | ✅ in place (hosted) |
-| ABLE Preps Webinar | July 21 | 1 (video-call "Live Q&A" screenshot) | ✅ in place (hosted) |
-| ABLE Business Workshop | July 22 | 8 (Mark Bittle + Titan Robotics talk, full room, candids) | ✅ in place (hosted) |
-| ABLE Preps Workshop | August 3 | 0 of 2 (students at podium + QR code slide) | ⬜ still needed |
+```
+assets/images/
+  logos/      logo-main.jpg, logo-health.jpg, logo-business.jpg
+  gallery/    health-workshop/, preps-webinar/, business-workshop/, preps-workshop/
+  team/       one headshot per director
+```
 
-**Adding a photo (site owner, by editing the HTML):** there is intentionally **no on-page upload button** — photos are added only by editing the code, so the public can't add anything. To add one, drop a new `<div class="event-photo">…</div>` block into the relevant event's `.gallery-grid` in `events.html`, with an `<img src="…">` pointing at either:
+Every `<img>` that can be missing carries `data-fallback`, paired with a
+`[data-fallback-el]` sibling. If the file 404s, the image hides and the fallback
+(initials, or a neutral "Photo coming soon") shows instead, so nothing ever renders
+broken. Add new images with `width`, `height`, `loading="lazy"` and `decoding="async"`
+— the dimensions prevent the page from jumping as photos load.
 
-1. **A hosted image link (recommended, no local storage needed).** Upload the photo to any free image host, e.g. [postimages.org](https://postimages.org) (no account needed), grab the **direct image link** (ends in `.jpg`/`.png`, not a page URL), and use it as the `src`. This is what all the current gallery photos use.
-2. **A local file.** Save it into `assets/images/gallery/<event>/` and reference it as `assets/images/gallery/<event>/N.jpg`.
+### The header/footer logo mark
+The small square mark in the header and footer reuses `logos/logo-main.jpg`. Because
+that logo is a wide lockup ("A" monogram + wordmark) that turns to mush at 34px, the
+CSS scales it up and pins it top-left so only the monogram shows — see `.brand-mark img`
+in `style.css`. If the logo file is ever replaced with different proportions, that
+`width: 272.34%` needs recalculating (it is `logo width ÷ monogram width`).
 
-All of the above (logos, hero photos, team headshots, gallery photos) fall back to a clean placeholder (initials or an icon) until a real file is added, so nothing ever looks broken in the meantime.
+## Still to do
 
-## Connecting real donations
-`donate.html` currently points the "Donate now" button at a `mailto:` link since no payment processor is connected yet. Once you set up a processor (Stripe, PayPal, Zeffy, Givebutter, etc.), swap that `href` for your checkout link.
+- [ ] **Confirm the contact address.** Every contact link points at
+      `ableinitiativespchs@gmail.com`. Make sure that mailbox exists and is monitored
+      before sharing the site — it is the only way anyone can reach you.
+- [ ] **Correct ABLE Preps logo.** The current one is wrong, so the Preps references
+      point at `assets/images/logos/logo-preps.png`, which doesn't exist yet and falls
+      back to "PR" initials. Drop the real file in at that exact path and it appears
+      everywhere automatically, no HTML edits.
+- [ ] **Team headshots.** `assets/images/team/{siddharth-dodda,eric-huang,helen-wan,rhythm-kasat,monsf-tibin}.jpg`
+      — currently all showing initials.
+- [ ] **Preps Workshop photos** (Aug 3): `assets/images/gallery/preps-workshop/1.jpg` and `2.png`.
+- [ ] **Payment processor.** The "Donate now" button is a `mailto:`. Once a processor is
+      set up (Zeffy is 0% for nonprofits; Givebutter and Stripe also work), swap the
+      `href` in `donate.html` and delete the "online giving is being set up" footnote.
+- [ ] **EIN and tax-deductibility notice** on `donate.html`. Donors look for it, and the
+      site claims 501(c)(3) status on every page.
+- [ ] **Canonical URLs, `og:image`, and `sitemap.xml`.** These all need the production
+      domain, which isn't decided yet. The other social tags are already in place; add
+      the sitemap line to `robots.txt` at the same time.
+- [ ] **Replace the `mailto:` intake links** on `get-involved.html` with a real form
+      (Google Forms, Tally). `mailto:` often does nothing on school Chromebooks, and a
+      form gives you an actual roster.
+- [ ] **Verify the homepage stats.** "~2 days avg. mentor response time" and
+      "1:1 mentor matching" are specific enough to be checked. Soften them if they
+      aren't measured.
 
-## Editing content
-There's no templating: the header/footer are duplicated in each HTML file. Shared styles live in `assets/css/style.css`, shared behavior in `assets/js/main.js`.
+## Gallery
+
+Photos are added only by editing the HTML — there is intentionally no upload button,
+so the public can't add anything. To add one, copy an existing
+`<div class="event-photo">…</div>` block into the relevant event's `.gallery-grid`
+in `events.html` and point its `<img src>` at a file under
+`assets/images/gallery/<event>/`.
+
+| Event | Date | Photos |
+|---|---|---|
+| ABLE Health Workshop | July 16 | 1 |
+| ABLE Preps Webinar | July 21 | 1 |
+| ABLE Business Workshop | July 22 | 8 |
+| ABLE Preps Workshop | August 3 | 0 of 2 — still needed |

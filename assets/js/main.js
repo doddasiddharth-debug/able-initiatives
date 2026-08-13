@@ -83,20 +83,35 @@ document.addEventListener("DOMContentLoaded", () => {
     revealEls.forEach((el) => el.classList.add("in-view"));
   }
 
-  // Donate amount chips
+  // Donate amount chips. The selected amount is written into the mailto so the
+  // team receives it, rather than only being recorded in a dataset nothing reads.
   const chips = document.querySelectorAll(".amount-chip[data-amount]");
-  if (chips.length) {
+  const donateBtn = document.querySelector("[data-donate-link]");
+  if (chips.length && donateBtn) {
+    const email = donateBtn.dataset.donateEmail || "";
+    const applyAmount = (amount) => {
+      const subject = `Donation of $${amount} to ABLE Initiatives`;
+      const body =
+        `Hi ABLE team,\n\nI'd like to donate $${amount}.\n\n` +
+        `Please send me a secure way to give.\n\nName: \nThanks!`;
+      donateBtn.href =
+        `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    };
+
     chips.forEach((chip) => {
       chip.addEventListener("click", () => {
-        chips.forEach((c) => c.classList.remove("selected"));
+        chips.forEach((c) => {
+          c.classList.remove("selected");
+          c.setAttribute("aria-pressed", "false");
+        });
         chip.classList.add("selected");
-        const donateBtn = document.querySelector("[data-donate-link]");
-        if (donateBtn) {
-          const amount = chip.dataset.amount;
-          donateBtn.dataset.selectedAmount = amount;
-        }
+        chip.setAttribute("aria-pressed", "true");
+        applyAmount(chip.dataset.amount);
       });
     });
+
+    const preselected = document.querySelector(".amount-chip.selected[data-amount]");
+    if (preselected) applyAmount(preselected.dataset.amount);
   }
 
   // Footer year
@@ -105,6 +120,8 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Sliding photo carousel
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
   document.querySelectorAll(".carousel").forEach((carousel) => {
     const slides = Array.from(carousel.querySelectorAll(".carousel-slide"));
     const dots = Array.from(carousel.querySelectorAll(".carousel-dots .dot"));
@@ -115,7 +132,27 @@ document.addEventListener("DOMContentLoaded", () => {
     let index = slides.findIndex((s) => s.classList.contains("is-active"));
     if (index < 0) index = 0;
     let timer = null;
+    // Paused by the user (via the toggle) as opposed to paused transiently
+    // because the pointer is over the carousel: only the latter auto-resumes.
+    let userPaused = reduceMotion.matches;
     const interval = parseInt(carousel.dataset.interval, 10) || 4500;
+
+    carousel.setAttribute("role", "group");
+    carousel.setAttribute("aria-roledescription", "carousel");
+    if (!carousel.hasAttribute("aria-label")) {
+      carousel.setAttribute("aria-label", "Event photos");
+    }
+
+    // Off-screen slides are still in the accessibility tree, so a screen reader
+    // would otherwise read all three captions as one run-on block.
+    const syncHidden = () => {
+      slides.forEach((slide, i) => {
+        slide.setAttribute("aria-hidden", i === index ? "false" : "true");
+      });
+      dots.forEach((dot, i) => {
+        dot.setAttribute("aria-current", i === index ? "true" : "false");
+      });
+    };
 
     const show = (next) => {
       slides[index].classList.remove("is-active");
@@ -123,16 +160,37 @@ document.addEventListener("DOMContentLoaded", () => {
       index = (next + slides.length) % slides.length;
       slides[index].classList.add("is-active");
       dots[index] && dots[index].classList.add("is-active");
+      syncHidden();
     };
 
-    const start = () => {
-      stop();
-      timer = setInterval(() => show(index + 1), interval);
-    };
     const stop = () => {
       if (timer) clearInterval(timer);
       timer = null;
     };
+    const start = () => {
+      stop();
+      if (userPaused) return;
+      timer = setInterval(() => show(index + 1), interval);
+    };
+
+    // Autoplay with no way to stop it is a WCAG failure, so give it a control.
+    // It is built here rather than in the markup so it never appears without
+    // the script that makes it work.
+    const toggle = document.createElement("button");
+    toggle.type = "button";
+    toggle.className = "carousel-pause";
+    const syncToggle = () => {
+      toggle.textContent = userPaused ? "▶" : "❚❚";
+      toggle.setAttribute("aria-label", userPaused ? "Play photo slideshow" : "Pause photo slideshow");
+    };
+    toggle.addEventListener("click", () => {
+      userPaused = !userPaused;
+      syncToggle();
+      if (userPaused) stop();
+      else start();
+    });
+    syncToggle();
+    carousel.appendChild(toggle);
 
     dots.forEach((dot, i) => {
       dot.addEventListener("click", () => {
@@ -143,11 +201,27 @@ document.addEventListener("DOMContentLoaded", () => {
     if (nextBtn) nextBtn.addEventListener("click", () => { show(index + 1); start(); });
     if (prevBtn) prevBtn.addEventListener("click", () => { show(index - 1); start(); });
 
+    carousel.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowLeft") { show(index - 1); start(); }
+      else if (e.key === "ArrowRight") { show(index + 1); start(); }
+      else return;
+      e.preventDefault();
+    });
+
     carousel.addEventListener("mouseenter", stop);
     carousel.addEventListener("mouseleave", start);
     carousel.addEventListener("focusin", stop);
     carousel.addEventListener("focusout", start);
 
+    // Respect the setting if it is changed after load.
+    reduceMotion.addEventListener("change", (e) => {
+      userPaused = e.matches;
+      syncToggle();
+      if (userPaused) stop();
+      else start();
+    });
+
+    syncHidden();
     start();
   });
 
