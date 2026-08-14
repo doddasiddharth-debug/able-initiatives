@@ -2,8 +2,9 @@
 
 // Marks that scripting is available, so CSS can safely hide things it intends
 // to animate in later. Anything gated behind `html.js` degrades to its plain
-// state when this file fails to load. Set before DOMContentLoaded to avoid a
-// flash of the un-animated layout.
+// state when this file fails to load. Nothing uses the hook at the moment (the
+// progress bars that did were removed with the "by the numbers" section), but
+// it is the correct place to gate any future animate-in styling.
 document.documentElement.classList.add("js");
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -91,6 +92,11 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Count-up stats.
+  //
+  // Currently inert: the homepage stat strip this was written for has been
+  // removed, so there are no .stat-num elements on the site. Kept because it is
+  // generic — add a .stat-num anywhere and it animates — and because it encodes
+  // a non-obvious safety property, described below.
   //
   // Deliberately conservative. The real figure is already in the markup, and
   // every exit path here restores that exact string, so a stalled frame loop,
