@@ -50,9 +50,10 @@ assets/images/
                                referenced by any page; kept because it is the
                                only asset carrying the wordmark, which is
                                useful for a social preview image later.
-              logo-health.png, logo-business.png
+              logo-preps.png, logo-health.png, logo-business.png
                                branch marks, also transparent
   photos/     hero.jpg — the homepage hero banner background
+  speakers/   cropped headshots for the guest-speaker cards
   gallery/    health-workshop/, preps-webinar/, business-workshop/, preps-workshop/
   team/       one headshot per director
 ```
@@ -136,8 +137,13 @@ attribute in `YYYY-MM-DD` form; it's the machine-readable version search engines
 Also update the "Four events" count in the section intro.
 
 **Guest speakers** (`index.html`). Copy a `.speaker-card` block. With one speaker the
-card lays out horizontally on purpose; adding a second automatically switches the
-section to a normal grid, no CSS changes needed.
+card lays out horizontally on purpose; from two onward it becomes a normal grid,
+with no CSS change needed.
+
+Speaker photos live in `assets/images/speakers/` and should be cropped to roughly
+4:3 around the person. Don't point a card straight at a wide event photo: the tile
+is 4:3 with `object-fit: cover`, so a wide shot where the speaker occupies a third
+of the frame will render as a room, not a portrait.
 
 **Animated stat counters.** Any `.stat-num` on the site counts up when scrolled into
 view. It reads the final value straight out of the markup and restores that exact
@@ -159,16 +165,24 @@ blanks them while the section is off-screen and only when `html.js` is present.
 - [ ] **Confirm the contact address.** Every contact link points at
       `ableinitiativespchs@gmail.com`. Make sure that mailbox exists and is monitored
       before sharing the site — it is the only way anyone can reach you.
-- [ ] **Correct ABLE Preps logo.** The current one is wrong, so the Preps references
-      point at `assets/images/logos/logo-preps.png`, which doesn't exist yet and falls
-      back to "PR" initials. Drop the real file in at that exact path and it appears
-      everywhere automatically, no HTML edits.
+- [x] ~~ABLE Preps logo~~ — in place; every logo on the site is now a real
+      transparent PNG.
 - [x] ~~Team headshots~~ — all eight are in `assets/images/team/`.
 - [x] ~~Transparent branch logos~~ — Health and Business are transparent PNGs now.
-- [ ] **Branch colours no longer match the branch logos.** The ABLE Health logo is
-      red but `--health` is green; the ABLE Business logo is green but `--business`
-      is gold. That shows up on the card top-borders, the timeline markers, and the
-      event badges. Either restyle the logos or re-point those two variables.
+- [ ] **Branch colours don't match the branch logos** — all three now:
+
+      | Branch | Logo | `--sat` / `--health` / `--business` |
+      |---|---|---|
+      | Preps | orange/gold | indigo `#2B2BC4` |
+      | Health | red | green `#10B76E` |
+      | Business | green | gold `#F0C048` |
+
+      This shows on the card top-borders, timeline markers, event badges and the
+      donut chart. Re-pointing those three variables is a small change — the hero
+      no longer borrows any of them (see `--gold`), so nothing else moves with it.
+      Check contrast afterwards: `--on-brand` is white, which works on the indigo
+      but not on a light orange or gold, and the `*-tint` values would need
+      matching too.
 - [ ] **Preps Workshop photos** (Aug 3): `assets/images/gallery/preps-workshop/1.jpg` and `2.png`.
 - [ ] **Payment processor.** The "Donate now" button is a `mailto:`. Once a processor is
       set up (Zeffy is 0% for nonprofits; Givebutter and Stripe also work), swap the

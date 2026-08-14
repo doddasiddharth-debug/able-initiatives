@@ -25,6 +25,11 @@
      palette, which is why they are variables rather than a hardcoded #fff. */
   --accent-ink: #FFFFFF;
   --on-brand: #FFFFFF;
+  /* The gold from the logo's swoosh, as a colour in its own right. The hero
+     accents used to borrow var(--business) purely because it happened to be
+     gold, which quietly tied the hero to a branch colour — change the Business
+     branch and the homepage headline would have changed with it. */
+  --gold: #F0C048;
   --header-bg: rgba(247, 248, 253, 0.88);
 
   /* Dark blocks (CTA band, contact panel, primary button, skip link). Kept
@@ -382,8 +387,8 @@ a { color: inherit; text-decoration: none; }
   margin-bottom: 22px;
   text-wrap: balance;
 }
-.hero-banner .eyebrow { color: var(--business); }
-.hero-banner .eyebrow::before { background: var(--business); }
+.hero-banner .eyebrow { color: var(--gold); }
+.hero-banner .eyebrow::before { background: var(--gold); }
 /* Spells out the acronym, with the initials picked out in gold so the letters
    read as A.B.L.E. without needing to write the dotted form separately. It is
    plain text, so a screen reader still reads the phrase normally. */
@@ -396,7 +401,7 @@ a { color: inherit; text-decoration: none; }
   margin: -6px 0 24px;
 }
 .hero-acronym .ini {
-  color: var(--business);
+  color: var(--gold);
   font-weight: 800;
   font-size: 1.18em;
 }
@@ -405,7 +410,7 @@ a { color: inherit; text-decoration: none; }
 /* A white button reads as the primary action on a dark photo; the navy
    .btn-primary would disappear into the scrim. */
 .btn-on-image { background: #fff; color: var(--panel); }
-.btn-on-image:hover { background: var(--business); color: var(--panel); }
+.btn-on-image:hover { background: var(--gold); color: var(--panel); }
 /* .btn-on-dark's border is tuned for the flat navy CTA band; over a photograph
    that dark indigo edge all but disappears, so lift it here. */
 .hero-banner .btn-outline { border-color: rgba(255, 255, 255, 0.45); }
@@ -1248,7 +1253,10 @@ a { color: inherit; text-decoration: none; }
   .speaker-card:only-child .speaker-photo { flex: 0 0 250px; aspect-ratio: auto; }
   .speaker-card:only-child .speaker-body { display: flex; flex-direction: column; justify-content: center; }
 }
-.speaker-body { padding: 22px 24px 24px; }
+/* Column layout so the event line can sit at the bottom of the card. Without
+   it the divider follows the title, and a two-line title (Michelle's) leaves
+   the pair misaligned now that the descriptions are gone. */
+.speaker-body { padding: 22px 24px 24px; display: flex; flex-direction: column; flex: 1; }
 .speaker-body h3 { font-size: 18px; margin-bottom: 2px; }
 .speaker-body p { font-size: 14.5px; }
 .speaker-org {
@@ -1260,7 +1268,7 @@ a { color: inherit; text-decoration: none; }
 .speaker-event {
   font-size: 12.5px;
   color: var(--muted);
-  margin-bottom: 0;
+  margin: auto 0 0;
   padding-top: 14px;
   border-top: 1px solid var(--line);
 }
