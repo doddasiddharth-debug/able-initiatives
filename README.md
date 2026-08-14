@@ -21,7 +21,8 @@ python3 -m http.server 8000
 
 ## Pages
 - `index.html`: Home
-- `about.html`: About + team
+- `our-story.html`: Our Story (why ABLE exists, what we believe)
+- `our-team.html`: Our Team (executive officers + branch officers)
 - `programs.html`: All three branches on one page
 - `preps.html` / `health.html` / `business.html`: One page per branch
 - `get-involved.html`: Students, members, and chapter leads
@@ -31,7 +32,15 @@ python3 -m http.server 8000
 
 Shared styles live in `assets/css/style.css`, shared behavior in `assets/js/main.js`.
 There is no templating, so **the header and footer are duplicated in every page** —
-a nav change is a ten-file edit. Use find-and-replace across all `*.html`, and check
+a nav change is an eleven-file edit.
+
+The **About** nav item is a dropdown (`.has-submenu`) holding Our Story and Our Team.
+Its parent is a `<button>`, not a link, because it navigates nowhere on its own.
+CSS opens it on hover and focus-within; the JS adds click/tap toggling, Escape to
+close, and keeps `aria-expanded` honest. On mobile it flattens into an indented
+list inside the nav panel rather than a floating card. The submenu's `id` must
+stay unique per page — a scripted nav edit once duplicated the whole block into
+the footer, which silently produced two elements sharing `id="about-submenu"`. Use find-and-replace across all `*.html`, and check
 the result with `grep` before committing.
 
 ## Images

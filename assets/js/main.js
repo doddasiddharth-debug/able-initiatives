@@ -22,6 +22,51 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // About submenu. CSS already opens it on hover and on focus-within, so this
+  // only adds what CSS can't: click/tap toggling, Escape to close, and closing
+  // when focus or the pointer moves elsewhere.
+  document.querySelectorAll(".has-submenu").forEach((item) => {
+    const parent = item.querySelector(".nav-parent");
+    if (!parent) return;
+    const setOpen = (open) => {
+      item.classList.toggle("is-open", open);
+      parent.setAttribute("aria-expanded", open ? "true" : "false");
+    };
+    parent.addEventListener("click", (e) => {
+      e.stopPropagation();
+      setOpen(!item.classList.contains("is-open"));
+    });
+    item.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && item.classList.contains("is-open")) {
+        setOpen(false);
+        parent.focus();
+      }
+    });
+    // Hovering opens it via CSS, so aria-expanded would otherwise go stale for
+    // anyone using a pointer and a screen reader together.
+    item.addEventListener("mouseenter", () => parent.setAttribute("aria-expanded", "true"));
+    item.addEventListener("mouseleave", () => {
+      if (!item.classList.contains("is-open")) parent.setAttribute("aria-expanded", "false");
+    });
+    document.addEventListener("click", (e) => {
+      if (!item.contains(e.target)) setOpen(false);
+    });
+    item.addEventListener("focusout", (e) => {
+      if (!item.contains(e.relatedTarget)) setOpen(false);
+    });
+  });
+
+  // Mark the current page inside the submenu, and light up its parent, so the
+  // nav still shows where you are on a child page.
+  const here = location.pathname.split("/").pop() || "index.html";
+  document.querySelectorAll(".submenu a").forEach((a) => {
+    if (a.getAttribute("href") === here) {
+      a.setAttribute("aria-current", "page");
+      const parent = a.closest(".has-submenu");
+      if (parent) parent.classList.add("is-current");
+    }
+  });
+
   // Fallback initials for missing logo/photo images.
   // On a fast connection a 404 can resolve (and fire "error") before this
   // deferred script runs, so an addEventListener-only approach misses it,

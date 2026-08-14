@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>About · ABLE Initiatives</title>
-<meta name="description" content="ABLE Initiatives is a student-run 501(c)(3) nonprofit making educational resources free and open to all students in college prep, health, and business.">
+<title>Our Team · ABLE Initiatives</title>
+<meta name="description" content="The students who run ABLE Initiatives: the executive officers and the branch officers leading ABLE Preps, ABLE Health, and ABLE Business.">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="assets/images/logos/logo-main.png">
 <meta name="theme-color" content="#2B2BC4">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="ABLE Initiatives">
-<meta property="og:title" content="About · ABLE Initiatives">
-<meta property="og:description" content="ABLE Initiatives is a student-run 501(c)(3) nonprofit making educational resources free and open to all students in college prep, health, and business.">
+<meta property="og:title" content="Our Team · ABLE Initiatives">
+<meta property="og:description" content="The students who run ABLE Initiatives: the executive officers and the branch officers leading ABLE Preps, ABLE Health, and ABLE Business.">
 <meta name="twitter:card" content="summary">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -34,7 +34,13 @@
       ABLE Initiatives
     </a>
     <ul class="nav-links">
-      <li><a href="about.html" aria-current="page">About</a></li>
+      <li class="has-submenu">
+        <button type="button" class="nav-parent" aria-expanded="false" aria-controls="about-submenu">About</button>
+        <ul class="submenu" id="about-submenu">
+          <li><a href="our-story.html">Our Story</a></li>
+          <li><a href="our-team.html">Our Team</a></li>
+        </ul>
+      </li>
       <li><a href="programs.html">Programs</a></li>
       <li><a href="get-involved.html">Get Involved</a></li>
       <li><a href="events.html">Gallery</a></li>
@@ -52,66 +58,15 @@
 
   <section class="page-header">
     <div class="container">
-      <p class="eyebrow">About us</p>
-      <h1>Started by students who noticed a gap, and decided to close it.</h1>
-      <p class="lede">ABLE Initiatives is a student-run 501(c)(3) nonprofit. We make educational resources free and open to every student across college prep, health, and business, because the things that change outcomes shouldn't be locked behind a paywall.</p>
-    </div>
-  </section>
-
-  <section class="section section-alt">
-    <div class="container">
-      <div class="grid-2 reveal" style="align-items:center;">
-        <div>
-          <p class="eyebrow">Why we exist</p>
-          <h2>Ability is everywhere. Access isn't.</h2>
-          <p>ABLE started with a simple observation: the students who get furthest aren't always the most capable: they're the ones who happened to know someone who could point them in the right direction. A structured test-prep plan. A session that explained how applications actually work. Someone who had already walked the path and was willing to explain it.</p>
-          <p>Those things are usually available, for a price. We wanted to make them available without one.</p>
-        </div>
-        <div class="photo-card ratio-wide">
-          <img src="assets/images/gallery/business-workshop/2.jpg" width="1280" height="960" loading="lazy" decoding="async" alt="Students at an ABLE workshop" data-fallback>
-          <div data-fallback-el class="photo-card-fallback">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.5"/><circle cx="8.5" cy="9.5" r="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M21 15l-5-5-9 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <p>Photo coming soon</p>
-          </div>
-        </div>
-      </div>
+      <p class="eyebrow">Our team</p>
+      <h1>Who runs ABLE</h1>
+      <p class="lede">A small group of students who volunteer their time alongside school, across an executive team and three programme branches.</p>
     </div>
   </section>
 
   <section class="section">
     <div class="container">
-      <div class="section-head reveal">
-        <p class="eyebrow">What we believe</p>
-        <h2>The principles behind how we run ABLE</h2>
-      </div>
-      <div class="grid-3 reveal">
-        <div class="card value-card">
-          <div class="value-icon">$0</div>
-          <h3 style="font-size:17px;">Free, no exceptions</h3>
-          <p style="font-size:14.5px;">No tuition, no application fee, no premium tier. Every program stays free for every student, every time.</p>
-        </div>
-        <div class="card value-card">
-          <div class="value-icon">ALL</div>
-          <h3 style="font-size:17px;">Open to everyone</h3>
-          <p style="font-size:14.5px;">No application, no eligibility screen, no waitlist. If you want to be in the room, you're in.</p>
-        </div>
-        <div class="card value-card">
-          <div class="value-icon">SL</div>
-          <h3 style="font-size:17px;">Student-led</h3>
-          <p style="font-size:14.5px;">Run by high schoolers and college students volunteering alongside their own classes, not a top-down institution.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section section-alt">
-    <div class="container">
-      <div class="section-head reveal">
-        <p class="eyebrow">Team</p>
-        <h2>Who runs ABLE</h2>
-        <p class="lede">A small group of students who volunteer their time alongside school.</p>
-      </div>
-      <h3 class="team-subhead reveal">Executive officers</h3>
+<h3 class="team-subhead reveal">Executive officers</h3>
       <div class="team-grid reveal">
         <div class="team-card">
           <div class="avatar">
@@ -248,7 +203,20 @@
     </div>
   </section>
 
-</main>
+  <section class="section-tight">
+    <div class="container">
+      <div class="cta-band reveal">
+        <div>
+          <h2>Want to join them?</h2>
+          <p>We're always looking for students to help build and run sessions.</p>
+        </div>
+        <div class="actions">
+          <a href="get-involved.html" class="btn btn-accent">Become a member</a>
+          <a href="our-story.html" class="btn btn-outline btn-on-dark">Read our story</a>
+        </div>
+      </div>
+    </div>
+  </section>
 
 <footer class="site-footer">
   <div class="container">
@@ -268,7 +236,8 @@
       <div class="footer-col">
         <h4>Organization</h4>
         <ul>
-          <li><a href="about.html">About</a></li>
+          <li><a href="our-story.html">Our Story</a></li>
+          <li><a href="our-team.html">Our Team</a></li>
           <li><a href="get-involved.html">Get Involved</a></li>
           <li><a href="events.html">Gallery</a></li>
         </ul>
