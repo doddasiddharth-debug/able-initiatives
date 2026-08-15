@@ -230,7 +230,7 @@ inline, and CSS only blanked them while the section was off-screen and only when
 
       Note the class names still read `.sat` — that predates the Preps rename and
       changing it is an eleven-file edit, so it was left alone.
-- [ ] **Business Webinar photos** (Aug 15), and Ameya Yelne's speaker card.
+- [ ] **Business Webinar photos** (Aug 15), and Ameya Yelne's headshot and title.
       The session was on Google Meet, so the photos we have are screenshots of
       the call. **Crop them before committing.** As captured they show attendee
       faces alongside full names, most of them students, plus a People panel
@@ -239,8 +239,12 @@ inline, and CSS only blanked them while the section was off-screen and only when
       call on the same code. The presentation area alone carries the content
       worth showing. Save the cropped files to
       `assets/images/gallery/business-webinar/` and replace the placeholder tile
-      in `events.html`. Ameya Yelne's speaker card is written and commented out
-      in `index.html`, waiting on her title and employer.
+      in `events.html`.
+
+      Her speaker card is live on the homepage but carries a `.speaker-initials`
+      placeholder instead of a photo, and no `.speaker-org` line — the other two
+      cards both name a title and employer, and the site shouldn't invent one.
+      Add both when you have them; the markup comment in `index.html` says how.
 
 - [ ] **Preps Workshop photos** (Aug 3). The event's `.gallery-grid` in
       `events.html` currently holds a single "Photos coming soon" tile. It used to
