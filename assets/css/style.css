@@ -46,6 +46,12 @@
   --health-tint: #DEF7EA;
   --business: #F0C048;
   --business-tint: #FCF1D5;
+  /* Darkened branch colours, for text sitting on the matching tint. The
+     branch colours themselves fail there — health reads 2.3:1 on its own
+     tint and business 1.5:1. These land at 5.6:1 and 5.7:1. */
+  --sat-ink: #2B2BC4;
+  --health-ink: #0A6E42;
+  --business-ink: #7A5A08;
 
   --radius-sm: 6px;
   --radius-md: 10px;
@@ -366,7 +372,12 @@ a { color: inherit; text-decoration: none; }
 .nav-toggle span::before { position: absolute; top: -6px; }
 .nav-toggle span::after { position: absolute; top: 6px; }
 
-@media (max-width: 860px) {
+/* Switch to the mobile nav at 1040px, not 860px. The full nav row needs
+   about 1040px before the brand, links and buttons stop colliding, so
+   between 861px and 1040px the desktop nav was rendering on top of itself.
+   Measure before lowering this: brand-right to links-left should stay
+   positive at the breakpoint width. */
+@media (max-width: 1040px) {
   /* Dropdown panel anchored to the bottom of the header, so it never
      overlaps a taller-than-expected header. */
   .nav-links {
@@ -854,6 +865,14 @@ a { color: inherit; text-decoration: none; }
   height: 100%;
   object-fit: cover;
 }
+/* Officers without a headshot. The default .avatar gradient is a dark slab,
+   and a grid of those reads as failed image loads; a soft branch tint with
+   the branch initials reads as a deliberate placeholder instead, and it
+   fills in with no markup change once a photo arrives. */
+.avatar-initials { background: var(--line); color: var(--ink-soft); letter-spacing: 0.04em; }
+.avatar-initials.sat { background: var(--sat-tint); color: var(--sat-ink); }
+.avatar-initials.health { background: var(--health-tint); color: var(--health-ink); }
+.avatar-initials.business { background: var(--business-tint); color: var(--business-ink); }
 .team-subhead {
   font-size: 13px;
   text-transform: uppercase;
@@ -865,73 +884,46 @@ a { color: inherit; text-decoration: none; }
 }
 .team-grid + .team-subhead { margin-top: 56px; }
 
-/* Branch rosters. Most of these officers have no headshot, and a wall of
-   large square initials reads as broken images. Small circular avatars read
-   as deliberate (the pattern every chat app uses), so the roster stays
-   compact and fills in naturally as photos arrive. */
-.branch-roster {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-  align-items: start;
-}
-.roster-group {
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-top: 3px solid var(--line-strong);
-  border-radius: var(--radius-lg);
-  padding: 22px 24px 8px;
-  box-shadow: var(--shadow-sm);
-}
-.roster-group.sat { border-top-color: var(--sat); }
-.roster-group.health { border-top-color: var(--health); }
-.roster-group.business { border-top-color: var(--business); }
-.roster-branch {
-  font-size: 12.5px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  margin: 0 0 6px;
-}
-.roster-group.sat .roster-branch { color: var(--sat); }
-.roster-group.health .roster-branch { color: var(--health); }
-.roster-group.business .roster-branch { color: var(--business); }
-.roster-list { list-style: none; margin: 0; padding: 0; }
-.roster-list li {
+/* The two top-level headings on Our Team. These have to outrank .team-subhead,
+   which labels the individual branches directly beneath "Branch officers" —
+   at the same weight the two levels read as one flat list of five sections.
+   The leading rule is the .eyebrow accent bar scaled up, so this stays in the
+   vocabulary the rest of the site already uses. */
+.team-section-title {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 0;
-  border-bottom: 1px solid var(--line);
-}
-.roster-list li:last-child { border-bottom: none; }
-.roster-avatar {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  overflow: hidden;
-  position: relative;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  gap: 16px;
+  margin: 0 0 26px;
   font-family: var(--font-display);
+  font-size: 26px;
   font-weight: 700;
-  font-size: 13px;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  color: var(--ink);
 }
-.roster-avatar img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-/* Initials sit on the branch colour, so the text colour follows the same
-   light/dark split used for the branch logo tiles. */
-.roster-group.sat .roster-avatar { background: var(--sat); color: #FFFFFF; }
-.roster-group.health .roster-avatar { background: var(--health); color: var(--panel); }
-.roster-group.business .roster-avatar { background: var(--business); color: var(--panel); }
-.roster-avatar [data-fallback-el] { display: none; }
-.roster-person strong { display: block; font-size: 14.5px; font-weight: 600; color: var(--ink); }
-.roster-person > span { font-size: 12.5px; color: var(--muted); }
+.team-section-title::before {
+  content: "";
+  flex: none;
+  width: 28px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--accent);
+}
+/* Trailing hairline: fills the width so the heading reads as a section
+   divider rather than a stray line of large text. */
+.team-section-title::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+.team-grid + .team-section-title { margin-top: 76px; }
+@media (max-width: 600px) {
+  .team-section-title { font-size: 21px; gap: 12px; }
+  .team-section-title::before { width: 20px; }
+}
 
-@media (max-width: 900px) {
-  .branch-roster { grid-template-columns: 1fr; }
-}
+
 
 .team-name { font-weight: 600; color: var(--ink); font-size: 15.5px; margin-bottom: 2px; }
 .team-role { font-size: 13px; color: var(--accent-dark); margin-bottom: 2px; }

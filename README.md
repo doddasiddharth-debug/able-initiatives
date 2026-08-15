@@ -22,7 +22,29 @@ python3 -m http.server 8000
 ## Pages
 - `index.html`: Home
 - `our-story.html`: Our Story (why ABLE exists, what we believe)
-- `our-team.html`: Our Team (executive officers + branch officers)
+- `our-team.html`: Our Team. Executive officers, then branch officers grouped
+  under a `.team-subhead` per branch. Every group uses the same `.team-grid` /
+  `.team-card` markup, so all four sections match.
+
+  Two heading levels, and they must stay distinct. `.team-section-title` is the
+  large accent-barred heading used only for "Executive officers" and "Branch
+  officers"; `.team-subhead` is the small grey uppercase label used for the
+  three branch names nested under the second one. When both levels used
+  `.team-subhead` the page read as five sibling sections rather than two.
+
+  Cards carry name and role only. They used to list "Pine Creek HS" on every
+  card, which was the same string eighteen times.
+
+  Officers without a headshot use `.avatar.avatar-initials.BRANCH` — a plain
+  div holding their initials, no `<img>`. It is tinted with the branch colour
+  rather than the default `.avatar` gradient, because a grid of dark slabs
+  reads as failed image loads. To add a photo later, swap that div for the
+  `<img>` + `data-fallback` pair the presidents use; nothing else changes.
+
+  The initials use `--sat-ink` / `--health-ink` / `--business-ink`, not the
+  branch colours themselves: `--health` is 2.3:1 on its own tint and
+  `--business` 1.5:1, both well under AA. The `-ink` values are 5.6:1 and
+  5.7:1. Use them for any text on a branch tint.
 - `programs.html`: All three branches on one page
 - `preps.html` / `health.html` / `business.html`: One page per branch
 - `get-involved.html`: Students, members, and chapter leads
@@ -33,6 +55,12 @@ python3 -m http.server 8000
 Shared styles live in `assets/css/style.css`, shared behavior in `assets/js/main.js`.
 There is no templating, so **the header and footer are duplicated in every page** —
 a nav change is an eleven-file edit.
+
+The nav switches to the mobile panel at **1040px**, which is wider than it looks
+like it should be. The full row — brand, links, and two buttons — needs about
+1040px before those three stop colliding, so the old 860px breakpoint left a band
+between 861px and 1040px where the desktop nav overlapped itself. If you lower it,
+measure first: brand-right to links-left must stay positive at the breakpoint width.
 
 The **About** nav item is a dropdown (`.has-submenu`) holding Our Story and Our Team.
 Its parent is a `<button>`, not a link, because it navigates nowhere on its own.
