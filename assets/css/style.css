@@ -40,18 +40,31 @@
   --on-panel-soft: #AFB4D8;
   --on-panel-line: #3A3E7A;
 
-  --sat: #2B2BC4;
-  --sat-tint: #E4E4FA;
-  --health: #10B76E;
-  --health-tint: #DEF7EA;
-  --business: #F0C048;
-  --business-tint: #FCF1D5;
-  /* Darkened branch colours, for text sitting on the matching tint. The
-     branch colours themselves fail there — health reads 2.3:1 on its own
-     tint and business 1.5:1. These land at 5.6:1 and 5.7:1. */
-  --sat-ink: #2B2BC4;
-  --health-ink: #0A6E42;
-  --business-ink: #7A5A08;
+  /* Branch colours, taken from the branch logos themselves: the Preps mark is
+     orange, Health is red, Business is green. These used to be indigo/green/gold
+     — inherited from an earlier palette — so every branch cue on the site
+     (card top-borders, timeline markers, event badges, branch dots) contradicted
+     the logo sitting next to it.
+
+     Each --X is the hue sampled from its logo's apex, at the lightness closest
+     to the logo that still clears 3:1 against both --bg and --bg-alt, since
+     these are graphical cues that distinguish one branch from another rather
+     than decoration. Measured: Preps 3.5:1, Health 4.1:1, Business 3.5:1. */
+  --sat: #BD7305;
+  --sat-tint: #FCEED9;
+  --health: #F20808;
+  --health-tint: #FCD9D9;
+  --business: #28991F;
+  --business-tint: #E0F7DE;
+  /* Darkened branch colours, for text sitting on the matching tint. The branch
+     colours themselves fail badly there (the old gold read 1.5:1 on its own
+     tint). Same hue, dark enough to clear 5:1 on the tint and 4.5:1 as a
+     white-on-colour ground: 5.1 / 5.1 / 5.3 on tint, 5.9 / 6.6 / 6.0 with
+     white. Use these for any text on a branch tint, and as the ground for any
+     white text. */
+  --sat-ink: #905804;
+  --health-ink: #BC0606;
+  --business-ink: #1E7217;
 
   --radius-sm: 6px;
   --radius-md: 10px;
@@ -539,35 +552,8 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ---------- hero ---------- */
-.hero {
-  padding: 56px 0 80px;
-  position: relative;
-  overflow: hidden;
-}
-.hero::before {
-  content: "";
-  position: absolute;
-  top: -120px;
-  right: -140px;
-  width: 420px;
-  height: 420px;
-  border-radius: 50%;
-  background: radial-gradient(circle, var(--accent-tint) 0%, rgba(255, 227, 218, 0) 70%);
-  z-index: 0;
-  pointer-events: none;
-}
-.hero .container { position: relative; z-index: 1; }
-.hero-grid {
-  display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
-  gap: 56px;
-  align-items: center;
-}
-.hero h1 {
-  font-size: clamp(36px, 5vw, 58px);
-  margin-bottom: 22px;
-}
-.hero .lede { margin-bottom: 32px; }
+/* Shared by the homepage hero banner; the older text-only .hero / .hero-grid
+   layout these sat alongside was replaced by .hero-banner above. */
 .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 20px; }
 .hero-note { font-size: 13.5px; color: var(--muted); }
 
@@ -603,17 +589,6 @@ a { color: inherit; text-decoration: none; }
 }
 .photo-card-fallback svg { opacity: 0.5; }
 .photo-card-fallback p { font-size: 13px; margin: 0; max-width: 220px; }
-.photo-card-fallback code {
-  background: var(--paper);
-  border: 1px solid var(--line);
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-size: 11.5px;
-}
-
-@media (max-width: 900px) {
-  .hero-grid { grid-template-columns: 1fr; }
-}
 
 /* ---------- cards / grids ---------- */
 .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
@@ -698,9 +673,9 @@ a { color: inherit; text-decoration: none; }
   font-size: 34px;
   color: var(--on-brand);
 }
-.branch-logo-plate.sat .logo-slot-fallback { background: var(--sat); color: #FFFFFF; }
-.branch-logo-plate.health .logo-slot-fallback { background: var(--health); color: var(--panel); }
-.branch-logo-plate.business .logo-slot-fallback { background: var(--business); color: var(--panel); }
+.branch-logo-plate.sat .logo-slot-fallback { background: var(--sat-ink); color: #FFFFFF; }
+.branch-logo-plate.health .logo-slot-fallback { background: var(--health-ink); color: #FFFFFF; }
+.branch-logo-plate.business .logo-slot-fallback { background: var(--business-ink); color: #FFFFFF; }
 
 /* The branch logos are full-colour transparent PNGs (indigo, red, green), so
    the chip needs a neutral ground: a red Health mark on a green tile clashes.
@@ -714,13 +689,14 @@ a { color: inherit; text-decoration: none; }
   justify-content: center;
   color: var(--on-brand);
 }
-/* Text colour is set per branch rather than from --on-brand: indigo is dark
-   enough for white, but the green and gold are not (white on gold is 1.7:1).
-   These only render when a logo file is missing, which is precisely when they
-   need to be legible. */
-.logo-slot.sat .logo-slot-fallback { background: var(--sat); color: #FFFFFF; }
-.logo-slot.health .logo-slot-fallback { background: var(--health); color: var(--panel); }
-.logo-slot.business .logo-slot-fallback { background: var(--business); color: var(--panel); }
+/* The ground is the -ink value rather than the branch colour, so white always
+   works: the branch colours as sampled from the logos are too light for white
+   at this size (orange 2.6:1, green 3.2:1). All three -ink values clear 4.5:1
+   with white. These only render when a logo file is missing, which is
+   precisely when they need to be legible. */
+.logo-slot.sat .logo-slot-fallback { background: var(--sat-ink); color: #FFFFFF; }
+.logo-slot.health .logo-slot-fallback { background: var(--health-ink); color: #FFFFFF; }
+.logo-slot.business .logo-slot-fallback { background: var(--business-ink); color: #FFFFFF; }
 .logo-slot img {
   width: 100%; height: 100%; object-fit: contain; padding: 4px;
   position: absolute; inset: 0;
@@ -733,33 +709,6 @@ a { color: inherit; text-decoration: none; }
 }
 .logo-slot-fallback { display: none; }
 .logo-slot-lg .logo-slot-fallback { font-size: 26px; }
-
-.logo-upload {
-  border: 1.5px dashed var(--line-strong);
-  border-radius: var(--radius-md);
-  background: var(--bg-alt);
-  padding: 16px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  font-size: 13px;
-  color: var(--muted);
-}
-.logo-upload code {
-  background: var(--paper);
-  border: 1px solid var(--line);
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-size: 12px;
-  color: var(--ink-soft);
-}
-
-.program-body ul {
-  margin: 0;
-  padding-left: 18px;
-  font-size: 14.5px;
-}
-.program-body li { margin-bottom: 6px; }
 
 /* ---------- branch detail sections (programs.html) ---------- */
 .branch-section {
@@ -927,7 +876,6 @@ a { color: inherit; text-decoration: none; }
 
 .team-name { font-weight: 600; color: var(--ink); font-size: 15.5px; margin-bottom: 2px; }
 .team-role { font-size: 13px; color: var(--accent-dark); margin-bottom: 2px; }
-.team-school { font-size: 12.5px; color: var(--muted); }
 @media (max-width: 1080px) { .team-grid { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 760px) { .team-grid { grid-template-columns: repeat(2, 1fr); } }
 
@@ -980,14 +928,6 @@ a { color: inherit; text-decoration: none; }
 .contact-panel .muted { color: var(--on-panel-soft); }
 
 /* ---------- events / gallery ---------- */
-.event-card {
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
 .event-photo {
   aspect-ratio: 4/3;
   background: var(--bg-alt);
@@ -1007,7 +947,6 @@ a { color: inherit; text-decoration: none; }
   padding: 0 20px;
 }
 .event-photo-fallback svg { margin-bottom: 8px; opacity: 0.5; }
-.event-body { padding: 20px 22px 24px; }
 .event-branch {
   display: inline-block;
   font-size: 11.5px;
@@ -1018,48 +957,12 @@ a { color: inherit; text-decoration: none; }
   border-radius: 999px;
   margin-bottom: 10px;
 }
-.event-branch.sat { background: var(--sat-tint); color: var(--sat); }
-.event-branch.health { background: var(--health-tint); color: var(--health); }
-.event-branch.business { background: var(--business-tint); color: var(--business); }
-.event-date { font-size: 12.5px; color: var(--muted); margin-bottom: 6px; }
-.event-title { font-size: 17px; margin-bottom: 6px; }
-.event-desc { font-size: 14px; margin-bottom: 0; }
-
-.gallery-note {
-  border: 1px dashed var(--line-strong);
-  background: var(--bg-alt);
-  border-radius: var(--radius-md);
-  padding: 18px 22px;
-  font-size: 13.5px;
-  color: var(--ink-soft);
-  margin-bottom: 48px;
-}
-.gallery-note code {
-  background: var(--paper);
-  border: 1px solid var(--line);
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-size: 12px;
-}
-
-/* ---------- quote ---------- */
-.quote-block {
-  border-left: 3px solid var(--accent);
-  padding-left: 28px;
-  margin: 0;
-}
-.quote-block p {
-  font-family: var(--font-display);
-  font-size: 24px;
-  color: var(--ink);
-  line-height: 1.5;
-  margin-bottom: 14px;
-}
-.quote-block cite {
-  font-style: normal;
-  font-size: 13.5px;
-  color: var(--muted);
-}
+/* The badge label is 11.5px bold on the branch tint, so it takes the -ink
+   value, not the branch colour — the raw colour on its own tint reads 2-4:1
+   and fails AA at this size. */
+.event-branch.sat { background: var(--sat-tint); color: var(--sat-ink); }
+.event-branch.health { background: var(--health-tint); color: var(--health-ink); }
+.event-branch.business { background: var(--business-tint); color: var(--business-ink); }
 
 /* ---------- donate ---------- */
 .donate-hero {
@@ -1311,6 +1214,23 @@ a { color: inherit; text-decoration: none; }
   overflow: hidden;
 }
 .speaker-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+/* A speaker whose headshot isn't in the repo yet. Same reasoning as the team
+   page's .avatar-initials: a branch-tinted placeholder reads as deliberate,
+   where a dark slab or a broken <img> reads as a failed load. Tinted Business
+   because that is the branch that hosted them. */
+.speaker-photo .speaker-initials {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 34px;
+  letter-spacing: 0.04em;
+  background: var(--business-tint);
+  color: var(--business-ink);
+}
 /* With a single speaker the card would sit alone in a wide grid looking like a
    gap. Lay that one case out horizontally so it reads as deliberate; it reverts
    to the normal grid as soon as a second speaker is added. */
@@ -1492,116 +1412,6 @@ a { color: inherit; text-decoration: none; }
 /* Wide screenshots (e.g. the webinar capture) show in full instead of being
    cropped to the middle, so you can actually see what's on screen. */
 .gallery-grid[data-event="preps-webinar"] .event-photo img { object-fit: contain; }
-
-.gallery-add-tile {
-  aspect-ratio: 4 / 3;
-  border-radius: var(--radius-md);
-  border: 1.5px dashed var(--line-strong);
-  background: var(--bg-alt);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  color: var(--muted);
-  cursor: pointer;
-  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
-  text-align: center;
-  padding: 12px;
-}
-.gallery-add-tile:hover { border-color: var(--accent); color: var(--accent-dark); background: var(--accent-tint); }
-.gallery-add-tile .plus {
-  width: 36px; height: 36px;
-  border-radius: 50%;
-  border: 1.5px solid currentColor;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 20px;
-  line-height: 1;
-}
-.gallery-add-tile span.label { font-size: 12.5px; font-weight: 600; }
-.gallery-add-tile input[type="file"] { display: none; }
-
-.gallery-toast {
-  position: fixed;
-  left: 50%;
-  bottom: 28px;
-  transform: translate(-50%, 12px);
-  background: var(--panel);
-  color: var(--on-panel);
-  padding: 12px 20px;
-  border-radius: 999px;
-  font-size: 13.5px;
-  box-shadow: var(--shadow-md);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.25s ease, transform 0.25s ease;
-  z-index: 200;
-  max-width: 90vw;
-  text-align: center;
-}
-.gallery-toast.is-visible { opacity: 1; transform: translate(-50%, 0); }
-
-.gallery-intro-note {
-  border: 1px dashed var(--line-strong);
-  background: var(--bg-alt);
-  border-radius: var(--radius-md);
-  padding: 16px 20px;
-  font-size: 13.5px;
-  color: var(--ink-soft);
-  margin-bottom: 44px;
-}
-.gallery-intro-note code {
-  background: var(--paper);
-  border: 1px solid var(--line);
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-size: 12px;
-}
-
-.gallery-manage-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-md);
-  padding: 14px 20px;
-  margin-bottom: 16px;
-}
-.gallery-manage-status { display: flex; align-items: center; gap: 9px; font-size: 13.5px; color: var(--ink-soft); }
-.gallery-manage-status .dot {
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  background: var(--line-strong);
-  flex-shrink: 0;
-}
-.gallery-manage-status .dot.is-connected { background: var(--health); }
-
-.event-photo-remove {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  border: none;
-  background: rgba(27, 42, 58, 0.72);
-  color: #fff;
-  font-size: 16px;
-  line-height: 1;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transform: translateY(-2px);
-  transition: opacity 0.15s ease, transform 0.15s ease, background 0.15s ease;
-  z-index: 2;
-}
-.event-photo:hover .event-photo-remove { opacity: 1; transform: translateY(0); }
-.event-photo-remove:hover { background: var(--accent-dark); }
 
 @media (max-width: 640px) {
   .section { padding: 64px 0; }

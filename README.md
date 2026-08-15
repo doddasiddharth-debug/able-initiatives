@@ -42,9 +42,9 @@ python3 -m http.server 8000
   `<img>` + `data-fallback` pair the presidents use; nothing else changes.
 
   The initials use `--sat-ink` / `--health-ink` / `--business-ink`, not the
-  branch colours themselves: `--health` is 2.3:1 on its own tint and
-  `--business` 1.5:1, both well under AA. The `-ink` values are 5.6:1 and
-  5.7:1. Use them for any text on a branch tint.
+  branch colours themselves, which fail badly on their own tints. The `-ink`
+  values land at 5.1:1, 5.1:1 and 5.3:1. Use them for any text on a branch
+  tint, and as the ground under any white text.
 - `programs.html`: All three branches on one page
 - `preps.html` / `health.html` / `business.html`: One page per branch
 - `get-involved.html`: Students, members, and chapter leads
@@ -134,6 +134,11 @@ Several variables exist specifically so that inversion stays possible:
   palette it is *lighter* than `--accent`, not darker.
 - `--on-brand` is the text colour on a branch colour (`--sat`/`--health`/
   `--business`), which flips with the theme the same way `--accent-ink` does.
+  It is close to vestigial now: since the branch colours were re-pointed at the
+  logos, nothing puts text directly on one — the places that used to (the
+  logo-slot fallbacks) sit on the darker `-ink` value instead, so white always
+  works. Keep it if you invert the palette, or drop it and the three base rules
+  that still reference it.
 - Shadows need to be far denser on a dark ground; light-theme shadow values are
   invisible there.
 
@@ -182,23 +187,22 @@ Speaker photos live in `assets/images/speakers/` and should be cropped to roughl
 is 4:3 with `object-fit: cover`, so a wide shot where the speaker occupies a third
 of the frame will render as a room, not a portrait.
 
-**Animated stat counters** *(currently unused — the homepage stat strip was removed,
-along with the "by the numbers" donut/progress section and the cost-comparison
-chart. All three are recoverable from git history.)* Any `.stat-num` on the site
-counts up when scrolled into view. It reads the final value straight out of the markup and restores that exact
-string when the animation ends, so the number in the HTML is always the source of
-truth. Values with no sensible midpoint are skipped automatically: ratios containing
-a colon (`1:1`) and zero targets (`$0`). Formats that do animate include `3`, `100%`,
-`~2 days`, `4.5 hrs`, and `1,200 students`.
+**Animated stat counters** — *removed.* The homepage stat strip, the "by the
+numbers" donut/progress section, and the cost-comparison chart were all deleted
+earlier; the `.stat-num` count-up code that drove the first of them outlived them
+by a while as dead JS and has now been removed too. All of it is recoverable from
+git history.
 
-This is deliberately defensive, and worth preserving if you edit it. A well-known
-nonprofit site this design borrowed from currently displays **"0 patients aided
-since 2020"** because its counter animation breaks before reaching the real figure.
-Every failure path here — no `IntersectionObserver`, reduced-motion preference,
-backgrounded tab, JS not loading at all — leaves the true number on screen instead.
-The progress bars worked the same way before they were removed: their real widths
-were inline, and CSS only blanked them while the section was off-screen and only
-when `html.js` was present.
+If you ever bring a counter back, take the old implementation from history rather
+than writing a fresh one — it encodes a non-obvious safety property. The real
+figure lives in the markup and every exit path restores that exact string, so a
+stalled frame loop, an unsupported browser, a backgrounded tab, a reduced-motion
+preference, or JS failing to load at all each leave the true number on screen. A
+well-known nonprofit site this design borrowed from currently displays **"0
+patients aided since 2020"** because its counter animation breaks before reaching
+the real figure. The progress bars worked the same way: their real widths were
+inline, and CSS only blanked them while the section was off-screen and only when
+`html.js` was present.
 
 ## Still to do
 
@@ -209,21 +213,41 @@ when `html.js` was present.
       transparent PNG.
 - [x] ~~Team headshots~~ — all eight are in `assets/images/team/`.
 - [x] ~~Transparent branch logos~~ — Health and Business are transparent PNGs now.
-- [ ] **Branch colours don't match the branch logos** — all three now:
+- [x] ~~**Branch colours don't match the branch logos**~~ — fixed. All three now
+      take their hue from the logo they sit next to:
 
-      | Branch | Logo | `--sat` / `--health` / `--business` |
-      |---|---|---|
-      | Preps | orange/gold | indigo `#2B2BC4` |
-      | Health | red | green `#10B76E` |
-      | Business | green | gold `#F0C048` |
+      | Branch | Logo | was | now |
+      |---|---|---|---|
+      | Preps | orange | indigo `#2B2BC4` | `#BD7305` |
+      | Health | red | green `#10B76E` | `#F20808` |
+      | Business | green | gold `#F0C048` | `#28991F` |
 
-      This shows on the card top-borders, timeline markers, event badges and the
-      donut chart. Re-pointing those three variables is a small change — the hero
-      no longer borrows any of them (see `--gold`), so nothing else moves with it.
-      Check contrast afterwards: `--on-brand` is white, which works on the indigo
-      but not on a light orange or gold, and the `*-tint` values would need
-      matching too.
-- [ ] **Preps Workshop photos** (Aug 3): `assets/images/gallery/preps-workshop/1.jpg` and `2.png`.
+      The `*-tint` and `*-ink` values were re-derived from the same hues, and
+      `.event-branch` was switched from the raw branch colour to `-ink` — it had
+      been putting 11.5px bold text on its own tint at as little as 1.5:1. The
+      logo-slot fallbacks now use `-ink` as the ground so white always works on
+      them. Every pairing was measured; see the comments in `style.css`.
+
+      Note the class names still read `.sat` — that predates the Preps rename and
+      changing it is an eleven-file edit, so it was left alone.
+- [ ] **Business Webinar photos** (Aug 15), and Ameya Yelne's speaker card.
+      The session was on Google Meet, so the photos we have are screenshots of
+      the call. **Crop them before committing.** As captured they show attendee
+      faces alongside full names, most of them students, plus a People panel
+      listing another eight, and the meeting code sits in the title bar of every
+      shot — publishing that on a public site invites anyone to join a future
+      call on the same code. The presentation area alone carries the content
+      worth showing. Save the cropped files to
+      `assets/images/gallery/business-webinar/` and replace the placeholder tile
+      in `events.html`. Ameya Yelne's speaker card is written and commented out
+      in `index.html`, waiting on her title and employer.
+
+- [ ] **Preps Workshop photos** (Aug 3). The event's `.gallery-grid` in
+      `events.html` currently holds a single "Photos coming soon" tile. It used to
+      hold two `<img>` tags pointing at `preps-workshop/1.jpg` and `2.png`, neither
+      of which was ever added, so every visit fired two 404s. Drop the real files
+      into `assets/images/gallery/preps-workshop/` and replace the placeholder with
+      `event-photo` blocks copied from the Business Workshop above.
 - [ ] **Payment processor.** The "Donate now" button is a `mailto:`. Once a processor is
       set up (Zeffy is 0% for nonprofits; Givebutter and Stripe also work), swap the
       `href` in `donate.html` and delete the "online giving is being set up" footnote.
@@ -241,8 +265,9 @@ when `html.js` was present.
       coordinator / Operations & outreach — a best guess at what volunteers
       actually do. Correct them if that's off; the same four names also appear
       inside the "Become a member" mailto body.
-- [ ] **Confirm "4 free events run"** on the homepage stat strip stays current as
-      you run more events. It should match the number of entries in the timeline.
+- [ ] **Keep the homepage event count current.** The timeline intro on `index.html`
+      reads "Four events across all three branches" — update that wording whenever
+      you add a `.timeline-item`, so the two never drift apart.
 
 ## Gallery
 
@@ -257,4 +282,5 @@ in `events.html` and point its `<img src>` at a file under
 | ABLE Health Workshop | July 16 | 1 |
 | ABLE Preps Webinar | July 21 | 1 |
 | ABLE Business Workshop | July 22 | 8 |
-| ABLE Preps Workshop | August 3 | 0 of 2 — still needed |
+| ABLE Preps Workshop | August 3 | 0 — placeholder tile, photos still needed |
+| ABLE Business Webinar | August 15 | 0 — placeholder tile, photos still needed |
