@@ -1058,31 +1058,6 @@ a { color: inherit; text-decoration: none; }
   gap: 32px;
   flex-wrap: wrap;
 }
-/* The mascot as a watermark in the corner. Deliberately faint and behind the
-   content: at full strength he competes with the heading, and the band is a
-   call to action rather than a place to look at a drawing. He is a background
-   image, not an <img>, because he carries no meaning — nothing is lost if
-   images are off. */
-.cta-band {
-  position: relative;
-  overflow: hidden;
-  isolation: isolate;
-}
-.cta-band::after {
-  content: "";
-  position: absolute;
-  right: 4px;
-  bottom: -26px;
-  width: 232px;
-  height: 298px;
-  background: url("../images/mascot.png") no-repeat center / contain;
-  /* Faint enough not to fight the heading, strong enough to actually register:
-     at 0.14 against this navy he read as a smudge. */
-  opacity: 0.22;
-  z-index: -1;
-  pointer-events: none;
-}
-.cta-band > * { position: relative; }
 .cta-band h2 { color: var(--on-panel); margin-bottom: 6px; }
 .cta-band p { color: var(--on-panel-soft); margin-bottom: 0; }
 /* Outline buttons sitting on a dark panel. Replaces a hardcoded inline style
@@ -1474,16 +1449,11 @@ a { color: inherit; text-decoration: none; }
   position: absolute;
   inset: 0;
   display: none;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 10px;
   color: var(--muted);
   font-size: 13px;
 }
-/* The mascot stands in for the missing photo, so an event with none of its own
-   still shows something deliberate rather than an empty grey box. */
-.entry-photo-fallback img { width: 52px; height: auto; opacity: 0.75; }
 .entry-photo-empty { border-bottom: 1px dashed var(--line-strong); }
 .entry-body { padding: 22px 24px 24px; }
 .entry-meta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 10px; }
@@ -1623,26 +1593,6 @@ a { color: inherit; text-decoration: none; }
 /* ---------- reveal-on-scroll ---------- */
 .reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.5s ease, transform 0.5s ease; }
 .reveal.in-view { opacity: 1; transform: translateY(0); }
-
-/* ---------- 404 ---------- */
-/* The mascot stands beside the apology rather than above it, so the page still
-   opens on the sentence that explains what happened. */
-.lost-layout {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 40px;
-  align-items: center;
-}
-.lost-mascot {
-  width: clamp(120px, 18vw, 210px);
-  height: auto;
-  justify-self: end;
-}
-@media (max-width: 720px) {
-  .lost-layout { grid-template-columns: 1fr; gap: 24px; }
-  /* Above the text on a phone: side by side, neither gets enough width. */
-  .lost-mascot { order: -1; justify-self: start; width: 110px; }
-}
 
 /* ---------- page header (inner pages) ---------- */
 .page-header { padding: 72px 0 56px; }
