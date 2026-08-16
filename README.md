@@ -162,6 +162,8 @@ assets/images/
                                useful for a social preview image later.
               logo-preps.png, logo-health.png, logo-business.png
                                branch marks, also transparent
+  mascot.png  the gold figure with both arms raised, lifted out of the logos
+              and used on his own. Transparent, #E0A040.
   photos/     hero.jpg — the homepage hero banner background
   speakers/   cropped headshots for the guest-speaker cards
   gallery/    health-workshop/, preps-webinar/, business-workshop/, preps-workshop/
@@ -173,6 +175,23 @@ Every `<img>` that can be missing carries `data-fallback`, paired with a
 (initials, or a neutral "Photo coming soon") shows instead, so nothing ever renders
 broken. Add new images with `width`, `height`, `loading="lazy"` and `decoding="async"`
 — the dimensions prevent the page from jumping as photos load.
+
+### The mascot
+`mascot.png` is the gold figure that lives inside the branch logos, on his own.
+He appears in three places, and the restraint is the point — a mascot repeated
+on every section stops reading as a character and starts reading as clip art:
+
+- **`404.html`**, beside the apology rather than above it, so the page still
+  opens on the sentence explaining what happened. On a phone he moves above the
+  text, because side by side neither gets enough width.
+- **The CTA band**, as a watermark in the bottom-right at 14% opacity. He is a
+  CSS `background-image`, not an `<img>`, because he carries no meaning there.
+- **The timeline's empty photo tile**, so an event with no photos of its own
+  shows something deliberate instead of an empty grey box.
+
+Everywhere he is decorative he is `alt=""` and `aria-hidden`, so a screen reader
+never announces him. If you add him somewhere new, keep that — and check he
+isn't competing with a heading for attention.
 
 ### The logo
 `logos/logo-main.png` is the "A" monogram on a transparent background, and it is
