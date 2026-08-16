@@ -333,8 +333,24 @@ a { color: inherit; text-decoration: none; }
   opacity: 0;
   visibility: hidden;
   transform: translateY(-6px);
-  transition: opacity 0.16s ease, transform 0.16s ease;
+  /* Closing is delayed ~0.2s so the menu forgives a wobble on the way down;
+     opening is instant. visibility is held until after the fade, otherwise it
+     flips immediately and the panel vanishes mid-transition. */
+  transition: opacity 0.16s ease 0.2s, transform 0.16s ease 0.2s, visibility 0s linear 0.36s;
   z-index: 20;
+}
+/* The panel sits 10px below the parent, and that strip belongs to neither of
+   them — so travelling from "About" down to its links crossed a dead zone,
+   un-hovered the item, and shut the menu just as you reached for it. Clicking
+   was the only reliable way in. This bridges the gap: an invisible extension of
+   the panel's own hover area, so the pointer never leaves the item. */
+.submenu::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -14px;
+  height: 14px;
 }
 .has-submenu.is-open .submenu,
 .has-submenu:hover .submenu,
@@ -342,6 +358,7 @@ a { color: inherit; text-decoration: none; }
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
+  transition: opacity 0.16s ease 0s, transform 0.16s ease 0s, visibility 0s linear 0s;
 }
 .submenu a {
   display: block;
@@ -433,11 +450,15 @@ a { color: inherit; text-decoration: none; }
     border-bottom: 1px solid var(--line);
     font-size: 17px;
   }
+  /* No pointer to bridge for here, and a static panel would put the bridge in
+     the middle of the list. */
+  .submenu::before { display: none; }
   .submenu {
     position: static;
     opacity: 1;
     visibility: visible;
     transform: none;
+    transition: none;
     min-width: 0;
     background: none;
     border: none;

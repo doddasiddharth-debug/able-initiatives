@@ -28,9 +28,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // About submenu. CSS already opens it on hover and on focus-within, so this
-  // only adds what CSS can't: click/tap toggling, Escape to close, and closing
-  // when focus or the pointer moves elsewhere.
+  // Nav submenus (About, Impact). CSS already opens them on hover and on
+  // focus-within, so this only adds what CSS can't: click/tap toggling, Escape
+  // to close, and closing when focus or the pointer moves elsewhere.
+  const canHover = window.matchMedia("(hover: hover) and (pointer: fine)");
   document.querySelectorAll(".has-submenu").forEach((item) => {
     const parent = item.querySelector(".nav-parent");
     if (!parent) return;
@@ -52,7 +53,13 @@ document.addEventListener("DOMContentLoaded", () => {
     // anyone using a pointer and a screen reader together.
     item.addEventListener("mouseenter", () => parent.setAttribute("aria-expanded", "true"));
     item.addEventListener("mouseleave", () => {
-      if (!item.classList.contains("is-open")) parent.setAttribute("aria-expanded", "false");
+      // On a real pointer, leaving the item closes it outright. Without this a
+      // menu opened by clicking the parent stayed open after the pointer moved
+      // away, since CSS :hover no longer had any say once .is-open was set.
+      // Touch and keyboard keep the click-toggle behaviour, which is their only
+      // way in.
+      if (canHover.matches) setOpen(false);
+      else if (!item.classList.contains("is-open")) parent.setAttribute("aria-expanded", "false");
     });
     document.addEventListener("click", (e) => {
       if (!item.contains(e.target)) setOpen(false);

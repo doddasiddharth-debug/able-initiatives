@@ -127,6 +127,16 @@ focus-within; the JS adds click/tap toggling, Escape to close, and keeps
 nav panel rather than a floating card. The JS handles any number of them, so a
 third dropdown needs no script change.
 
+**Don't remove `.submenu::before`.** The panel sits 10px below its parent, and
+that strip belongs to neither element — so moving the pointer down from "About"
+to its links crossed a dead zone, un-hovered the item and closed the menu just
+as you reached it, which made clicking the parent feel mandatory. That pseudo-
+element is an invisible 14px bridge over the gap, and it is the only reason
+hover-then-click works. If you change `top: calc(100% + 10px)`, change the
+bridge to match. Closing is also delayed ~0.2s to forgive a wobble; opening is
+instant. On a device with a real pointer, `mouseleave` closes the menu even if
+it was opened by clicking, so a click-opened panel can't get stuck open.
+
 Each submenu's `id` must stay unique **per page** — `about-submenu` and
 `impact-submenu`. A scripted nav edit once duplicated a whole block into the
 footer, silently producing two elements sharing one `id`; the same class of bug
