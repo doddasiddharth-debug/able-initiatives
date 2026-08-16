@@ -902,6 +902,148 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 1080px) { .team-grid { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 760px) { .team-grid { grid-template-columns: repeat(2, 1fr); } }
 
+/* ---- team bios --------------------------------------------------------- */
+/* A member with a bio gets a clickable photo that opens it over an enlarged,
+   dimmed copy of the picture.
+
+   The bio text sits in the card markup, so the default state — no JS, no
+   <dialog> support, or a browser holding a cached older main.js — is the bio
+   simply printed on the card. It is hidden only on cards main.js has wired,
+   which is what `.bio-live` marks. Gating this on `.js` would hide bios that
+   nothing is left to reveal; see the timeline spine for the same trap. */
+.team-bio { font-size: 13.5px; color: var(--ink-soft); margin-top: 8px; }
+.team-bio p { margin: 0 0 0.6em; }
+.team-bio p:last-child { margin-bottom: 0; }
+.team-card.bio-live .team-bio { display: none; }
+
+/* Built by main.js, never in the markup, so the control can't appear without
+   the code that opens the dialog. */
+.bio-trigger {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-align: inherit;
+  cursor: pointer;
+}
+/* The cue that the photo does something. It rides inside .avatar, which is
+   already position:relative with overflow:hidden, so it takes the tile's
+   rounded corners for free. */
+.bio-trigger .avatar::after {
+  content: "Read bio";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 22px 8px 10px;
+  background: linear-gradient(to top, rgba(20, 20, 58, 0.88), rgba(20, 20, 58, 0));
+  color: #fff;
+  font-size: 12.5px;
+  font-weight: 600;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.18s ease;
+}
+.bio-trigger:hover .avatar::after,
+.bio-trigger:focus-visible .avatar::after { opacity: 1; }
+.bio-trigger .avatar img { transition: transform 0.3s ease; }
+.bio-trigger:hover .avatar img { transform: scale(1.04); }
+/* No hover to reveal it on a touchscreen, so the label just stays up. */
+@media (hover: none) {
+  .bio-trigger .avatar::after { opacity: 1; }
+}
+
+.bio-dialog {
+  width: 100%;
+  max-width: min(560px, calc(100vw - 32px));
+  padding: 0;
+  border: none;
+  background: transparent;
+  overflow: visible;
+}
+.bio-dialog::backdrop { background: rgba(20, 20, 58, 0.62); }
+/* isolation + a negative-z photo is the hero banner's arrangement: the picture
+   paints over the panel's own background but under the text, so the text needs
+   no wrapper of its own. */
+.bio-panel {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--panel);
+  padding: 44px 40px 40px;
+  box-shadow: 0 24px 60px rgba(20, 20, 58, 0.45);
+}
+/* 0.35 is the ceiling here, not a taste call: against the worst case of a photo
+   that is pure white in the area behind the text, this leaves white at 5.7:1
+   and the softer #E6E8F5 at 4.6:1. Raise it and the body copy drops below AA on
+   a bright headshot. */
+.bio-photo {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.35;
+}
+/* Stand-in for a member who has no headshot yet: the same treatment applied to
+   their initials, so the dialog looks deliberate rather than half-loaded. */
+.bio-initials {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 210px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: #fff;
+  opacity: 0.12;
+}
+.bio-name { color: #fff; font-size: 27px; margin: 0 0 4px; }
+.bio-role {
+  color: #E6E8F5;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin: 0 0 18px;
+}
+.bio-text { color: #E6E8F5; font-size: 15.5px; line-height: 1.7; }
+.bio-text p { margin: 0 0 0.9em; }
+.bio-text p:last-child { margin-bottom: 0; }
+.bio-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  font-size: 19px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease;
+}
+.bio-close:hover { background: rgba(255, 255, 255, 0.28); }
+@media (max-width: 560px) {
+  .bio-panel { padding: 40px 26px 30px; }
+  .bio-name { font-size: 23px; }
+  .bio-initials { font-size: 150px; }
+}
+
 /* ---------- founder story (our-story.html) ---------- */
 .founder-layout {
   display: grid;

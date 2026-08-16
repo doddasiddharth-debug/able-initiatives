@@ -46,8 +46,33 @@ python3 -m http.server 8000
   three branch names nested under the second one. When both levels used
   `.team-subhead` the page read as five sibling sections rather than two.
 
-  Cards carry name and role only. They used to list "Pine Creek HS" on every
-  card, which was the same string eighteen times.
+  Cards carry name and role, plus an optional bio. They used to list "Pine
+  Creek HS" on every card, which was the same string eighteen times.
+
+  **Bios.** A card may hold a `.team-bio` div of one or more paragraphs; only
+  Chelsea Ogden has one so far. Where one exists, `main.js` wraps that card's
+  avatar in a button and the photo opens a dialog showing the bio over an
+  enlarged, dimmed copy of the picture. Adding another bio is a markup edit
+  alone — paste a `.team-bio` into the card and it is wired on load.
+
+  The text lives in the card, not in the script, so the state this degrades to
+  is the bio printed under the role: no JS, a browser without `<dialog>`, and a
+  cached older `main.js` all land there. The card is hidden only once it has
+  been wired, via `.bio-live` **on the card itself** — the `.is-live` rule from
+  the timeline spine, for the same reason. The trigger button is likewise built
+  in JS so it can never appear without the code that opens it.
+
+  A member with no headshot gets their initials as the dialog's backdrop
+  instead, so the panel looks deliberate rather than half-loaded; it swaps to
+  the photo automatically once one is added, with no change here.
+
+  `.bio-photo`'s `opacity: 0.35` is a contrast ceiling, not a taste call. It is
+  set against the worst case of a headshot that is white behind the text, where
+  it leaves the white name at 5.7:1 and the `#E6E8F5` body copy at 4.6:1.
+  Raising it drops the bio below AA on a bright photo.
+
+  One dialog serves the whole page, so the `bio-dialog-name` id it is labelled
+  by stays unique however many bios exist. Don't build one per card.
 
   Officers without a headshot use `.avatar.avatar-initials.BRANCH` — a plain
   div holding their initials, no `<img>`. It is tinted with the branch colour
@@ -349,6 +374,15 @@ that page and not its neighbour.
 
 ## Still to do
 
+- [ ] **The org name in Chelsea Ogden's bio.** As submitted it read "acting as
+      Apex Health's VP" and "give back to the community through Apex". Both were
+      changed to ABLE, since she is ABLE Health's Vice President and this is
+      ABLE's site — but nobody invented anything else in that paragraph, and if
+      "Apex" was deliberate it should go straight back.
+- [ ] **A headshot for Chelsea Ogden.** Her bio dialog currently falls back to
+      her initials. Drop a photo into `assets/images/team/` and swap her
+      `.avatar-initials` div for the `<img>` + `data-fallback` pair; the dialog
+      picks it up with no other change.
 - [ ] **Confirm the contact address.** Every contact link points at
       `ableinitiativespchs@gmail.com`. Make sure that mailbox exists and is monitored
       before sharing the site — it is the only way anyone can reach you.

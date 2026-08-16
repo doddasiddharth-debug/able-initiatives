@@ -423,4 +423,104 @@ document.addEventListener("DOMContentLoaded", () => {
     start();
   });
 
+  // Team bios.
+  //
+  // Clicking a member's photo opens their bio over an enlarged, dimmed copy of
+  // that photo. The text itself lives in the card markup, so the state this
+  // degrades to is the bio printed on the card — that covers no JS, a browser
+  // without <dialog>, and a cached older main.js alike. Each card is hidden
+  // only once it has actually been wired, via `.bio-live` on the card itself,
+  // for the same reason the timeline spine uses `.is-live`.
+  //
+  // One dialog serves every card on the page, so the id it is labelled by stays
+  // unique no matter how many bios get added.
+  const bioCards = Array.from(document.querySelectorAll(".team-bio"), (bio) =>
+    bio.closest(".team-card")
+  ).filter(Boolean);
+  const dialogSupported =
+    typeof HTMLDialogElement === "function" &&
+    typeof HTMLDialogElement.prototype.showModal === "function";
+
+  if (bioCards.length && dialogSupported) {
+    const dialog = document.createElement("dialog");
+    dialog.className = "bio-dialog";
+    dialog.setAttribute("aria-labelledby", "bio-dialog-name");
+    dialog.innerHTML =
+      '<div class="bio-panel">' +
+      '<button type="button" class="bio-close" aria-label="Close bio">&times;</button>' +
+      '<h2 class="bio-name" id="bio-dialog-name"></h2>' +
+      '<p class="bio-role"></p>' +
+      '<div class="bio-text"></div>' +
+      "</div>";
+    const panel = dialog.querySelector(".bio-panel");
+    const nameEl = dialog.querySelector(".bio-name");
+    const roleEl = dialog.querySelector(".bio-role");
+    const textEl = dialog.querySelector(".bio-text");
+    document.body.appendChild(dialog);
+
+    const open = (card) => {
+      const name = card.querySelector(".team-name");
+      const role = card.querySelector(".team-role");
+      const photo = card.querySelector(".avatar img");
+      const initials = card.querySelector(".avatar-initials");
+
+      nameEl.textContent = name ? name.textContent.trim() : "";
+      roleEl.textContent = role ? role.textContent.trim() : "";
+      roleEl.hidden = !roleEl.textContent;
+
+      // Cloned rather than rebuilt, so a bio can hold more than one paragraph
+      // and keep whatever markup the card gave it.
+      textEl.replaceChildren(...Array.from(card.querySelector(".team-bio").cloneNode(true).childNodes));
+
+      const art = panel.querySelector(".bio-photo, .bio-initials");
+      if (art) art.remove();
+      // A lazy photo that hasn't loaded yet still has naturalWidth 0, so only a
+      // settled failure counts as missing — the same test the image fallbacks
+      // higher up use.
+      const photoFailed = photo && photo.complete && photo.naturalWidth === 0;
+      if (photo && !photoFailed) {
+        const img = document.createElement("img");
+        img.className = "bio-photo";
+        img.src = photo.currentSrc || photo.src;
+        // Decorative here: the name is right next to it, and the card's own
+        // image already carries the descriptive alt text.
+        img.alt = "";
+        panel.prepend(img);
+      } else if (initials) {
+        const mark = document.createElement("span");
+        mark.className = "bio-initials";
+        mark.setAttribute("aria-hidden", "true");
+        mark.textContent = initials.textContent.trim();
+        panel.prepend(mark);
+      }
+
+      dialog.showModal();
+    };
+
+    bioCards.forEach((card) => {
+      const avatar = card.querySelector(".avatar");
+      const name = card.querySelector(".team-name");
+      if (!avatar || !name) return;
+
+      const trigger = document.createElement("button");
+      trigger.type = "button";
+      trigger.className = "bio-trigger";
+      trigger.setAttribute("aria-haspopup", "dialog");
+      trigger.setAttribute("aria-label", "Read " + name.textContent.trim() + "'s bio");
+      avatar.parentNode.insertBefore(trigger, avatar);
+      trigger.appendChild(avatar);
+      trigger.addEventListener("click", () => open(card));
+
+      // Only now is the inline bio redundant.
+      card.classList.add("bio-live");
+    });
+
+    dialog.querySelector(".bio-close").addEventListener("click", () => dialog.close());
+    // Clicks on the backdrop land on the dialog itself, since the panel fills
+    // it completely. Escape and returning focus to the photo are native.
+    dialog.addEventListener("click", (e) => {
+      if (e.target === dialog) dialog.close();
+    });
+  }
+
 });
