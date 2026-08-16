@@ -54,10 +54,21 @@ python3 -m http.server 8000
   direct child of a list, and an earlier version nested the positioning div
   inside it.
 
-  Both the fill and the slide-in are gated behind `html.js`, and the CSS default
-  is a **fully drawn** spine. No-JS, reduced-motion and a stalled script all
+  The CSS default is a **fully drawn** spine, shortened only once `main.js` sets
+  `.is-live` on the container. No-JS, reduced motion, and a stalled script all
   leave a complete line rather than an empty channel — the same reasoning as the
   count-up stats: the failure mode must not look like "nothing happened here".
+
+  **Gate animate-in styling on `.is-live`, not on `html.js`.** `html.js` only
+  means "a main.js loaded", which is not the same as "the code driving this
+  ran". GitHub Pages serves the CSS and JS with `max-age=600` while a brand-new
+  HTML page is fetched fresh, so for ten minutes after any deploy a visitor can
+  hold new HTML alongside a cached older `main.js`. That older file still sets
+  `html.js` — so a rule like `.js .timeline-fill { height: 0 }` collapsed the
+  spine with nothing left to fill it. The speaker marquee had the identical bug:
+  it would animate a track sized for nine cards with only three in it, because
+  the cached script never made the clones. Both now set `.is-live` from inside
+  the block that does the work.
 
   The Aug 3 entry has no photo and carries a dashed placeholder tile. Give it a
   real one when the photos arrive.

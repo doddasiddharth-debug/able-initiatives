@@ -1,10 +1,16 @@
 // ABLE Initiatives: shared behavior
 
-// Marks that scripting is available, so CSS can safely hide things it intends
-// to animate in later. Anything gated behind `html.js` degrades to its plain
-// state when this file fails to load. Nothing uses the hook at the moment (the
-// progress bars that did were removed with the "by the numbers" section), but
-// it is the correct place to gate any future animate-in styling.
+// Marks that scripting is available. Anything gated behind `html.js` degrades
+// to its plain state when this file fails to load entirely.
+//
+// It is the wrong hook for anything a *specific* block here drives, though: a
+// browser holding a cached older copy of this file still sets `html.js` while
+// missing the code that was supposed to do the work, so the CSS hides something
+// that nothing will ever reveal. That is a live risk on every deploy, because
+// GitHub Pages serves this with max-age=600 while a new HTML page is fetched
+// fresh. For those, set a class from inside the block itself once it has
+// actually taken over — see `.is-live` on the timeline spine and the speaker
+// marquee — and let the CSS default be the finished state.
 document.documentElement.classList.add("js");
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -175,9 +181,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // Timeline spine.
   //
   // Fills the vertical line as you scroll and lights each marker as the fill
-  // reaches it. The CSS default is a fully-drawn line, and this only shortens
-  // it once `html.js` is present — so no-JS, reduced-motion and a stalled
-  // script all leave a complete spine rather than an empty channel.
+  // reaches it. The CSS default is a fully-drawn line, shortened only once this
+  // block sets `.is-live` on the container — so no-JS, reduced motion, a stale
+  // cached copy of this file, and a stalled script all leave a complete spine
+  // rather than an empty channel.
   document.querySelectorAll("[data-timeline]").forEach((timeline) => {
     const fill = timeline.querySelector(".timeline-fill");
     const entries = Array.from(timeline.querySelectorAll(".timeline-entry"));
@@ -188,6 +195,11 @@ document.addEventListener("DOMContentLoaded", () => {
       entries.forEach((el) => el.classList.add("is-reached"));
       return;
     }
+
+    // Hand the spine over to script control. Until this line runs the CSS keeps
+    // it fully drawn, so a stale or failed main.js leaves a finished line rather
+    // than an empty channel.
+    timeline.classList.add("is-live");
 
     let queued = false;
     const update = () => {
@@ -269,6 +281,10 @@ document.addEventListener("DOMContentLoaded", () => {
     };
     setSpeed();
     window.addEventListener("resize", setSpeed);
+
+    // Hand the strip over to script control, now that the clones the loop needs
+    // actually exist. Until this line the plain grid renders.
+    marquee.classList.add("is-live");
 
     let userPaused = reduceMotion.matches;
     const toggle = document.createElement("button");

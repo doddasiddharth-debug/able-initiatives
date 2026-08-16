@@ -1244,11 +1244,13 @@ a { color: inherit; text-decoration: none; }
   border-top: 1px solid var(--line);
 }
 /* ---- speaker marquee ---------------------------------------------------- */
-/* The row drifts continuously right-to-left and loops seamlessly. Everything
-   here is gated behind html.js: main.js clones the cards to make the loop, so
-   without the script the plain .speaker-grid above is what renders — a wrapping
-   grid, rather than a flex row clipped by an overflow that nothing scrolls. */
-.js .speaker-marquee {
+/* The row drifts continuously right-to-left and loops seamlessly. Gated on
+   .is-live, which main.js sets only after it has cloned the cards that make the
+   loop — not on html.js, which merely says scripting exists. A cached older
+   main.js sets html.js but clones nothing, which would leave three cards
+   drifting across a track sized for nine. Without the class the plain
+   .speaker-grid renders: a wrapping grid, nothing clipped, nothing moving. */
+.speaker-marquee.is-live {
   position: relative;
   overflow: hidden;
   /* Room for the cards' tilt and lifted shadow, which would otherwise be
@@ -1256,7 +1258,7 @@ a { color: inherit; text-decoration: none; }
   padding: 18px 0 22px;
   margin: -18px 0 -22px;
 }
-.js .speaker-track {
+.speaker-marquee.is-live .speaker-track {
   display: flex;
   width: max-content;
   gap: 28px;
@@ -1271,29 +1273,29 @@ a { color: inherit; text-decoration: none; }
   from { transform: translate3d(0, 0, 0); }
   to { transform: translate3d(calc(-100% / 3), 0, 0); }
 }
-.js .speaker-track .speaker-card { flex: 0 0 340px; }
+.speaker-marquee.is-live .speaker-card { flex: 0 0 340px; }
 /* A slight alternating tilt, so the strip reads as motion rather than a
    conveyor of identical rectangles. */
-.js .speaker-track .speaker-card:nth-child(3n+1) { transform: rotate(-1.5deg); }
-.js .speaker-track .speaker-card:nth-child(3n+2) { transform: rotate(1.1deg); }
-.js .speaker-track .speaker-card:nth-child(3n+3) { transform: rotate(-0.6deg); }
-.js .speaker-track .speaker-card {
+.speaker-marquee.is-live .speaker-card:nth-child(3n+1) { transform: rotate(-1.5deg); }
+.speaker-marquee.is-live .speaker-card:nth-child(3n+2) { transform: rotate(1.1deg); }
+.speaker-marquee.is-live .speaker-card:nth-child(3n+3) { transform: rotate(-0.6deg); }
+.speaker-marquee.is-live .speaker-card {
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 /* Straighten and lift whichever card you point at. */
-.js .speaker-track .speaker-card:hover {
+.speaker-marquee.is-live .speaker-card:hover {
   transform: rotate(0deg) translateY(-4px) scale(1.02);
   box-shadow: var(--shadow-md);
 }
 /* Autoplay with no way to stop it is a WCAG 2.2.2 failure, and hover-to-pause
    doesn't help a keyboard user, so the button is the real control; hover and
    focus-within are conveniences on top of it. */
-.js .speaker-marquee:hover .speaker-track,
-.js .speaker-marquee:focus-within .speaker-track,
-.js .speaker-marquee.is-paused .speaker-track { animation-play-state: paused; }
+.speaker-marquee.is-live:hover .speaker-track,
+.speaker-marquee.is-live:focus-within .speaker-track,
+.speaker-marquee.is-live.is-paused .speaker-track { animation-play-state: paused; }
 /* Once stopped, let the row be scrolled by hand so the cards that happen to be
    off-frame are still reachable. */
-.js .speaker-marquee.is-paused { overflow-x: auto; }
+.speaker-marquee.is-live.is-paused { overflow-x: auto; }
 .marquee-pause {
   position: absolute;
   top: 0;
@@ -1317,7 +1319,7 @@ a { color: inherit; text-decoration: none; }
 }
 .marquee-pause:hover { color: var(--ink); border-color: var(--line-strong); }
 @media (prefers-reduced-motion: reduce) {
-  .js .speaker-track { animation: none; }
+  .speaker-marquee.is-live .speaker-track { animation: none; }
   .js .speaker-marquee { overflow-x: auto; }
 }
 
@@ -1357,7 +1359,12 @@ a { color: inherit; text-decoration: none; }
   background: linear-gradient(to bottom, var(--accent), var(--accent-dark));
   border-radius: 2px;
 }
-.js .timeline-fill { height: 0; transition: height 0.15s linear; }
+/* Gated on .is-live, which main.js sets only once it has actually taken over
+   this spine — NOT on `html.js`, which merely says scripting exists. A cached
+   older main.js still sets html.js but has no timeline code, so gating on that
+   collapsed the spine to zero with nothing left to fill it. Gate animate-in
+   styling on evidence that the code driving it ran. */
+.timeline-rich.is-live .timeline-fill { height: 0; transition: height 0.15s linear; }
 
 .timeline-entry {
   position: relative;
