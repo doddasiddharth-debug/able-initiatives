@@ -1214,23 +1214,6 @@ a { color: inherit; text-decoration: none; }
   overflow: hidden;
 }
 .speaker-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-/* A speaker whose headshot isn't in the repo yet. Same reasoning as the team
-   page's .avatar-initials: a branch-tinted placeholder reads as deliberate,
-   where a dark slab or a broken <img> reads as a failed load. Tinted Business
-   because that is the branch that hosted them. */
-.speaker-photo .speaker-initials {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 34px;
-  letter-spacing: 0.04em;
-  background: var(--business-tint);
-  color: var(--business-ink);
-}
 /* With a single speaker the card would sit alone in a wide grid looking like a
    gap. Lay that one case out horizontally so it reads as deliberate; it reverts
    to the normal grid as soon as a second speaker is added. */
@@ -1258,6 +1241,84 @@ a { color: inherit; text-decoration: none; }
   padding-top: 14px;
   border-top: 1px solid var(--line);
 }
+/* ---- speaker marquee ---------------------------------------------------- */
+/* The row drifts continuously right-to-left and loops seamlessly. Everything
+   here is gated behind html.js: main.js clones the cards to make the loop, so
+   without the script the plain .speaker-grid above is what renders — a wrapping
+   grid, rather than a flex row clipped by an overflow that nothing scrolls. */
+.js .speaker-marquee {
+  position: relative;
+  overflow: hidden;
+  /* Room for the cards' tilt and lifted shadow, which would otherwise be
+     sheared off by the overflow. */
+  padding: 18px 0 22px;
+  margin: -18px 0 -22px;
+}
+.js .speaker-track {
+  display: flex;
+  width: max-content;
+  gap: 28px;
+  animation: speaker-drift 48s linear infinite;
+  will-change: transform;
+}
+/* Three copies of the set, so the track stays wider than the viewport plus one
+   set — the condition for the seam never showing. main.js keeps the duration
+   proportional to the width, so adding a speaker lengthens the loop instead of
+   speeding it up. */
+@keyframes speaker-drift {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(calc(-100% / 3), 0, 0); }
+}
+.js .speaker-track .speaker-card { flex: 0 0 340px; }
+/* A slight alternating tilt, so the strip reads as motion rather than a
+   conveyor of identical rectangles. */
+.js .speaker-track .speaker-card:nth-child(3n+1) { transform: rotate(-1.5deg); }
+.js .speaker-track .speaker-card:nth-child(3n+2) { transform: rotate(1.1deg); }
+.js .speaker-track .speaker-card:nth-child(3n+3) { transform: rotate(-0.6deg); }
+.js .speaker-track .speaker-card {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+/* Straighten and lift whichever card you point at. */
+.js .speaker-track .speaker-card:hover {
+  transform: rotate(0deg) translateY(-4px) scale(1.02);
+  box-shadow: var(--shadow-md);
+}
+/* Autoplay with no way to stop it is a WCAG 2.2.2 failure, and hover-to-pause
+   doesn't help a keyboard user, so the button is the real control; hover and
+   focus-within are conveniences on top of it. */
+.js .speaker-marquee:hover .speaker-track,
+.js .speaker-marquee:focus-within .speaker-track,
+.js .speaker-marquee.is-paused .speaker-track { animation-play-state: paused; }
+/* Once stopped, let the row be scrolled by hand so the cards that happen to be
+   off-frame are still reachable. */
+.js .speaker-marquee.is-paused { overflow-x: auto; }
+.marquee-pause {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 3;
+  min-width: 30px;
+  height: 30px;
+  padding: 0 9px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  color: var(--ink-soft);
+  font-size: 11px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-sm);
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+.marquee-pause:hover { color: var(--ink); border-color: var(--line-strong); }
+@media (prefers-reduced-motion: reduce) {
+  .js .speaker-track { animation: none; }
+  .js .speaker-marquee { overflow-x: auto; }
+}
+
 .speaker-note {
   font-size: 14px;
   color: var(--muted);
@@ -1409,9 +1470,12 @@ a { color: inherit; text-decoration: none; }
   gap: 18px;
 }
 .gallery-grid .event-photo { border-radius: var(--radius-md); border: 1px solid var(--line); }
-/* Wide screenshots (e.g. the webinar capture) show in full instead of being
-   cropped to the middle, so you can actually see what's on screen. */
-.gallery-grid[data-event="preps-webinar"] .event-photo img { object-fit: contain; }
+/* Wide screenshots (the webinar captures) show in full instead of being
+   cropped to the middle, so you can actually see what's on screen. Both of
+   these are 16:9-ish slides inside a 4:3 tile, so cover would eat a quarter of
+   the width and cut the speaker out of frame. */
+.gallery-grid[data-event="preps-webinar"] .event-photo img,
+.gallery-grid[data-event="business-webinar"] .event-photo img { object-fit: contain; }
 
 @media (max-width: 640px) {
   .section { padding: 64px 0; }

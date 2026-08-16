@@ -182,15 +182,13 @@
         <span class="gallery-event-date">August 15</span>
       </div>
       <div class="gallery-grid" data-event="business-webinar">
-        <!-- Photos from this session are not in the repo yet. Save them as
-             assets/images/gallery/business-webinar/1.jpg (and 2.jpg, ...), then
-             replace this placeholder with event-photo blocks copied from the
-             Business Workshop above, keeping width/height/loading/decoding.
-
-             Crop before committing: the raw screenshots show attendee faces and
-             full names, and the meeting code in the title bar. See the README. -->
+        <!-- Cropped from the call screenshot to the presentation area only: the
+             participant tiles, the People panel and the meeting code in the
+             title bar are all outside this frame. Keep it that way if you add
+             more — see the README. -->
         <div class="event-photo" style="aspect-ratio:4/3; border-radius:var(--radius-md); position:relative;">
-          <div class="event-photo-fallback" style="display:block">Photos coming soon</div>
+          <img src="assets/images/gallery/business-webinar/1.jpg" width="1280" height="717" loading="lazy" decoding="async" alt="Slide from the ABLE Business webinar listing the questions put to guest speaker Ameya Yelne" data-fallback>
+          <div data-fallback-el class="event-photo-fallback"><div>Photos coming soon</div></div>
         </div>
       </div>
     </div>

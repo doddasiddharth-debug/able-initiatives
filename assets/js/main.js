@@ -172,6 +172,68 @@ document.addEventListener("DOMContentLoaded", () => {
     el.textContent = new Date().getFullYear();
   });
 
+  // Speaker marquee.
+  //
+  // The cards drift continuously and loop. The duplicate sets are built here
+  // rather than written into index.html so that one card per speaker stays the
+  // source of truth, and — more importantly — so the copies can be marked
+  // aria-hidden. Duplicated in the markup, every speaker would be announced
+  // three times to a screen reader.
+  document.querySelectorAll("[data-speaker-marquee]").forEach((marquee) => {
+    const track = marquee.querySelector(".speaker-track");
+    if (!track) return;
+    const originals = Array.from(track.children);
+    if (!originals.length) return;
+
+    // Three copies: the CSS shifts the track by exactly one set, and the seam
+    // only stays hidden while the remaining two sets still cover the viewport.
+    const COPIES = 3;
+    for (let copy = 1; copy < COPIES; copy++) {
+      originals.forEach((card) => {
+        const clone = card.cloneNode(true);
+        clone.setAttribute("aria-hidden", "true");
+        // Decorative duplicates shouldn't be tab stops.
+        clone.querySelectorAll("a, button").forEach((el) => el.setAttribute("tabindex", "-1"));
+        track.appendChild(clone);
+      });
+    }
+
+    // Pace the loop by width rather than by a fixed duration, so adding a
+    // speaker makes the loop longer instead of making everything move faster.
+    const PX_PER_SECOND = 42;
+    const setSpeed = () => {
+      const setWidth = track.scrollWidth / COPIES;
+      if (setWidth > 0) track.style.animationDuration = setWidth / PX_PER_SECOND + "s";
+    };
+    setSpeed();
+    window.addEventListener("resize", setSpeed);
+
+    let userPaused = reduceMotion.matches;
+    const toggle = document.createElement("button");
+    toggle.type = "button";
+    toggle.className = "marquee-pause";
+    const syncToggle = () => {
+      toggle.textContent = userPaused ? "▶" : "❚❚";
+      toggle.setAttribute(
+        "aria-label",
+        userPaused ? "Play the guest speaker strip" : "Pause the guest speaker strip"
+      );
+      marquee.classList.toggle("is-paused", userPaused);
+    };
+    toggle.addEventListener("click", () => {
+      userPaused = !userPaused;
+      syncToggle();
+    });
+    syncToggle();
+    marquee.appendChild(toggle);
+
+    // Respect the setting if it is changed after load.
+    reduceMotion.addEventListener("change", (e) => {
+      userPaused = e.matches;
+      syncToggle();
+    });
+  });
+
   // Sliding photo carousel
   document.querySelectorAll(".carousel").forEach((carousel) => {
     const slides = Array.from(carousel.querySelectorAll(".carousel-slide"));

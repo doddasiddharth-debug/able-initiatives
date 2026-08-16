@@ -230,21 +230,10 @@ inline, and CSS only blanked them while the section was off-screen and only when
 
       Note the class names still read `.sat` — that predates the Preps rename and
       changing it is an eleven-file edit, so it was left alone.
-- [ ] **Business Webinar photos** (Aug 15), and Ameya Yelne's headshot and title.
-      The session was on Google Meet, so the photos we have are screenshots of
-      the call. **Crop them before committing.** As captured they show attendee
-      faces alongside full names, most of them students, plus a People panel
-      listing another eight, and the meeting code sits in the title bar of every
-      shot — publishing that on a public site invites anyone to join a future
-      call on the same code. The presentation area alone carries the content
-      worth showing. Save the cropped files to
-      `assets/images/gallery/business-webinar/` and replace the placeholder tile
-      in `events.html`.
-
-      Her speaker card is live on the homepage but carries a `.speaker-initials`
-      placeholder instead of a photo, and no `.speaker-org` line — the other two
-      cards both name a title and employer, and the site shouldn't invent one.
-      Add both when you have them; the markup comment in `index.html` says how.
+- [ ] **Ameya Yelne's title and employer.** Her speaker card is live on the
+      homepage with a headshot, but it has no `.speaker-org` line — the other
+      two cards both name a title and employer, and the site shouldn't invent
+      one. Add the line when you have it.
 
 - [ ] **Preps Workshop photos** (Aug 3). The event's `.gallery-grid` in
       `events.html` currently holds a single "Photos coming soon" tile. It used to
@@ -287,4 +276,13 @@ in `events.html` and point its `<img src>` at a file under
 | ABLE Preps Webinar | July 21 | 1 |
 | ABLE Business Workshop | July 22 | 8 |
 | ABLE Preps Workshop | August 3 | 0 — placeholder tile, photos still needed |
-| ABLE Business Webinar | August 15 | 0 — placeholder tile, photos still needed |
+| ABLE Business Webinar | August 15 | 1 |
+
+The Business Webinar ran on Google Meet, so its photo is a crop of a call
+screenshot. **Crop any further ones the same way.** The raw captures show
+attendee faces next to full names, most of them students, plus a People panel
+listing another eight, and the meeting code sits in the title bar of every shot
+— published on a public site, that code invites anyone to join a later call on
+it. The presentation area is the only region that carries the content worth
+showing and none of the identifying detail. The two webinar events use
+`object-fit: contain` so their wide slides aren't cropped to the middle.
