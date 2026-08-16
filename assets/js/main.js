@@ -448,11 +448,15 @@ document.addEventListener("DOMContentLoaded", () => {
     dialog.innerHTML =
       '<div class="bio-panel">' +
       '<button type="button" class="bio-close" aria-label="Close bio">&times;</button>' +
+      '<div class="bio-media"></div>' +
+      '<div class="bio-content">' +
       '<h2 class="bio-name" id="bio-dialog-name"></h2>' +
       '<p class="bio-role"></p>' +
       '<div class="bio-text"></div>' +
+      "</div>" +
       "</div>";
     const panel = dialog.querySelector(".bio-panel");
+    const media = dialog.querySelector(".bio-media");
     const nameEl = dialog.querySelector(".bio-name");
     const roleEl = dialog.querySelector(".bio-role");
     const textEl = dialog.querySelector(".bio-text");
@@ -472,8 +476,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // and keep whatever markup the card gave it.
       textEl.replaceChildren(...Array.from(card.querySelector(".team-bio").cloneNode(true).childNodes));
 
-      const art = panel.querySelector(".bio-photo, .bio-initials");
-      if (art) art.remove();
+      media.replaceChildren();
       // A lazy photo that hasn't loaded yet still has naturalWidth 0, so only a
       // settled failure counts as missing — the same test the image fallbacks
       // higher up use.
@@ -482,17 +485,20 @@ document.addEventListener("DOMContentLoaded", () => {
         const img = document.createElement("img");
         img.className = "bio-photo";
         img.src = photo.currentSrc || photo.src;
-        // Decorative here: the name is right next to it, and the card's own
-        // image already carries the descriptive alt text.
+        // Decorative here: the name is right below it, and the card's own image
+        // already carries the descriptive alt text.
         img.alt = "";
-        panel.prepend(img);
+        media.appendChild(img);
       } else if (initials) {
         const mark = document.createElement("span");
         mark.className = "bio-initials";
         mark.setAttribute("aria-hidden", "true");
         mark.textContent = initials.textContent.trim();
-        panel.prepend(mark);
+        media.appendChild(mark);
       }
+      // With no art at all there is nothing for the text to fade out of, so the
+      // panel drops the overlap and the gradient with it.
+      panel.classList.toggle("no-art", !media.firstChild);
 
       dialog.showModal();
     };

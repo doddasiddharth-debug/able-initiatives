@@ -958,56 +958,71 @@ a { color: inherit; text-decoration: none; }
 
 .bio-dialog {
   width: 100%;
-  max-width: min(560px, calc(100vw - 32px));
+  max-width: min(460px, calc(100vw - 32px));
+  max-height: 94vh;
   padding: 0;
   border: none;
   background: transparent;
   overflow: visible;
 }
 .bio-dialog::backdrop { background: rgba(20, 20, 58, 0.62); }
-/* isolation + a negative-z photo is the hero banner's arrangement: the picture
-   paints over the panel's own background but under the text, so the text needs
-   no wrapper of its own. */
+/* The photo is shown whole and undimmed — it is the point of opening this, not
+   a texture behind the text. The panel's own near-black is what the picture
+   fades into further down, so it must match the gradient's end stop below. */
 .bio-panel {
   position: relative;
-  isolation: isolate;
   overflow: hidden;
   border-radius: var(--radius-lg);
-  background: var(--panel);
-  padding: 44px 40px 40px;
+  background: #05050D;
   box-shadow: 0 24px 60px rgba(20, 20, 58, 0.45);
+  max-height: 94vh;
+  overflow-y: auto;
 }
-/* 0.35 is the ceiling here, not a taste call: against the worst case of a photo
-   that is pure white in the area behind the text, this leaves white at 5.7:1
-   and the softer #E6E8F5 at 4.6:1. Raise it and the body copy drops below AA on
-   a bright headshot. */
+.bio-media { display: block; font-size: 0; }
+/* Uncropped: full width, natural height. The viewport cap is what keeps a tall
+   portrait from running off a short screen — `contain` letterboxes it against
+   the panel's black rather than cutting the head off. */
 .bio-photo {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
+  display: block;
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0.35;
+  height: auto;
+  max-height: 62vh;
+  object-fit: contain;
 }
-/* Stand-in for a member who has no headshot yet: the same treatment applied to
-   their initials, so the dialog looks deliberate rather than half-loaded. */
+/* Stand-in for a member who has no headshot yet, sized to occupy the same slot
+   the photo would, so the dialog looks deliberate rather than half-loaded. */
 .bio-initials {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
   display: flex;
+  aspect-ratio: 1;
   align-items: center;
   justify-content: center;
   font-family: var(--font-display);
-  font-size: 210px;
+  font-size: 150px;
   font-weight: 700;
   line-height: 1;
   letter-spacing: 0.02em;
-  color: #fff;
-  opacity: 0.12;
+  color: rgba(255, 255, 255, 0.16);
 }
-.bio-name { color: #fff; font-size: 27px; margin: 0 0 4px; }
+/* Pulled up over the foot of the photo, where the gradient turns it black. The
+   stops are in px, not %, so the ramp always finishes inside the padding above
+   the first line of text — that is what makes the contrast below predictable
+   however tall the bio runs. Text starts at 150px, where the ground is solid.
+   Gold on it reads 12.9:1 and the body copy 16.7:1, on any photo. */
+.bio-content {
+  position: relative;
+  margin-top: -210px;
+  padding: 150px 34px 34px;
+  background: linear-gradient(
+    to bottom,
+    rgba(5, 5, 13, 0) 0px,
+    rgba(5, 5, 13, 0.5) 62px,
+    rgba(5, 5, 13, 0.88) 112px,
+    #05050D 150px
+  );
+}
+/* No art to overlap, so there is nothing to fade into. */
+.bio-panel.no-art .bio-content { margin-top: 0; padding-top: 38px; background: none; }
+.bio-name { color: var(--gold); font-size: 27px; margin: 0 0 4px; }
 .bio-role {
   color: #E6E8F5;
   font-size: 12.5px;
@@ -1019,15 +1034,18 @@ a { color: inherit; text-decoration: none; }
 .bio-text { color: #E6E8F5; font-size: 15.5px; line-height: 1.7; }
 .bio-text p { margin: 0 0 0.9em; }
 .bio-text p:last-child { margin-bottom: 0; }
+/* It sits on the undimmed photo now, so it carries its own dark ground: a
+   translucent white pill vanished against a light background. */
 .bio-close {
   position: absolute;
   top: 14px;
   right: 14px;
+  z-index: 2;
   width: 32px;
   height: 32px;
   border-radius: 50%;
   border: none;
-  background: rgba(255, 255, 255, 0.14);
+  background: rgba(5, 5, 13, 0.55);
   color: #fff;
   font-size: 19px;
   line-height: 1;
@@ -1037,11 +1055,11 @@ a { color: inherit; text-decoration: none; }
   justify-content: center;
   transition: background 0.15s ease;
 }
-.bio-close:hover { background: rgba(255, 255, 255, 0.28); }
+.bio-close:hover { background: rgba(5, 5, 13, 0.8); }
 @media (max-width: 560px) {
-  .bio-panel { padding: 40px 26px 30px; }
+  .bio-content { padding: 140px 24px 28px; }
   .bio-name { font-size: 23px; }
-  .bio-initials { font-size: 150px; }
+  .bio-initials { font-size: 120px; }
 }
 
 /* ---------- founder story (our-story.html) ---------- */
