@@ -21,21 +21,26 @@ python3 -m http.server 8000
 
 ## Pages
 - `index.html`: Home
-- `our-story.html`: Our Story. The founder's story — a trip to India, cousins
-  and friends with as much potential and none of the resources — then what ABLE
-  does about it, the values, and a link to the team.
+- `our-story.html`: Our Story. What ABLE does and why, the values, and a link
+  to the team.
 
-  `photos/founder.png` is **arch-topped with transparent corners**, so it sits
-  directly on the page instead of inside a `.photo-card`. A card would fill the
-  arch with its own background and crop the image to the card's ratio, losing
-  the shape. The shadow is a `filter: drop-shadow`, which follows the alpha;
-  `box-shadow` would trace the bounding box and draw a rectangle around the
-  arch. Keep both properties if you swap the photo, or drop them together if
-  the replacement is a plain rectangle.
+  **The founder's story was removed** — the trip to India, the cousins with as
+  much potential and none of the resources, and the portrait that ran beside
+  it. It is recoverable in full from git history if it is ever wanted back.
 
-  The copy names Siddharth and describes a real trip. **Don't embellish it** —
-  no invented ages, cities, names or dialogue. What is there is what we were
-  told.
+  Taking it out was five edits, not one, because the story was threaded through
+  the page: the section itself, the `<h1>` and lede that set it up, `<meta
+  name="description">` and `og:description`, and the sentence "Everything ABLE
+  runs comes back to that trip". Removing only the section would have left four
+  references to a story the page no longer tells, two of them in the text search
+  engines and social cards show. The replacement copy is drawn from wording
+  already used elsewhere on the site rather than newly written, so nothing about
+  ABLE is claimed here that isn't claimed on the homepage.
+
+  Left in place but now unused: `photos/founder.png`, and the `.founder-layout`
+  / `.founder-portrait` / `.founder-copy` / `.founder-close` rules in
+  `style.css`. They are dead weight unless the story returns — delete both if
+  the removal is permanent.
 - `our-team.html`: Our Team. Executive officers, then branch officers grouped
   under a `.team-subhead` per branch. Every group uses the same `.team-grid` /
   `.team-card` markup, so all four sections match.
