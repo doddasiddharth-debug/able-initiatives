@@ -46,6 +46,20 @@ python3 -m http.server 8000
   values land at 5.1:1, 5.1:1 and 5.3:1. Use them for any text on a branch
   tint, and as the ground under any white text.
 - `programs.html`: All three branches on one page
+- `impact.html`: Timeline and Impact. The event timeline lived on the homepage
+  until this page existed; it was moved here whole, so `index.html` now runs
+  carousel → guest speakers → CTA with no timeline in between.
+
+  The Impact section carries a US map as **inline SVG** — no library, no image
+  file. The outline is a coarse set of real lat/lon border waypoints projected
+  equirectangularly about 39°N, which is why Colorado can be a plain `<rect>`:
+  it is a true lat/lon rectangle (37–41°N, 102–109°W) and lands as an exact
+  rectangle under that projection. Both pins are the cities' real coordinates.
+
+  Denver and Colorado Springs are only about 20px apart at national scale, so
+  their labels sit outside the state on leader lines instead of beside the pins.
+  If you add a chapter, project its coordinates the same way rather than
+  eyeballing a position — the generator is in the git history for this commit.
 - `preps.html` / `health.html` / `business.html`: One page per branch
 - `get-involved.html`: Students, members, and chapter leads
 - `events.html`: Photo gallery (grouped by event)
@@ -54,13 +68,23 @@ python3 -m http.server 8000
 
 Shared styles live in `assets/css/style.css`, shared behavior in `assets/js/main.js`.
 There is no templating, so **the header and footer are duplicated in every page** —
-a nav change is an eleven-file edit.
+a nav change is a twelve-file edit. Adding the Impact link caught this the hard
+way: `preps.html`, `health.html` and `business.html` carry
+`aria-current="page"` on their Programs link, so a find-and-replace written
+against the plain markup silently skipped all three. Check with `grep` across
+every page afterwards, not just a sample.
 
-The nav switches to the mobile panel at **1040px**, which is wider than it looks
-like it should be. The full row — brand, links, and two buttons — needs about
-1040px before those three stop colliding, so the old 860px breakpoint left a band
-between 861px and 1040px where the desktop nav overlapped itself. If you lower it,
-measure first: brand-right to links-left must stay positive at the breakpoint width.
+The nav switches to the mobile panel at **1130px**, which is wider than it looks
+like it should be. The full row — brand, six links, and two buttons — needs about
+that much before those three groups stop colliding, so the original 860px
+breakpoint left a wide band where the desktop nav overlapped itself.
+
+It was 1040px until the Impact link was added; a sixth item is worth roughly
+another 90px of row, so the breakpoint moved with it. **Adding or renaming a nav
+item means revisiting this number.** Measure rather than guess: brand-right to
+links-left must stay positive at the breakpoint width. The current 1130px is an
+estimate from the item widths, not a measured value — if you see the row collide
+just above it, raise it.
 
 The **About** nav item is a dropdown (`.has-submenu`) holding Our Story and Our Team.
 Its parent is a `<button>`, not a link, because it navigates nowhere on its own.
@@ -172,11 +196,11 @@ phrase normally rather than announcing four separate letters.
 
 ## Homepage sections that need updating as ABLE grows
 
-**Event timeline** (`index.html`, "Our first season"). Add a new `<li class="timeline-item BRANCH">`
+**Event timeline** (`impact.html`). Add a new `<li class="timeline-item BRANCH">`
 in date order, where `BRANCH` is `sat`, `health`, or `business` — that class colours
 the marker and must match the `event-branch` span inside. Keep the `datetime`
 attribute in `YYYY-MM-DD` form; it's the machine-readable version search engines read.
-Also update the "Four events" count in the section intro.
+Also update the event count in the section intro.
 
 **Guest speakers** (`index.html`). Copy a `.speaker-card` block. With one speaker the
 card lays out horizontally on purpose; from two onward it becomes a normal grid,
@@ -258,9 +282,9 @@ inline, and CSS only blanked them while the section was off-screen and only when
       coordinator / Operations & outreach — a best guess at what volunteers
       actually do. Correct them if that's off; the same four names also appear
       inside the "Become a member" mailto body.
-- [ ] **Keep the homepage event count current.** The timeline intro on `index.html`
-      reads "Four events across all three branches" — update that wording whenever
-      you add a `.timeline-item`, so the two never drift apart.
+- [ ] **Keep the event count current.** The timeline intro on `impact.html` reads
+      "Five events across all three branches" — update that wording whenever you
+      add a `.timeline-item`, so the two never drift apart.
 
 ## Gallery
 
