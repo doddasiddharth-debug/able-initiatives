@@ -188,6 +188,21 @@ Every `<img>` that can be missing carries `data-fallback`, paired with a
 broken. Add new images with `width`, `height`, `loading="lazy"` and `decoding="async"`
 — the dimensions prevent the page from jumping as photos load.
 
+### The icons
+`assets/favicon.png` (128×128) and `assets/apple-touch-icon.png` (180×180) are
+the monogram composited onto a **solid white square**, generated from
+`logos/logo-main.png` rather than drawn separately.
+
+The white ground is deliberate and worth keeping. The mark is dark indigo on a
+transparent background, which all but disappears in a dark browser tab strip;
+and iOS renders transparency in an apple-touch-icon as black, so the transparent
+logo was the wrong file for that slot regardless.
+
+To regenerate after a logo change: scale `logo-main.png` to ~80% of the target
+square, then alpha-composite it centred over white. `sips` cannot composite, so
+that step needs a real image tool or a few lines of Python. Don't just point
+these at `logo-main.png` again — that reintroduces both problems.
+
 ### The logo
 `logos/logo-main.png` is the "A" monogram on a transparent background, and it is
 used at every size: the 34px header/footer mark, the homepage banner, and the
