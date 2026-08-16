@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Every indexable page, in the same order as the nav. 404.html is left out
+     on purpose: it carries robots noindex. The <loc> values must stay identical
+     to each page's <link rel="canonical">, or the two contradict each other. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://ableinitiatives.com/</loc>
+    <lastmod>2026-08-16</lastmod>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://ableinitiatives.com/our-story.html</loc>
+    <lastmod>2026-08-16</lastmod>
+  </url>
+  <url>
+    <loc>https://ableinitiatives.com/our-team.html</loc>
+    <lastmod>2026-08-16</lastmod>
+  </url>
+  <url>
+    <loc>https://ableinitiatives.com/programs.html</loc>
+    <lastmod>2026-08-16</lastmod>
+  </url>
+  <url>
+    <loc>https://ableinitiatives.com/preps.html</loc>
+    <lastmod>2026-08-16</lastmod>
+  </url>
+  <url>
+    <loc>https://ableinitiatives.com/health.html</loc>
+    <lastmod>2026-08-16</lastmod>
+  </url>
+  <url>
+    <loc>https://ableinitiatives.com/business.html</loc>
+    <lastmod>2026-08-16</lastmod>
+  </url>
+  <url>
+    <loc>https://ableinitiatives.com/timeline.html</loc>
+    <lastmod>2026-08-16</lastmod>
+  </url>
+  <url>
+    <loc>https://ableinitiatives.com/impact.html</loc>
+    <lastmod>2026-08-16</lastmod>
+  </url>
+  <url>
+    <loc>https://ableinitiatives.com/events.html</loc>
+    <lastmod>2026-08-16</lastmod>
+  </url>
+  <url>
+    <loc>https://ableinitiatives.com/get-involved.html</loc>
+    <lastmod>2026-08-16</lastmod>
+  </url>
+  <url>
+    <loc>https://ableinitiatives.com/donate.html</loc>
+    <lastmod>2026-08-16</lastmod>
+  </url>
+</urlset>

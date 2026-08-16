@@ -306,6 +306,47 @@ the real figure. The progress bars worked the same way: their real widths were
 inline, and CSS only blanked them while the section was off-screen and only when
 `html.js` was present.
 
+## Search and social tags
+
+The production domain is **`ableinitiatives.com`**, set in `CNAME`. Everything
+below is absolute against it, because canonical URLs, `og:url` and `og:image`
+are all resolved by machines that don't share the page's base URL.
+
+Every indexable page carries, in `<head>`:
+
+- `<link rel="canonical">` — its own absolute URL. `index.html` canonicalises to
+  the bare root `https://ableinitiatives.com/`, not `/index.html`, since GitHub
+  Pages serves the same file at both and the root is the form to consolidate on.
+- `og:url` — the same string as the canonical. If you change one, change both;
+  a page that names two different addresses for itself is worse than one that
+  names none.
+- `og:image` and its `width` / `height` / `alt` — `logos/logo-lockup.jpg`
+  (1280×685), the only asset carrying the wordmark. That is what it was kept
+  for. The dimensions let a crawler lay out the card on first scrape instead of
+  waiting to fetch the file. If you swap the image, update those two numbers —
+  they're an assertion about the file, not a request to resize it.
+- `twitter:card` is `summary_large_image`, which is what the 1.87:1 lockup wants;
+  it was `summary` back when there was no image to show.
+
+**`404.html` is deliberately different.** It carries `robots: noindex` and gets
+the shared `og:image` but *no* canonical and *no* `og:url` — both would be
+claims about a page that should never be indexed. GitHub Pages serves it for
+every missing path, so a self-canonical there points thousands of dead URLs at
+one address.
+
+`sitemap.xml` lists the same twelve pages in nav order, `robots.txt` points at
+it, and each `<loc>` is character-for-character the page's canonical. **Adding a
+page means three edits: its own canonical/`og:url` pair, and a `<url>` block in
+the sitemap.** The `lastmod` dates are honest ones from git — leave a page's
+date alone if you didn't change the page.
+
+These tags were inserted by script, which the nav history above says to be
+careful with. The anchors used were the favicon `<link>` and the `twitter:card`
+`<meta>`, both of which appear exactly once per file and only inside `<head>`;
+the script asserted that count before writing anything. Audit the same way if
+you repeat it — `grep -c` per page, then check that each page's canonical names
+that page and not its neighbour.
+
 ## Still to do
 
 - [ ] **Confirm the contact address.** Every contact link points at
@@ -332,10 +373,9 @@ inline, and CSS only blanked them while the section was off-screen and only when
 
       Note the class names still read `.sat` — that predates the Preps rename and
       changing it is an eleven-file edit, so it was left alone.
-- [ ] **Ameya Yelne's title and employer.** Her speaker card is live on the
-      homepage with a headshot, but it has no `.speaker-org` line — the other
-      two cards both name a title and employer, and the site shouldn't invent
-      one. Add the line when you have it.
+- [x] ~~**Ameya Yelne's title and employer**~~ — her card now carries a
+      `.speaker-org` line ("Business student, UT Austin"), so all five speaker
+      cards name a title and employer.
 
 - [ ] **College Admissions Journey Panel photos** (Aug 3). The event's `.gallery-grid` in
       `events.html` currently holds a single "Photos coming soon" tile. It used to
@@ -348,9 +388,10 @@ inline, and CSS only blanked them while the section was off-screen and only when
       `href` in `donate.html` and delete the "online giving is being set up" footnote.
 - [ ] **EIN and tax-deductibility notice** on `donate.html`. Donors look for it, and the
       site claims 501(c)(3) status on every page.
-- [ ] **Canonical URLs, `og:image`, and `sitemap.xml`.** These all need the production
-      domain, which isn't decided yet. The other social tags are already in place; add
-      the sitemap line to `robots.txt` at the same time.
+- [x] ~~**Canonical URLs, `og:image`, and `sitemap.xml`**~~ — all in place; see
+      "Search and social tags" below. `CNAME` already pointed at
+      `ableinitiatives.com`, so the domain these were waiting on was in fact
+      settled.
 - [ ] **Replace the `mailto:` intake links** on `get-involved.html` with a real form
       (Google Forms, Tally). `mailto:` often does nothing on school Chromebooks, and a
       form gives you an actual roster.
