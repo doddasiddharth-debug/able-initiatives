@@ -49,8 +49,9 @@ python3 -m http.server 8000
   Cards carry name and role, plus an optional bio. They used to list "Pine
   Creek HS" on every card, which was the same string eighteen times.
 
-  **Bios.** A card may hold a `.team-bio` div of one or more paragraphs; only
-  Chelsea Ogden has one so far. Where one exists, `main.js` wraps that card's
+  **Bios.** A card may hold a `.team-bio` div of one or more paragraphs. Chelsea
+  Ogden, Advait Jadhav and Angelina Wan have one; the rest don't, and a card
+  without one behaves exactly as it always did. Where one exists, `main.js` wraps that card's
   avatar in a button and the photo opens a dialog showing the bio over an
   enlarged, dimmed copy of the picture. Adding another bio is a markup edit
   alone — paste a `.team-bio` into the card and it is wired on load.
@@ -389,6 +390,16 @@ that page and not its neighbour.
 
 ## Still to do
 
+- [ ] **A headshot for Angelina Wan.** Her bio is live but her photo never
+      reached the repo, so her dialog falls back to her initials. Drop the file
+      into `assets/images/team/` and swap her `.avatar-initials` div for the
+      `<img>` + `data-fallback` pair; nothing else changes.
+- [ ] **Two names normalised in submitted bios.** Angelina Wan's read "ABLE
+      Prep's VP of Public Relations" and "helping ABLE Prep grow"; both became
+      "ABLE Preps", the branch's actual name. Advait Jadhav's names his school
+      and year, which is his own wording, kept as written — but note the team
+      cards deliberately stopped listing "Pine Creek HS", so it is worth
+      deciding whether a student's school belongs on a public page at all.
 - [ ] **The org name in Chelsea Ogden's bio.** As submitted it read "acting as
       Apex Health's VP" and "give back to the community through Apex". Both were
       changed to ABLE, since she is ABLE Health's Vice President and this is
