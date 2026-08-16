@@ -235,12 +235,12 @@ inline, and CSS only blanked them while the section was off-screen and only when
       two cards both name a title and employer, and the site shouldn't invent
       one. Add the line when you have it.
 
-- [ ] **Preps Workshop photos** (Aug 3). The event's `.gallery-grid` in
+- [ ] **College Admissions Journey Panel photos** (Aug 3). The event's `.gallery-grid` in
       `events.html` currently holds a single "Photos coming soon" tile. It used to
       hold two `<img>` tags pointing at `preps-workshop/1.jpg` and `2.png`, neither
       of which was ever added, so every visit fired two 404s. Drop the real files
       into `assets/images/gallery/preps-workshop/` and replace the placeholder with
-      `event-photo` blocks copied from the Business Workshop above.
+      `event-photo` blocks copied from the $tartup Workshop above.
 - [ ] **Payment processor.** The "Donate now" button is a `mailto:`. Once a processor is
       set up (Zeffy is 0% for nonprofits; Givebutter and Stripe also work), swap the
       `href` in `donate.html` and delete the "online giving is being set up" footnote.
@@ -270,19 +270,24 @@ so the public can't add anything. To add one, copy an existing
 in `events.html` and point its `<img src>` at a file under
 `assets/images/gallery/<event>/`.
 
-| Event | Date | Photos |
-|---|---|---|
-| ABLE Health Workshop | July 16 | 1 |
-| ABLE Preps Webinar | July 21 | 1 |
-| ABLE Business Workshop | July 22 | 8 |
-| ABLE Preps Workshop | August 3 | 0 — placeholder tile, photos still needed |
-| ABLE Business Webinar | August 15 | 1 |
+| Event | Branch | Date | Photos |
+|---|---|---|---|
+| Health Literacy Workshop | ABLE Health | July 16 | 1 |
+| College Admissions Journey Webinar | ABLE Preps | July 21 | 1 |
+| How to Build a $tartup Workshop | ABLE Business | July 22 | 8 |
+| College Admissions Journey Panel | ABLE Preps | August 3 | 0 — placeholder tile, photos still needed |
+| Exploring Business Majors Webinar | ABLE Business | August 15 | 2 |
 
-The Business Webinar ran on Google Meet, so its photo is a crop of a call
-screenshot. **Crop any further ones the same way.** The raw captures show
-attendee faces next to full names, most of them students, plus a People panel
-listing another eight, and the meeting code sits in the title bar of every shot
-— published on a public site, that code invites anyone to join a later call on
-it. The presentation area is the only region that carries the content worth
-showing and none of the identifying detail. The two webinar events use
-`object-fit: contain` so their wide slides aren't cropped to the middle.
+Exploring Business Majors Webinar ran on Google Meet, so its photos are screenshots of the
+call, showing the attendees as well as the presentation. **Trim the title bar
+off any further ones.** Google Meet puts the joining code there, and published
+on a public page that code lets anyone drop into a later session on it — it is
+the one piece of these captures that is a security question rather than a
+judgement call. Roughly the top 9-10% of a full-screen capture does it; check
+the result rather than trusting the fraction.
+
+Note `sips --cropOffset` silently does nothing if either offset is `0`, leaving
+the image uncropped at its original size. Pass `1` instead and lose a pixel.
+
+The two webinar events use `object-fit: contain` so their wide captures aren't
+cropped to the middle of the frame.
