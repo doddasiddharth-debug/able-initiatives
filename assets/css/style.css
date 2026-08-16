@@ -1328,6 +1328,148 @@ a { color: inherit; text-decoration: none; }
 }
 .speaker-note a { color: var(--accent-dark); font-weight: 600; text-decoration: underline; }
 
+/* ---------- rich timeline (timeline.html) ---------- */
+/* Alternating cards either side of a central spine. The plain `.timeline` list
+   further up is the compact version and is still used nowhere else; this one is
+   the full-page treatment, with a photo per event. */
+/* The spine is a sibling of the <ol>, not a child of it — only <li> may be a
+   direct child of a list, and nesting a positioning div in there is invalid. */
+.timeline-rich { position: relative; max-width: 1000px; margin: 0 auto; }
+.timeline-entries { list-style: none; margin: 0; padding: 0; }
+.timeline-spine {
+  position: absolute;
+  left: 50%;
+  top: 8px;
+  bottom: 8px;
+  width: 3px;
+  margin-left: -1.5px;
+  background: var(--line-strong);
+  border-radius: 2px;
+  overflow: hidden;
+}
+/* Filled portion. Height is driven by scroll in main.js; the default of 100%
+   is what a no-JS or reduced-motion visitor sees, so the spine reads as a
+   finished line rather than an empty channel. */
+.timeline-fill {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, var(--accent), var(--accent-dark));
+  border-radius: 2px;
+}
+.js .timeline-fill { height: 0; transition: height 0.15s linear; }
+
+.timeline-entry {
+  position: relative;
+  width: 50%;
+  padding: 0 46px 56px 0;
+  box-sizing: border-box;
+}
+.timeline-entry:nth-child(even) { margin-left: 50%; padding: 0 0 56px 46px; }
+.timeline-entry:last-child { padding-bottom: 0; }
+
+.entry-marker {
+  position: absolute;
+  top: 26px;
+  right: -9px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--paper);
+  border: 3px solid var(--line-strong);
+  z-index: 2;
+  transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+.timeline-entry:nth-child(even) .entry-marker { right: auto; left: -9px; }
+/* Lit once the spine's fill has reached it, so the markers colour in as you
+   scroll rather than all at once. */
+.timeline-entry.sat.is-reached .entry-marker { border-color: var(--sat); box-shadow: 0 0 0 5px var(--sat-tint); }
+.timeline-entry.health.is-reached .entry-marker { border-color: var(--health); box-shadow: 0 0 0 5px var(--health-tint); }
+.timeline-entry.business.is-reached .entry-marker { border-color: var(--business); box-shadow: 0 0 0 5px var(--business-tint); }
+.timeline-entry.is-reached .entry-marker { transform: scale(1.15); }
+
+.entry-card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.entry-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--line-strong);
+}
+.entry-photo {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: var(--bg-alt);
+  border-bottom: 1px solid var(--line);
+  overflow: hidden;
+}
+.entry-photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+.entry-card:hover .entry-photo img { transform: scale(1.04); }
+.entry-photo-fallback {
+  position: absolute;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  font-size: 13px;
+}
+.entry-photo-empty { border-bottom: 1px dashed var(--line-strong); }
+.entry-body { padding: 22px 24px 24px; }
+.entry-meta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 10px; }
+.entry-meta .event-branch { margin-bottom: 0; }
+.entry-date { font-size: 13px; color: var(--muted); }
+.entry-body h3 { font-size: 20px; margin-bottom: 8px; }
+.entry-body p { font-size: 14.5px; margin-bottom: 0; }
+.entry-speaker {
+  margin-top: 14px !important;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+/* Entries slide in from their own side. Gated behind html.js so the page is
+   fully readable if the script never runs; .reveal's own safety nets (the
+   scroll sweep and the 1200ms backstop) apply here too. */
+.js .timeline-entry.reveal { opacity: 0; transform: translateX(-28px); }
+.js .timeline-entry:nth-child(even).reveal { transform: translateX(28px); }
+.js .timeline-entry.reveal.in-view { opacity: 1; transform: translateX(0); }
+
+@media (max-width: 860px) {
+  /* One column: the spine moves to the far left and every card sits beside it. */
+  .timeline-spine { left: 9px; margin-left: 0; }
+  .timeline-entry,
+  .timeline-entry:nth-child(even) {
+    width: 100%;
+    margin-left: 0;
+    padding: 0 0 40px 42px;
+  }
+  .timeline-entry .entry-marker,
+  .timeline-entry:nth-child(even) .entry-marker { left: 1px; right: auto; }
+  .js .timeline-entry.reveal,
+  .js .timeline-entry:nth-child(even).reveal { transform: translateY(16px); }
+  .js .timeline-entry.reveal.in-view { transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .js .timeline-fill { height: 100%; transition: none; }
+  .js .timeline-entry.reveal { opacity: 1; transform: none; }
+  .entry-card:hover { transform: none; }
+  .entry-card:hover .entry-photo img { transform: none; }
+}
+
 /* ---------- impact page ---------- */
 .impact-figures {
   display: grid;

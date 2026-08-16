@@ -172,6 +172,68 @@ document.addEventListener("DOMContentLoaded", () => {
     el.textContent = new Date().getFullYear();
   });
 
+  // Timeline spine.
+  //
+  // Fills the vertical line as you scroll and lights each marker as the fill
+  // reaches it. The CSS default is a fully-drawn line, and this only shortens
+  // it once `html.js` is present — so no-JS, reduced-motion and a stalled
+  // script all leave a complete spine rather than an empty channel.
+  document.querySelectorAll("[data-timeline]").forEach((timeline) => {
+    const fill = timeline.querySelector(".timeline-fill");
+    const entries = Array.from(timeline.querySelectorAll(".timeline-entry"));
+    if (!fill) return;
+
+    if (reduceMotion.matches) {
+      fill.style.height = "100%";
+      entries.forEach((el) => el.classList.add("is-reached"));
+      return;
+    }
+
+    let queued = false;
+    const update = () => {
+      queued = false;
+      const rect = timeline.getBoundingClientRect();
+      // Fill up to a line just above the middle of the viewport, so the spine
+      // stays ahead of whatever you are actually reading.
+      const anchor = window.innerHeight * 0.55;
+      const ratio = (anchor - rect.top) / rect.height;
+      const clamped = Math.max(0, Math.min(1, ratio));
+      fill.style.height = clamped * 100 + "%";
+
+      const filledTo = rect.top + rect.height * clamped;
+      entries.forEach((el) => {
+        const marker = el.querySelector(".entry-marker");
+        const target = marker || el;
+        const mid = target.getBoundingClientRect().top + target.offsetHeight / 2;
+        el.classList.toggle("is-reached", filledTo >= mid);
+      });
+    };
+    const queue = () => {
+      if (!queued) {
+        queued = true;
+        requestAnimationFrame(update);
+      }
+    };
+    window.addEventListener("scroll", queue, { passive: true });
+    window.addEventListener("resize", queue);
+    update();
+
+    // Same reasoning as the reveal observer: if rAF never runs (backgrounded or
+    // prerendered tab), don't leave the line stuck at zero.
+    setTimeout(() => {
+      if (!fill.style.height || fill.style.height === "0%") update();
+    }, 1200);
+
+    reduceMotion.addEventListener("change", (e) => {
+      if (e.matches) {
+        fill.style.height = "100%";
+        entries.forEach((el) => el.classList.add("is-reached"));
+      } else {
+        update();
+      }
+    });
+  });
+
   // Speaker marquee.
   //
   // The cards drift continuously and loop. The duplicate sets are built here

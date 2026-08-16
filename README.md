@@ -46,20 +46,35 @@ python3 -m http.server 8000
   values land at 5.1:1, 5.1:1 and 5.3:1. Use them for any text on a branch
   tint, and as the ground under any white text.
 - `programs.html`: All three branches on one page
-- `impact.html`: Timeline and Impact. The event timeline lived on the homepage
-  until this page existed; it was moved here whole, so `index.html` now runs
-  carousel → guest speakers → CTA with no timeline in between.
+- `timeline.html`: Timeline. Every event as an alternating card either side of
+  a central spine, each with a photo. The spine's filled portion tracks scroll
+  position and lights each marker as it passes.
 
-  The Impact section carries a US map as **inline SVG** — no library, no image
-  file. The outline is a coarse set of real lat/lon border waypoints projected
-  equirectangularly about 39°N, which is why Colorado can be a plain `<rect>`:
-  it is a true lat/lon rectangle (37–41°N, 102–109°W) and lands as an exact
-  rectangle under that projection. Both pins are the cities' real coordinates.
+  The spine is a **sibling** of the `<ol>`, not a child — only `<li>` may be a
+  direct child of a list, and an earlier version nested the positioning div
+  inside it.
+
+  Both the fill and the slide-in are gated behind `html.js`, and the CSS default
+  is a **fully drawn** spine. No-JS, reduced-motion and a stalled script all
+  leave a complete line rather than an empty channel — the same reasoning as the
+  count-up stats: the failure mode must not look like "nothing happened here".
+
+  The Aug 3 entry has no photo and carries a dashed placeholder tile. Give it a
+  real one when the photos arrive.
+
+- `impact.html`: Impact. Chapters, the students reached, and a US map.
+
+  The map is **inline SVG** — no library, no image file. The outline is a coarse
+  set of real lat/lon border waypoints projected equirectangularly about 39°N,
+  which is why Colorado can be a plain `<rect>`: it is a true lat/lon rectangle
+  (37–41°N, 102–109°W) and lands as an exact rectangle under that projection.
+  Both pins are the cities' real coordinates.
 
   Denver and Colorado Springs are only about 20px apart at national scale, so
   their labels sit outside the state on leader lines instead of beside the pins.
   If you add a chapter, project its coordinates the same way rather than
-  eyeballing a position — the generator is in the git history for this commit.
+  eyeballing a position.
+
 - `preps.html` / `health.html` / `business.html`: One page per branch
 - `get-involved.html`: Students, members, and chapter leads
 - `events.html`: Photo gallery (grouped by event)
@@ -68,11 +83,18 @@ python3 -m http.server 8000
 
 Shared styles live in `assets/css/style.css`, shared behavior in `assets/js/main.js`.
 There is no templating, so **the header and footer are duplicated in every page** —
-a nav change is a twelve-file edit. Adding the Impact link caught this the hard
-way: `preps.html`, `health.html` and `business.html` carry
-`aria-current="page"` on their Programs link, so a find-and-replace written
-against the plain markup silently skipped all three. Check with `grep` across
-every page afterwards, not just a sample.
+a nav change is a thirteen-file edit, and scripted find-and-replace across them
+has now gone wrong twice in ways that looked fine at a glance:
+
+- `preps.html`, `health.html` and `business.html` carry `aria-current="page"`
+  on their Programs link, so a replacement written against the plain markup
+  silently skipped all three.
+- A pattern anchored on six spaces of indent also matched inside the footer's
+  ten-space indent, so a nav block was injected into the footer on every page.
+
+**Anchor on enough context to be unambiguous, and audit every page with `grep`
+afterwards** — the nav and footer both contain the same link markup at
+different depths.
 
 The nav switches to the mobile panel at **1130px**, which is wider than it looks
 like it should be. The full row — brand, six links, and two buttons — needs about
@@ -86,14 +108,20 @@ links-left must stay positive at the breakpoint width. The current 1130px is an
 estimate from the item widths, not a measured value — if you see the row collide
 just above it, raise it.
 
-The **About** nav item is a dropdown (`.has-submenu`) holding Our Story and Our Team.
-Its parent is a `<button>`, not a link, because it navigates nowhere on its own.
-CSS opens it on hover and focus-within; the JS adds click/tap toggling, Escape to
-close, and keeps `aria-expanded` honest. On mobile it flattens into an indented
-list inside the nav panel rather than a floating card. The submenu's `id` must
-stay unique per page — a scripted nav edit once duplicated the whole block into
-the footer, which silently produced two elements sharing `id="about-submenu"`. Use find-and-replace across all `*.html`, and check
-the result with `grep` before committing.
+Two nav items are dropdowns (`.has-submenu`): **About** holds Our Story and Our
+Team, **Impact** holds Timeline and Impact. Each parent is a `<button>`, not a
+link, because it navigates nowhere on its own. CSS opens them on hover and
+focus-within; the JS adds click/tap toggling, Escape to close, and keeps
+`aria-expanded` honest. On mobile they flatten into an indented list inside the
+nav panel rather than a floating card. The JS handles any number of them, so a
+third dropdown needs no script change.
+
+Each submenu's `id` must stay unique **per page** — `about-submenu` and
+`impact-submenu`. A scripted nav edit once duplicated a whole block into the
+footer, silently producing two elements sharing one `id`; the same class of bug
+recurred when the Impact dropdown was added. Audit with `grep` across every page
+before committing, checking that each page has exactly two submenu ids and that
+they match their `aria-controls`.
 
 ## Images
 
@@ -196,7 +224,7 @@ phrase normally rather than announcing four separate letters.
 
 ## Homepage sections that need updating as ABLE grows
 
-**Event timeline** (`impact.html`). Add a new `<li class="timeline-item BRANCH">`
+**Event timeline** (`timeline.html`). Add a new `<li class="timeline-entry BRANCH reveal">`
 in date order, where `BRANCH` is `sat`, `health`, or `business` — that class colours
 the marker and must match the `event-branch` span inside. Keep the `datetime`
 attribute in `YYYY-MM-DD` form; it's the machine-readable version search engines read.
@@ -282,7 +310,7 @@ inline, and CSS only blanked them while the section was off-screen and only when
       coordinator / Operations & outreach — a best guess at what volunteers
       actually do. Correct them if that's off; the same four names also appear
       inside the "Become a member" mailto body.
-- [ ] **Keep the event count current.** The timeline intro on `impact.html` reads
+- [ ] **Keep the event count current.** The timeline intro on `timeline.html` reads
       "Five events across all three branches" — update that wording whenever you
       add a `.timeline-item`, so the two never drift apart.
 
