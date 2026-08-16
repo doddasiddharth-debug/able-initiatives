@@ -21,7 +21,21 @@ python3 -m http.server 8000
 
 ## Pages
 - `index.html`: Home
-- `our-story.html`: Our Story (why ABLE exists, what we believe)
+- `our-story.html`: Our Story. The founder's story — a trip to India, cousins
+  and friends with as much potential and none of the resources — then what ABLE
+  does about it, the values, and a link to the team.
+
+  `photos/founder.png` is **arch-topped with transparent corners**, so it sits
+  directly on the page instead of inside a `.photo-card`. A card would fill the
+  arch with its own background and crop the image to the card's ratio, losing
+  the shape. The shadow is a `filter: drop-shadow`, which follows the alpha;
+  `box-shadow` would trace the bounding box and draw a rectangle around the
+  arch. Keep both properties if you swap the photo, or drop them together if
+  the replacement is a plain rectangle.
+
+  The copy names Siddharth and describes a real trip. **Don't embellish it** —
+  no invented ages, cities, names or dialogue. What is there is what we were
+  told.
 - `our-team.html`: Our Team. Executive officers, then branch officers grouped
   under a `.team-subhead` per branch. Every group uses the same `.team-grid` /
   `.team-card` markup, so all four sections match.

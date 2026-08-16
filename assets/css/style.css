@@ -902,6 +902,54 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 1080px) { .team-grid { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 760px) { .team-grid { grid-template-columns: repeat(2, 1fr); } }
 
+/* ---------- founder story (our-story.html) ---------- */
+.founder-layout {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 56px;
+  align-items: center;
+}
+.founder-portrait {
+  position: relative;
+  justify-self: center;
+  width: 100%;
+  max-width: 300px;
+}
+/* The portrait is arch-topped with transparent corners, so it sits directly on
+   the page rather than inside a .photo-card: a card would fill the arch with
+   its own background and crop the image to the card's aspect ratio, losing the
+   shape entirely. drop-shadow follows the alpha channel; box-shadow would trace
+   the bounding box and draw a rectangle around the arch. */
+.founder-portrait img {
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 14px 28px rgba(20, 20, 58, 0.20));
+}
+.founder-portrait .logo-slot-fallback {
+  aspect-ratio: 274 / 436;
+  border-radius: 140px 140px var(--radius-md) var(--radius-md);
+  background: var(--accent-tint);
+  color: var(--accent-dark);
+  font-size: 38px;
+  align-items: center;
+  justify-content: center;
+}
+.founder-copy p { max-width: 60ch; }
+/* The line the story lands on, so it doesn't read as just another paragraph. */
+.founder-close {
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--ink);
+  border-left: 3px solid var(--accent);
+  padding-left: 18px;
+  margin-top: 26px;
+}
+@media (max-width: 860px) {
+  .founder-layout { grid-template-columns: 1fr; gap: 36px; }
+  .founder-portrait { max-width: 230px; justify-self: start; }
+}
+
 /* ---------- values ---------- */
 .value-card { display: flex; flex-direction: column; gap: 10px; }
 .value-icon {
