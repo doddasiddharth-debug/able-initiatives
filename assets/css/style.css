@@ -285,6 +285,18 @@ a { color: inherit; text-decoration: none; }
   border-bottom: 2px solid transparent;
   transition: color 0.15s ease, border-color 0.15s ease;
 }
+/* Top-level links only (not the ones inside a submenu), and only in the
+   horizontal bar: left as plain inline boxes they are sized by font metrics,
+   while the submenu parents beside them are inline-flex and sized by
+   line-height, so the two sat a couple of pixels apart and their underlines did
+   not line up. Below the nav breakpoint the links become full-width rows in the
+   drop-down panel, where inline-flex would shrink them back to the text. */
+@media (min-width: 1131px) {
+  .nav-links > li > a {
+    display: inline-flex;
+    align-items: center;
+  }
+}
 /* ---- About submenu ---------------------------------------------------- */
 /* The parent is a <button>, not a link: it goes nowhere on its own, and a
    button is what screen readers and keyboards expect for something that
@@ -438,7 +450,10 @@ a { color: inherit; text-decoration: none; }
     max-height: calc(100vh - 100%);
     overflow-y: auto;
   }
-  .nav-links a { width: 100%; padding: 14px 0; border-bottom: 1px solid var(--line); font-size: 17px; }
+  /* display:block so the width below is honoured: as inline boxes these rows
+     were only as wide as their text, so their divider lines stopped short while
+     the submenu parents' ran the full width of the panel. */
+  .nav-links a { display: block; width: 100%; padding: 14px 0; border-bottom: 1px solid var(--line); font-size: 17px; }
   /* The submenu drops out of the floating-card treatment here and becomes an
      indented list inside the panel; a positioned dropdown would render off
      the edge of a phone screen. */
