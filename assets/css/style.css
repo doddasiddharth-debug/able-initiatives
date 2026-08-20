@@ -67,21 +67,27 @@
   --business-ink: #1E7217;
 
   --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 18px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
 
-  --shadow-sm: 0 1px 2px rgba(20, 20, 58, 0.07);
-  --shadow-md: 0 8px 24px rgba(20, 20, 58, 0.10);
+  --shadow-sm: 0 1px 2px rgba(20, 20, 58, 0.05), 0 2px 8px rgba(20, 20, 58, 0.05);
+  --shadow-md: 0 2px 6px rgba(20, 20, 58, 0.06), 0 12px 32px rgba(20, 20, 58, 0.10);
+  --shadow-lg: 0 4px 10px rgba(20, 20, 58, 0.06), 0 24px 56px rgba(20, 20, 58, 0.14);
 
   --container: 1160px;
 
   --font-display: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-body: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  /* Editorial serif for headlines only. Numbers, UI chrome, the wordmark, and
+     fallback initials stay on --font-display: serif numerals and serif UI
+     labels read as decoration, headlines read as a voice. */
+  --font-head: "Fraunces", Georgia, "Times New Roman", serif;
 }
 
 
 
 * { box-sizing: border-box; }
+::selection { background: var(--gold); color: var(--panel); }
 html { scroll-behavior: smooth; }
 
 /* ---------- accessibility ---------- */
@@ -134,12 +140,24 @@ body {
 img { max-width: 100%; display: block; }
 
 h1, h2, h3, h4 {
-  font-family: var(--font-display);
+  font-family: var(--font-head);
   color: var(--ink);
-  line-height: 1.15;
+  line-height: 1.14;
   margin: 0 0 0.5em;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  /* Fraunces carries more ink per stroke than DM Sans did; 600 at these sizes
+     matches the old 700's weight on the page, and the serif wants far less
+     negative tracking. */
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* Gold italic accent inside the hero headline. Plain <em>, so it reads
+   normally without the stylesheet. Scoped to the dark hero: gold text fails
+   contrast on the light page ground, so this must not leak to ordinary
+   headings. */
+.hero-banner h1 em {
+  font-style: italic;
+  color: var(--gold);
 }
 
 p { margin: 0 0 1em; }
@@ -200,8 +218,12 @@ a { color: inherit; text-decoration: none; }
 .btn:hover { transform: translateY(-1px); }
 .btn-primary { background: var(--panel); color: var(--on-panel); }
 .btn-primary:hover { background: var(--accent-dark); }
-.btn-accent { background: var(--accent); color: var(--accent-ink); }
-.btn-accent:hover { background: var(--accent-dark); }
+.btn-accent {
+  background: var(--accent);
+  color: var(--accent-ink);
+  box-shadow: 0 6px 16px rgba(43, 43, 196, 0.28);
+}
+.btn-accent:hover { background: var(--accent-dark); box-shadow: 0 8px 20px rgba(43, 43, 196, 0.34); }
 .btn-outline { background: transparent; color: var(--ink); border-color: var(--line-strong); }
 .btn-outline:hover { border-color: var(--ink); }
 .btn-sm { padding: 9px 18px; font-size: 13.5px; }
@@ -832,6 +854,7 @@ a { color: inherit; text-decoration: none; }
 .avatar {
   width: 100%;
   aspect-ratio: 1;
+  border: 1px solid var(--line);
   border-radius: var(--radius-md);
   background: linear-gradient(155deg, var(--panel) 0%, var(--line-strong) 100%);
   color: var(--on-panel);
@@ -881,11 +904,11 @@ a { color: inherit; text-decoration: none; }
   align-items: center;
   gap: 16px;
   margin: 0 0 26px;
-  font-family: var(--font-display);
+  font-family: var(--font-head);
   font-size: 26px;
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1.2;
-  letter-spacing: -0.015em;
+  letter-spacing: -0.01em;
   color: var(--ink);
 }
 .team-section-title::before {
@@ -1222,7 +1245,7 @@ a { color: inherit; text-decoration: none; }
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
   padding: 36px;
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-lg);
 }
 .donate-amounts {
   display: grid;
@@ -1291,10 +1314,18 @@ a { color: inherit; text-decoration: none; }
 
 /* ---------- footer ---------- */
 .site-footer {
-  border-top: 1px solid var(--line);
-  padding: 64px 0 32px;
-  margin-top: 40px;
+  /* A shade below --panel so the CTA band (which is --panel, and often sits
+     just above) still reads as its own object rather than melting into the
+     footer. */
+  background: #0D0D2B;
+  padding: 76px 0 36px;
+  margin-top: 72px;
 }
+.site-footer .brand { color: #FFFFFF; }
+/* The monogram is indigo-on-transparent and would sink into the navy, so the
+   footer's mark sits on a light chip. */
+.site-footer .brand-mark { background: var(--bg); }
+.site-footer .footer-brand p { color: var(--on-panel-soft); }
 .footer-grid {
   display: grid;
   grid-template-columns: 1.4fr 1fr 1fr 1fr;
@@ -1307,20 +1338,20 @@ a { color: inherit; text-decoration: none; }
   font-size: 13px;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--muted);
+  color: #8A8FBF;
   margin-bottom: 16px;
 }
 .footer-col ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
-.footer-col a { font-size: 14.5px; color: var(--ink-soft); }
-.footer-col a:hover { color: var(--accent-dark); }
+.footer-col a { font-size: 14.5px; color: #C6CAE8; }
+.footer-col a:hover { color: #FFFFFF; }
 .footer-bottom {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding-top: 28px;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid #292C5C;
   font-size: 13px;
-  color: var(--muted);
+  color: #8A8FBF;
   flex-wrap: wrap;
   gap: 12px;
 }
@@ -1349,7 +1380,14 @@ a { color: inherit; text-decoration: none; }
   font-weight: 700;
   line-height: 1;
   letter-spacing: -0.03em;
+  /* Gradient ink. The solid colour stays as the paint fallback: browsers that
+     skip background-clip render it untouched. */
   color: var(--accent-dark);
+  background: linear-gradient(115deg, var(--accent) 10%, var(--accent-dark) 55%, #33339A 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  width: fit-content;
   margin-bottom: 14px;
 }
 .world-stat p {
@@ -1742,6 +1780,11 @@ a { color: inherit; text-decoration: none; }
   line-height: 1;
   letter-spacing: -0.03em;
   color: var(--accent-dark);
+  background: linear-gradient(115deg, var(--accent) 10%, var(--accent-dark) 55%, #33339A 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  width: fit-content;
   margin-bottom: 14px;
 }
 .impact-figure p { font-size: 15px; color: var(--ink); margin-bottom: 0; }
@@ -1818,8 +1861,17 @@ a { color: inherit; text-decoration: none; }
 .reveal.in-view { opacity: 1; transform: translateY(0); }
 
 /* ---------- page header (inner pages) ---------- */
-.page-header { padding: 72px 0 56px; }
-.page-header h1 { font-size: clamp(32px, 4.5vw, 46px); }
+.page-header {
+  padding: 88px 0 64px;
+  /* A warm gold wash from the top corner against a cool indigo one below:
+     enough temperature to lift the header off the flat page ground without
+     becoming a "banner". Both stay under 15% alpha so text contrast is
+     untouched. */
+  background:
+    radial-gradient(640px 320px at 88% -10%, rgba(240, 192, 72, 0.16), transparent 70%),
+    radial-gradient(720px 360px at 4% 110%, rgba(43, 43, 196, 0.07), transparent 70%);
+}
+.page-header h1 { font-size: clamp(34px, 4.8vw, 52px); max-width: 18ch; text-wrap: balance; }
 .page-header .lede { max-width: 620px; }
 
 /* ---------- carousel (sliding photo feature) ---------- */
@@ -1859,7 +1911,7 @@ a { color: inherit; text-decoration: none; }
   z-index: 2;
 }
 .carousel-caption .cap-event { font-size: 12.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.9; }
-.carousel-caption .cap-title { font-family: var(--font-display); font-size: 19px; margin-top: 4px; }
+.carousel-caption .cap-title { font-family: var(--font-head); font-weight: 600; font-size: 20px; margin-top: 4px; }
 .carousel-dots {
   position: absolute;
   right: 24px;
