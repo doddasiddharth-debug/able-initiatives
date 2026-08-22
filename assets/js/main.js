@@ -434,8 +434,15 @@ document.addEventListener("DOMContentLoaded", () => {
   //
   // One dialog serves every card on the page, so the id it is labelled by stays
   // unique no matter how many bios get added.
-  const bioCards = Array.from(document.querySelectorAll(".team-bio"), (bio) =>
-    bio.closest(".team-card")
+  // Speaker cards with a .speaker-quote join the same system: same dialog,
+  // same degradation (the quote prints on the card until it is wired). The
+  // marquee has already cloned each speaker card twice by the time this runs,
+  // and every copy is collected deliberately — the strip drifts, so the copy a
+  // pointer can reach is usually not the original. The clones are aria-hidden
+  // decorations, so their triggers are taken out of the tab order below.
+  const bioCards = Array.from(
+    document.querySelectorAll(".team-bio, .speaker-quote"),
+    (bio) => bio.closest(".team-card, .speaker-card")
   ).filter(Boolean);
   const dialogSupported =
     typeof HTMLDialogElement === "function" &&
@@ -463,10 +470,10 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.appendChild(dialog);
 
     const open = (card) => {
-      const name = card.querySelector(".team-name");
-      const role = card.querySelector(".team-role");
-      const photo = card.querySelector(".avatar img");
-      const initials = card.querySelector(".avatar-initials");
+      const name = card.querySelector(".team-name, .speaker-body h3");
+      const role = card.querySelector(".team-role, .speaker-org");
+      const photo = card.querySelector(".avatar img, .speaker-photo img");
+      const initials = card.querySelector(".avatar-initials, .speaker-photo .logo-slot-fallback");
 
       nameEl.textContent = name ? name.textContent.trim() : "";
       roleEl.textContent = role ? role.textContent.trim() : "";
@@ -474,7 +481,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Cloned rather than rebuilt, so a bio can hold more than one paragraph
       // and keep whatever markup the card gave it.
-      textEl.replaceChildren(...Array.from(card.querySelector(".team-bio").cloneNode(true).childNodes));
+      textEl.replaceChildren(...Array.from(card.querySelector(".team-bio, .speaker-quote").cloneNode(true).childNodes));
 
       media.replaceChildren();
       // A lazy photo that hasn't loaded yet still has naturalWidth 0, so only a
@@ -504,29 +511,12 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     bioCards.forEach((card) => {
-      const avatar = card.querySelector(".avatar");
-      const name = card.querySelector(".team-name");
+      const avatar = card.querySelector(".avatar, .speaker-photo");
+      const name = card.querySelector(".team-name, .speaker-body h3");
       if (!avatar || !name) return;
 
+      const isSpeaker = card.classList.contains("speaker-card");
       const trigger = document.createElement("button");
       trigger.type = "button";
       trigger.className = "bio-trigger";
-      trigger.setAttribute("aria-haspopup", "dialog");
-      trigger.setAttribute("aria-label", "Read " + name.textContent.trim() + "'s bio");
-      avatar.parentNode.insertBefore(trigger, avatar);
-      trigger.appendChild(avatar);
-      trigger.addEventListener("click", () => open(card));
-
-      // Only now is the inline bio redundant.
-      card.classList.add("bio-live");
-    });
-
-    dialog.querySelector(".bio-close").addEventListener("click", () => dialog.close());
-    // Clicks on the backdrop land on the dialog itself, since the panel fills
-    // it completely. Escape and returning focus to the photo are native.
-    dialog.addEventListener("click", (e) => {
-      if (e.target === dialog) dialog.close();
-    });
-  }
-
-});
+      trigger.setAttribute("aria-

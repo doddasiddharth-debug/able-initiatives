@@ -953,12 +953,19 @@ a { color: inherit; text-decoration: none; }
 .team-bio p { margin: 0 0 0.6em; }
 .team-bio p:last-child { margin-bottom: 0; }
 .team-card.bio-live .team-bio { display: none; }
+/* Speaker testimonials ride the same system: printed on the card until the
+   dialog is wired, hidden after. */
+.speaker-quote { font-size: 13.5px; font-style: italic; color: var(--ink-soft); margin: 0 0 12px; }
+.speaker-quote p { margin: 0 0 0.6em; }
+.speaker-quote p:last-child { margin-bottom: 0; }
+.speaker-card.bio-live .speaker-quote { display: none; }
 
 /* Built by main.js, never in the markup, so the control can't appear without
    the code that opens the dialog. */
 .bio-trigger {
   display: block;
   width: 100%;
+  flex-shrink: 0;
   padding: 0;
   border: none;
   background: none;
@@ -970,7 +977,8 @@ a { color: inherit; text-decoration: none; }
 /* The cue that the photo does something. It rides inside .avatar, which is
    already position:relative with overflow:hidden, so it takes the tile's
    rounded corners for free. */
-.bio-trigger .avatar::after {
+.bio-trigger .avatar::after,
+.bio-trigger .speaker-photo::after {
   content: "Read bio";
   position: absolute;
   left: 0;
@@ -986,12 +994,19 @@ a { color: inherit; text-decoration: none; }
   transition: opacity 0.18s ease;
 }
 .bio-trigger:hover .avatar::after,
-.bio-trigger:focus-visible .avatar::after { opacity: 1; }
-.bio-trigger .avatar img { transition: transform 0.3s ease; }
-.bio-trigger:hover .avatar img { transform: scale(1.04); }
+.bio-trigger:focus-visible .avatar::after,
+.bio-trigger:hover .speaker-photo::after,
+.bio-trigger:focus-visible .speaker-photo::after { opacity: 1; }
+.bio-trigger .avatar img,
+.bio-trigger .speaker-photo img { transition: transform 0.3s ease; }
+.bio-trigger:hover .avatar img,
+.bio-trigger:hover .speaker-photo img { transform: scale(1.04); }
 /* No hover to reveal it on a touchscreen, so the label just stays up. */
+/* The speaker cue promises the right thing. */
+.bio-trigger .speaker-photo::after { content: "Read testimonial"; }
 @media (hover: none) {
-  .bio-trigger .avatar::after { opacity: 1; }
+  .bio-trigger .avatar::after,
+  .bio-trigger .speaker-photo::after { opacity: 1; }
 }
 
 .bio-dialog {
@@ -2010,62 +2025,4 @@ a { color: inherit; text-decoration: none; }
   height: 30px;
   padding: 0 9px;
   border-radius: 999px;
-  border: none;
-  background: rgba(27, 42, 58, 0.45);
-  color: #fff;
-  font-size: 11px;
-  line-height: 1;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.15s ease;
-}
-.carousel-pause:hover { background: rgba(27, 42, 58, 0.7); }
-@media (max-width: 640px) {
-  .carousel { aspect-ratio: 4 / 5; }
-  .carousel-arrow { width: 32px; height: 32px; font-size: 15px; }
-}
-
-/* ---------- photo gallery (events.html) ---------- */
-.gallery-event {
-  padding: 56px 0;
-}
-.gallery-event:not(:last-child) { border-bottom: 1px solid var(--line); }
-.gallery-event-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 20px;
-  flex-wrap: wrap;
-  margin-bottom: 26px;
-}
-.gallery-event-head h2 { font-size: 24px; margin-bottom: 6px; }
-.gallery-event-date {
-  font-family: var(--font-body);
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--accent-dark);
-  background: var(--accent-tint);
-  padding: 5px 12px;
-  border-radius: 999px;
-  white-space: nowrap;
-}
-.gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 340px));
-  justify-content: center;
-  gap: 18px;
-}
-.gallery-grid .event-photo { border-radius: var(--radius-md); border: 1px solid var(--line); }
-/* Wide screenshots (the webinar captures) show in full instead of being
-   cropped to the middle, so you can actually see what's on screen. Both of
-   these are 16:9-ish slides inside a 4:3 tile, so cover would eat a quarter of
-   the width and cut the speaker out of frame. */
-.gallery-grid[data-event="preps-webinar"] .event-photo img,
-.gallery-grid[data-event="business-webinar"] .event-photo img { object-fit: contain; }
-
-@media (max-width: 640px) {
-  .section { padding: 64px 0; }
-  .cta-band { padding: 36px 24px; flex-direction: column; align-items: flex-start; }
-}
+  
