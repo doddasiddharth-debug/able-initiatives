@@ -1293,6 +1293,55 @@ a { color: inherit; text-decoration: none; }
   .give-other { grid-template-columns: 1fr; }
 }
 
+/* ---------- testimonial ---------- */
+/* One quote, set like a pull quote rather than a card: the serif voice at
+   reading size, an oversized gold quote mark as the only ornament, and the
+   attribution back in the UI face. Centered, since it sits alone between two
+   full-width sections. */
+.testimonial {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 8px;
+  text-align: center;
+}
+.testimonial blockquote {
+  position: relative;
+  margin: 0 0 26px;
+  padding-top: 46px;
+}
+.testimonial blockquote::before {
+  content: "\201C";
+  position: absolute;
+  top: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-head);
+  font-size: 110px;
+  line-height: 1;
+  color: var(--gold);
+}
+.testimonial blockquote p {
+  font-family: var(--font-head);
+  font-size: clamp(19px, 2.4vw, 24px);
+  font-style: italic;
+  line-height: 1.55;
+  color: var(--ink);
+  margin: 0;
+  text-wrap: pretty;
+}
+.testimonial-name {
+  display: block;
+  font-weight: 700;
+  font-size: 15.5px;
+  color: var(--ink);
+}
+.testimonial-role {
+  display: block;
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 3px;
+}
+
 /* ---------- CTA band ---------- */
 .cta-band {
   background: var(--panel);
