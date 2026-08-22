@@ -56,6 +56,11 @@
   --health-tint: #FCD9D9;
   --business: #28991F;
   --business-tint: #E0F7DE;
+  /* Engineering's teal, sampled from its logo the same way: closest lightness
+     to the mark that still clears 3:1 on both grounds (3.4 on --bg, 3.1 on
+     --bg-alt). */
+  --eng: #1791B6;
+  --eng-tint: #D9F0F7;
   /* Darkened branch colours, for text sitting on the matching tint. The branch
      colours themselves fail badly there (the old gold read 1.5:1 on its own
      tint). Same hue, dark enough to clear 5:1 on the tint and 4.5:1 as a
@@ -65,6 +70,8 @@
   --sat-ink: #905804;
   --health-ink: #BC0606;
   --business-ink: #1E7217;
+  /* 5.1 on its tint, 6.1 under white. */
+  --eng-ink: #0A6B87;
 
   --radius-sm: 6px;
   --radius-md: 12px;
@@ -683,6 +690,7 @@ a { color: inherit; text-decoration: none; }
 .program-card.sat { border-top-color: var(--sat); }
 .program-card.health { border-top-color: var(--health); }
 .program-card.business { border-top-color: var(--business); }
+.program-card.eng { border-top-color: var(--eng); }
 
 .program-head { display: flex; align-items: center; gap: 14px; }
 .program-name { font-size: 19px; margin: 0; }
@@ -736,6 +744,7 @@ a { color: inherit; text-decoration: none; }
 .branch-logo-plate.sat .logo-slot-fallback { background: var(--sat-ink); color: #FFFFFF; }
 .branch-logo-plate.health .logo-slot-fallback { background: var(--health-ink); color: #FFFFFF; }
 .branch-logo-plate.business .logo-slot-fallback { background: var(--business-ink); color: #FFFFFF; }
+.branch-logo-plate.eng .logo-slot-fallback { background: var(--eng-ink); color: #FFFFFF; }
 
 /* The branch logos are full-colour transparent PNGs (indigo, red, green), so
    the chip needs a neutral ground: a red Health mark on a green tile clashes.
@@ -757,6 +766,7 @@ a { color: inherit; text-decoration: none; }
 .logo-slot.sat .logo-slot-fallback { background: var(--sat-ink); color: #FFFFFF; }
 .logo-slot.health .logo-slot-fallback { background: var(--health-ink); color: #FFFFFF; }
 .logo-slot.business .logo-slot-fallback { background: var(--business-ink); color: #FFFFFF; }
+.logo-slot.eng .logo-slot-fallback { background: var(--eng-ink); color: #FFFFFF; }
 .logo-slot img {
   width: 100%; height: 100%; object-fit: contain; padding: 4px;
   position: absolute; inset: 0;
@@ -820,6 +830,7 @@ a { color: inherit; text-decoration: none; }
 .branch-section.sat .dot { background: var(--sat); }
 .branch-section.health .dot { background: var(--health); }
 .branch-section.business .dot { background: var(--business); }
+.branch-section.eng .dot { background: var(--eng); }
 
 @media (max-width: 900px) {
   .branch-section, .branch-section.reverse { grid-template-columns: 1fr; direction: ltr; }
@@ -883,6 +894,7 @@ a { color: inherit; text-decoration: none; }
 .avatar-initials.sat { background: var(--sat-tint); color: var(--sat-ink); }
 .avatar-initials.health { background: var(--health-tint); color: var(--health-ink); }
 .avatar-initials.business { background: var(--business-tint); color: var(--business-ink); }
+.avatar-initials.eng { background: var(--eng-tint); color: var(--eng-ink); }
 .team-subhead {
   font-size: 13px;
   text-transform: uppercase;
@@ -1247,6 +1259,7 @@ a { color: inherit; text-decoration: none; }
 .event-branch.sat { background: var(--sat-tint); color: var(--sat-ink); }
 .event-branch.health { background: var(--health-tint); color: var(--health-ink); }
 .event-branch.business { background: var(--business-tint); color: var(--business-ink); }
+.event-branch.eng { background: var(--eng-tint); color: var(--eng-ink); }
 
 /* ---------- donate ---------- */
 .donate-hero {
@@ -1521,6 +1534,7 @@ a { color: inherit; text-decoration: none; }
 .timeline-item.sat::before { background: var(--sat); box-shadow: 0 0 0 2px var(--sat); }
 .timeline-item.health::before { background: var(--health); box-shadow: 0 0 0 2px var(--health); }
 .timeline-item.business::before { background: var(--business); box-shadow: 0 0 0 2px var(--business); }
+.timeline-item.eng::before { background: var(--eng); box-shadow: 0 0 0 2px var(--eng); }
 .timeline-meta {
   display: flex;
   align-items: center;
@@ -1739,6 +1753,7 @@ a { color: inherit; text-decoration: none; }
 .timeline-entry.sat.is-reached .entry-marker { border-color: var(--sat); box-shadow: 0 0 0 5px var(--sat-tint); }
 .timeline-entry.health.is-reached .entry-marker { border-color: var(--health); box-shadow: 0 0 0 5px var(--health-tint); }
 .timeline-entry.business.is-reached .entry-marker { border-color: var(--business); box-shadow: 0 0 0 5px var(--business-tint); }
+.timeline-entry.eng.is-reached .entry-marker { border-color: var(--eng); box-shadow: 0 0 0 5px var(--eng-tint); }
 .timeline-entry.is-reached .entry-marker { transform: scale(1.15); }
 
 .entry-card {
@@ -2025,4 +2040,62 @@ a { color: inherit; text-decoration: none; }
   height: 30px;
   padding: 0 9px;
   border-radius: 999px;
-  
+  border: none;
+  background: rgba(27, 42, 58, 0.45);
+  color: #fff;
+  font-size: 11px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease;
+}
+.carousel-pause:hover { background: rgba(27, 42, 58, 0.7); }
+@media (max-width: 640px) {
+  .carousel { aspect-ratio: 4 / 5; }
+  .carousel-arrow { width: 32px; height: 32px; font-size: 15px; }
+}
+
+/* ---------- photo gallery (events.html) ---------- */
+.gallery-event {
+  padding: 56px 0;
+}
+.gallery-event:not(:last-child) { border-bottom: 1px solid var(--line); }
+.gallery-event-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 26px;
+}
+.gallery-event-head h2 { font-size: 24px; margin-bottom: 6px; }
+.gallery-event-date {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent-dark);
+  background: var(--accent-tint);
+  padding: 5px 12px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 340px));
+  justify-content: center;
+  gap: 18px;
+}
+.gallery-grid .event-photo { border-radius: var(--radius-md); border: 1px solid var(--line); }
+/* Wide screenshots (the webinar captures) show in full instead of being
+   cropped to the middle, so you can actually see what's on screen. Both of
+   these are 16:9-ish slides inside a 4:3 tile, so cover would eat a quarter of
+   the width and cut the speaker out of frame. */
+.gallery-grid[data-event="preps-webinar"] .event-photo img,
+.gallery-grid[data-event="business-webinar"] .event-photo img { object-fit: contain; }
+
+@media (max-width: 640px) {
+  .section { padding: 64px 0; }
+  .cta-band { padding: 36px 24px; flex-direction: column; align-items: flex-start; }
+}

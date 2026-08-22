@@ -4,7 +4,7 @@
 
 ABLE Initiatives makes **educational resources free and open to every student**.
 It delivers that through workshops, webinars, and guest speaker sessions across
-three branches: ABLE Preps (college and test prep), ABLE Health, and ABLE Business.
+four branches: ABLE Preps (college and test prep), ABLE Health, ABLE Business, and ABLE Engineering.
 
 **ABLE does not match students one-on-one with mentors.** The site's original copy
 described a mentor-matching service in detail across all ten pages — "we match you
@@ -106,7 +106,7 @@ python3 -m http.server 8000
   branch colours themselves, which fail badly on their own tints. The `-ink`
   values land at 5.1:1, 5.1:1 and 5.3:1. Use them for any text on a branch
   tint, and as the ground under any white text.
-- `programs.html`: All three branches on one page
+- `programs.html`: All four branches on one page
 - `timeline.html`: Timeline. Every event as an alternating card either side of
   a central spine, each with a photo. The spine's filled portion tracks scroll
   position and lights each marker as it passes.
@@ -221,7 +221,8 @@ assets/images/
                                referenced by any page; kept because it is the
                                only asset carrying the wordmark, which is
                                useful for a social preview image later.
-              logo-preps.png, logo-health.png, logo-business.png
+              logo-preps.png, logo-health.png, logo-business.png,
+              logo-engineering.png
                                branch marks, also transparent
   photos/     hero.jpg — the homepage hero banner background
   speakers/   cropped headshots for the guest-speaker cards
