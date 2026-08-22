@@ -519,30 +519,4 @@ document.addEventListener("DOMContentLoaded", () => {
       const trigger = document.createElement("button");
       trigger.type = "button";
       trigger.className = "bio-trigger";
-      trigger.setAttribute("aria-haspopup", "dialog");
-      trigger.setAttribute(
-        "aria-label",
-        "Read " + name.textContent.trim() + (isSpeaker ? "'s testimonial" : "'s bio")
-      );
-      // Marquee clones are aria-hidden duplicates; their triggers still work
-      // for a pointer (the drifting copy is the one you can actually reach)
-      // but must not be tab stops — a focusable control inside aria-hidden is
-      // a contradiction, and keyboard users have the original set.
-      if (card.closest('[aria-hidden="true"]')) trigger.setAttribute("tabindex", "-1");
-      avatar.parentNode.insertBefore(trigger, avatar);
-      trigger.appendChild(avatar);
-      trigger.addEventListener("click", () => open(card));
-
-      // Only now is the inline bio redundant.
-      card.classList.add("bio-live");
-    });
-
-    dialog.querySelector(".bio-close").addEventListener("click", () => dialog.close());
-    // Clicks on the backdrop land on the dialog itself, since the panel fills
-    // it completely. Escape and returning focus to the photo are native.
-    dialog.addEventListener("click", (e) => {
-      if (e.target === dialog) dialog.close();
-    });
-  }
-
-});
+      trigger.setAttribute("aria-
