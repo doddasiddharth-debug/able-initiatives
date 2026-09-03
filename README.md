@@ -163,10 +163,17 @@ python3 -m http.server 8000
   works with no third-party calls beyond the map tiles. Cards that share a
   location share a single pin whose popup lists them all.
 
-  The Colorado Springs chapters are Discovery Canyon Campus High School (1810
-  North Gate Boulevard) and The Classical Academy High School (975 Stout Road).
-  The Denver chapter's address is just "Denver, CO" until it has one, so its
-  pin is the city centre.
+  Four chapters are at named schools in the Colorado Springs area: Discovery
+  Canyon Campus, The Classical Academy, Rampart, and Air Academy. Their
+  `data-address` is the school's name plus town, which the geocoder resolves to
+  the school itself, so no street address needs to be typed in. The Denver,
+  Cupertino and Vancouver chapters have only a city on file, so their pins are
+  the city centre until they get one. Lookups cover the US and Canada; widen
+  `countrycodes` in the script if a chapter opens elsewhere.
+
+  The static SVG fallback only draws the United States and only carries the
+  Colorado pins. It is the no-JS view, so that is acceptable, but its `<desc>`
+  points readers at the chapter list for the rest.
 
   Scroll-wheel zoom is off until the map is clicked or focused, and off again
   when the pointer leaves, so a wheel passing over the map never hijacks the page

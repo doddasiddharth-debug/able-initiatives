@@ -9,7 +9,9 @@ A card is only looked up again when its address no longer matches
 and unchanged cards cost nothing.
 
 Lookups go to OpenStreetMap's Nominatim first (it knows building outlines, so
-a school lands on the school), then the US Census geocoder as a fallback.
+a school lands on the school), then the US Census geocoder as a fallback for
+US addresses. Lookups are limited to the US and Canada, where the chapters are;
+widen `countrycodes` in nominatim() if one opens elsewhere.
 Neither needs an API key. Nominatim asks for one request per second and an
 identifying User-Agent, both honoured below.
 
@@ -53,7 +55,7 @@ def nominatim(query):
     street or neighbourhood; failing that, the top result is returned as
     imprecise.
     """
-    params = urllib.parse.urlencode({"q": query, "format": "jsonv2", "limit": 5, "countrycodes": "us"})
+    params = urllib.parse.urlencode({"q": query, "format": "jsonv2", "limit": 5, "countrycodes": "us,ca"})
     results = fetch_json("https://nominatim.openstreetmap.org/search?" + params)
     time.sleep(1.1)  # Nominatim's rate limit
     if not results:
