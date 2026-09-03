@@ -37,10 +37,8 @@ python3 -m http.server 8000
   already used elsewhere on the site rather than newly written, so nothing about
   ABLE is claimed here that isn't claimed on the homepage.
 
-  Left in place but now unused: `photos/founder.png`, and the `.founder-layout`
-  / `.founder-portrait` / `.founder-copy` / `.founder-close` rules in
-  `style.css`. They are dead weight unless the story returns — delete both if
-  the removal is permanent.
+  The portrait (`photos/founder.png`) and the `.founder-*` rules that laid it
+  out have since been deleted too; both are in git history alongside the copy.
 - `our-team.html`: Our Team. Executive officers, then branch officers grouped
   under a `.team-subhead` per branch. Every group uses the same `.team-grid` /
   `.team-card` markup, so all four sections match.
@@ -54,10 +52,9 @@ python3 -m http.server 8000
   Cards carry name and role, plus an optional bio. They used to list "Pine
   Creek HS" on every card, which was the same string eighteen times.
 
-  **Bios.** A card may hold a `.team-bio` div of one or more paragraphs. Chelsea
-  Ogden, Advait Jadhav, Angelina Wan and Neerav Shrestha have one, and all four
-  have a headshot to go with it; the rest don't, and a card
-  without one behaves exactly as it always did. Where one exists, `main.js` wraps that card's
+  **Bios.** A card may hold a `.team-bio` div of one or more paragraphs. Most
+  branch officers have one now; the executive officers and a few others don't,
+  and a card without one behaves exactly as it always did. Where one exists, `main.js` wraps that card's
   avatar in a button and the photo opens a dialog showing the bio over an
   enlarged, dimmed copy of the picture. Adding another bio is a markup edit
   alone — paste a `.team-bio` into the card and it is wired on load.
@@ -147,15 +144,20 @@ python3 -m http.server 8000
   If you add a chapter, project its coordinates the same way rather than
   eyeballing a position.
 
-- `preps.html` / `health.html` / `business.html`: One page per branch
+- `preps.html` / `health.html` / `business.html` / `engineering.html`: One page per branch
 - `get-involved.html`: Students, members, and chapter leads
 - `events.html`: Photo gallery (grouped by event)
 - `donate.html`: Donate
 - `404.html`: Not-found page
 
 Shared styles live in `assets/css/style.css`, shared behavior in `assets/js/main.js`.
+Every page pins both with a `?v=N` query string. GitHub Pages caches the two
+files for ten minutes, so **after changing either one, run
+`./bump-asset-version.sh`** — it increments the number in all fourteen pages and
+prints a count so you can see it hit every file.
+
 There is no templating, so **the header and footer are duplicated in every page** —
-a nav change is a thirteen-file edit, and scripted find-and-replace across them
+a nav change is a fourteen-file edit, and scripted find-and-replace across them
 has now gone wrong twice in ways that looked fine at a glance:
 
 - `preps.html`, `health.html` and `business.html` carry `aria-current="page"`
@@ -335,7 +337,9 @@ with no CSS change needed.
 Speaker photos live in `assets/images/speakers/` and should be cropped to roughly
 4:3 around the person. Don't point a card straight at a wide event photo: the tile
 is 4:3 with `object-fit: cover`, so a wide shot where the speaker occupies a third
-of the frame will render as a room, not a portrait.
+of the frame will render as a room, not a portrait. Mark Bittle's card did exactly
+that for a while; `speakers/mark-bittle.jpg` is now a 620×465 crop taken from
+`gallery/business-workshop/3.jpg`, the same treatment as the others.
 
 **Animated stat counters** — *removed.* The homepage stat strip, the "by the
 numbers" donut/progress section, and the cost-comparison chart were all deleted
@@ -382,7 +386,7 @@ claims about a page that should never be indexed. GitHub Pages serves it for
 every missing path, so a self-canonical there points thousands of dead URLs at
 one address.
 
-`sitemap.xml` lists the same twelve pages in nav order, `robots.txt` points at
+`sitemap.xml` lists the same thirteen pages in nav order, `robots.txt` points at
 it, and each `<loc>` is character-for-character the page's canonical. **Adding a
 page means three edits: its own canonical/`og:url` pair, and a `<url>` block in
 the sitemap.** The `lastmod` dates are honest ones from git — leave a page's
@@ -476,8 +480,8 @@ that page and not its neighbour.
       actually do. Correct them if that's off; the same four names also appear
       inside the "Become a member" mailto body.
 - [ ] **Keep the event count current.** The timeline intro on `timeline.html` reads
-      "Five events across all three branches" — update that wording whenever you
-      add a `.timeline-item`, so the two never drift apart.
+      "Five sessions and a brand-new branch since July" — update that wording
+      whenever you add a `.timeline-entry`, so the two never drift apart.
 
 ## Gallery
 
