@@ -39,12 +39,23 @@ def fetch_json(url):
         return json.load(resp)
 
 
+# Nominatim result categories that mean "this exact place", as opposed to a
+# street, a neighbourhood or a town. A school on the map is amenity/school; a
+# matched house number is place/house; an outlined building is building/*.
+PRECISE = {"amenity", "building", "leisure", "office", "shop", "tourism"}
+PRECISE_TYPES = {"house", "school", "college", "university"}
+
+
 def nominatim(query):
+    """Returns (lat, lng, label, precise) for the best match, or None."""
     params = urllib.parse.urlencode({"q": query, "format": "jsonv2", "limit": 1, "countrycodes": "us"})
     results = fetch_json("https://nominatim.openstreetmap.org/search?" + params)
-    if results:
-        return float(results[0]["lat"]), float(results[0]["lon"]), "OpenStreetMap: " + results[0].get("display_name", "")
-    return None
+    time.sleep(1.1)  # Nominatim's rate limit
+    if not results:
+        return None
+    r = results[0]
+    precise = r.get("category") in PRECISE or r.get("type") in PRECISE_TYPES
+    return float(r["lat"]), float(r["lon"]), "OpenStreetMap: " + r.get("display_name", ""), precise
 
 
 def census(address):
@@ -53,27 +64,43 @@ def census(address):
     matches = data.get("result", {}).get("addressMatches", [])
     if matches:
         c = matches[0]["coordinates"]
-        return float(c["y"]), float(c["x"]), "US Census: " + matches[0].get("matchedAddress", "")
+        return float(c["y"]), float(c["x"]), "US Census: " + matches[0].get("matchedAddress", ""), True
     return None
+
+
+def attempt(fn):
+    try:
+        return fn()
+    except (urllib.error.URLError, ValueError, KeyError) as err:
+        print(f"    lookup error: {err}")
+        return None
 
 
 def geocode(address, name):
-    """Try the address, then the chapter name in the same town, then Census."""
-    attempts = [lambda: nominatim(address)]
+    """Best available match for a chapter, most precise first.
+
+    1. The address on OpenStreetMap. Taken as final if it resolves to the
+       building or a matched house number.
+    2. Otherwise the chapter name in the same town, which finds the school
+       itself when the address only resolved to its street.
+    3. The Census geocoder, which matches house numbers along a street.
+    4. Whatever street- or town-level match step 1 produced, as a last resort.
+    """
+    by_address = attempt(lambda: nominatim(address))
+    if by_address and by_address[3]:
+        return by_address
+
     town = ", ".join(address.split(",")[1:]).strip()
     if name and town and name.lower() not in address.lower():
-        attempts.append(lambda: nominatim(f"{name}, {town}"))
-    attempts.append(lambda: census(address))
-    for attempt in attempts:
-        try:
-            hit = attempt()
-        except (urllib.error.URLError, ValueError, KeyError) as err:
-            print(f"    lookup error: {err}")
-            hit = None
-        time.sleep(1.1)  # Nominatim's rate limit
-        if hit:
-            return hit
-    return None
+        by_name = attempt(lambda: nominatim(f"{name}, {town}"))
+        if by_name and by_name[3]:
+            return by_name
+
+    by_census = attempt(lambda: census(address))
+    if by_census:
+        return by_census
+
+    return by_address
 
 
 def set_attr(tag, key, value):
@@ -110,8 +137,8 @@ def main():
             failures.append(f"{name} ({address})")
             print("    no match")
             continue
-        lat, lng, source = hit
-        print(f"    -> {lat:.5f}, {lng:.5f}  [{source}]")
+        lat, lng, source, precise = hit
+        print(f"    -> {lat:.5f}, {lng:.5f}  [{source}]" + ("" if precise else "  (street/town level)"))
         new_tag = set_attr(tag, "data-lat", f"{lat:.5f}")
         new_tag = set_attr(new_tag, "data-lng", f"{lng:.5f}")
         new_tag = set_attr(new_tag, "data-geocoded", address)
