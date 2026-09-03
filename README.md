@@ -164,7 +164,7 @@ python3 -m http.server 8000
   location share a single pin whose popup lists them all.
 
   The Colorado Springs chapters are Discovery Canyon Campus High School (1810
-  Grand Lawn Circle) and The Classical Academy High School (975 Stout Road).
+  North Gate Boulevard) and The Classical Academy High School (975 Stout Road).
   The Denver chapter's address is just "Denver, CO" until it has one, so its
   pin is the city centre.
 
