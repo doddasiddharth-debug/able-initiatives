@@ -139,11 +139,12 @@
 
         <div class="chapter-list">
           <h3>Our chapters</h3>
-          <!-- Each card carries the chapter's coordinates for the map: put the
-               street address in data-address and its latitude/longitude in
-               data-lat / data-lng, and the marker lands there. Cards that share
-               a location share one marker. See the README for how to look up
-               coordinates for a new address. -->
+          <!-- Each card carries the chapter's address and coordinates for the map.
+               Only data-address is meant to be edited by hand: the "Geocode
+               chapter addresses" workflow (.github/workflows/geocode.yml) looks
+               it up and fills data-lat / data-lng, recording the address it used
+               in data-geocoded so it knows when to look again. Cards that share
+               a location share one marker. -->
           <div class="chapter-card business" data-lat="38.9873" data-lng="-104.7746" data-address="1810 Grand Lawn Circle, Colorado Springs, CO 80924">
             <div class="chapter-city">Colorado Springs, CO</div>
             <div class="chapter-name">Discovery Canyon Campus High School</div>

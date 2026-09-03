@@ -141,27 +141,32 @@ python3 -m http.server 8000
   tiles from OpenStreetMap, which needs no API key or billing account. (Google
   Maps would need both; the Leaflet code is the same shape if you ever switch.)
 
-  **The chapter cards are the source of truth.** Each `.chapter-card` carries
-  `data-lat`, `data-lng` and `data-address`, and the script reads those to place
-  the pins — there is no separate list of coordinates to keep in sync. To add a
-  chapter, copy a card and fill in the three attributes. To move one to its real
-  address, change the same three attributes. Cards that share a location share a
-  single pin whose popup lists them all, so two chapters at one school would
-  not hide each other.
+  **The chapter cards are the source of truth, and only the address is edited
+  by hand.** Each `.chapter-card` carries `data-address`, `data-lat`,
+  `data-lng` and `data-geocoded`. To add a chapter, copy a card, set its name,
+  city and `data-address`, and leave the coordinates alone. To move one, change
+  `data-address`. The **Geocode chapter addresses** workflow
+  (`.github/workflows/geocode.yml`, running `scripts/geocode-chapters.py`)
+  looks up every card whose address differs from its `data-geocoded`, writes
+  the exact coordinates in, commits the result, and re-runs the Pages deploy.
 
-  The two Colorado Springs pins are Discovery Canyon Campus High School (1810
+  It runs by itself on any push to `main` that touches `impact.html`, so the
+  usual flow is: edit the address, commit, wait a minute, and the pin lands on
+  the building. It can also be run by hand on any branch from the Actions tab
+  ("Run workflow"). Lookups go to OpenStreetMap's Nominatim, which knows
+  building outlines so a school lands on the school, with the US Census
+  geocoder as a fallback; neither needs a key. If an address can't be found the
+  run fails and names the card — usually a spelling or a missing ZIP.
+
+  Nothing on the site fetches coordinates at page-load time. The workflow
+  bakes them into the HTML, so visitors never wait on a geocoder and the page
+  works with no third-party calls beyond the map tiles. Cards that share a
+  location share a single pin whose popup lists them all.
+
+  The Colorado Springs chapters are Discovery Canyon Campus High School (1810
   Grand Lawn Circle) and The Classical Academy High School (975 Stout Road).
-  Their coordinates were entered from the addresses without a geocoder to
-  hand, so they should be within a few blocks; if a pin looks off, look the
-  address up as described below and paste the exact numbers in. The Denver
-  pin is still the city centre until that chapter has an address.
-
-  To turn an address into coordinates: search for it on
-  [openstreetmap.org](https://www.openstreetmap.org), right-click the spot and
-  choose "Show address", or in Google Maps right-click and click the
-  coordinates at the top of the menu to copy them. Latitude is the first number
-  (about 38–40 for Colorado), longitude the second (about -104 to -105). Four
-  decimal places is plenty.
+  The Denver chapter's address is just "Denver, CO" until it has one, so its
+  pin is the city centre.
 
   Scroll-wheel zoom is off until the map is clicked or focused, and off again
   when the pointer leaves, so a wheel passing over the map never hijacks the page
