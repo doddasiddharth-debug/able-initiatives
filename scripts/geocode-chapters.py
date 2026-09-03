@@ -47,15 +47,37 @@ PRECISE_TYPES = {"house", "school", "college", "university"}
 
 
 def nominatim(query):
-    """Returns (lat, lng, label, precise) for the best match, or None."""
-    params = urllib.parse.urlencode({"q": query, "format": "jsonv2", "limit": 1, "countrycodes": "us"})
+    """Returns (lat, lng, label, precise) for the best match, or None.
+
+    The first precise result wins, since a school often ranks below its own
+    street or neighbourhood; failing that, the top result is returned as
+    imprecise.
+    """
+    params = urllib.parse.urlencode({"q": query, "format": "jsonv2", "limit": 5, "countrycodes": "us"})
     results = fetch_json("https://nominatim.openstreetmap.org/search?" + params)
     time.sleep(1.1)  # Nominatim's rate limit
     if not results:
         return None
-    r = results[0]
-    precise = r.get("category") in PRECISE or r.get("type") in PRECISE_TYPES
-    return float(r["lat"]), float(r["lon"]), "OpenStreetMap: " + r.get("display_name", ""), precise
+
+    def is_precise(r):
+        return r.get("category") in PRECISE or r.get("type") in PRECISE_TYPES
+
+    r = next((r for r in results if is_precise(r)), results[0])
+    return float(r["lat"]), float(r["lon"]), "OpenStreetMap: " + r.get("display_name", ""), is_precise(r)
+
+
+def name_variants(name):
+    """'Discovery Canyon Campus High School' -> itself, 'Discovery Canyon
+    Campus', 'Discovery Canyon': the map often lists a school under its short
+    name, with the level left off."""
+    variants = [name]
+    trimmed = name
+    for suffix in (" High School", " Middle School", " Elementary School", " School", " Campus", " Academy"):
+        if trimmed.lower().endswith(suffix.lower()):
+            trimmed = trimmed[: -len(suffix)].strip()
+            if trimmed and trimmed not in variants:
+                variants.append(trimmed)
+    return variants
 
 
 def census(address):
@@ -92,9 +114,10 @@ def geocode(address, name):
 
     town = ", ".join(address.split(",")[1:]).strip()
     if name and town and name.lower() not in address.lower():
-        by_name = attempt(lambda: nominatim(f"{name}, {town}"))
-        if by_name and by_name[3]:
-            return by_name
+        for variant in name_variants(name):
+            by_name = attempt(lambda: nominatim(f"{variant}, {town}"))
+            if by_name and by_name[3]:
+                return by_name
 
     by_census = attempt(lambda: census(address))
     if by_census:
