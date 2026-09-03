@@ -101,7 +101,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const markers = [];
   const markerFor = new Map();
   groups.forEach((group) => {
-    const branch = branchOf(group.cards[0]);
+    // A pin takes its branch colour only when every chapter there is the same
+    // branch; a school running two branches gets the neutral accent instead of
+    // whichever card happened to come first.
+    const branches = new Set(group.cards.map(branchOf));
+    const branch = branches.size === 1 ? group.cards[0] && branchOf(group.cards[0]) : "";
     const label = group.cards.map((c) => c.querySelector(".chapter-name")?.textContent.trim()).filter(Boolean).join(" and ");
     const icon = L.divIcon({
       className: "chapter-pin-wrap",

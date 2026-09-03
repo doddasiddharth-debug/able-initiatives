@@ -107,8 +107,9 @@ def geocode(address, name):
        building or a matched house number.
     2. Otherwise the chapter name in the same town, which finds the school
        itself when the address only resolved to its street.
-    3. The Census geocoder, which matches house numbers along a street.
-    4. Whatever street- or town-level match step 1 produced, as a last resort.
+    3. The chapter name alone, accepted only for a school/building match.
+    4. The Census geocoder, which matches house numbers along a street.
+    5. Whatever street- or town-level match step 1 produced, as a last resort.
     """
     by_address = attempt(lambda: nominatim(address))
     if by_address and by_address[3]:
@@ -120,6 +121,14 @@ def geocode(address, name):
             by_name = attempt(lambda: nominatim(f"{variant}, {town}"))
             if by_name and by_name[3]:
                 return by_name
+
+    # The name on its own, for a school whose town on the map isn't the one
+    # people write (a campus on a base, say). Only a school/building match is
+    # accepted, since a bare name could otherwise land on a namesake anywhere.
+    if name:
+        by_bare_name = attempt(lambda: nominatim(name))
+        if by_bare_name and by_bare_name[3]:
+            return by_bare_name
 
     by_census = attempt(lambda: census(address))
     if by_census:

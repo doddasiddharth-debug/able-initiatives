@@ -168,7 +168,10 @@ python3 -m http.server 8000
   `data-address` is the school's name plus town, which the geocoder resolves to
   the school itself, so no street address needs to be typed in. The Denver,
   Cupertino and Vancouver chapters have only a city on file, so their pins are
-  the city centre until they get one. Lookups cover the US and Canada; widen
+  the city centre until they get one. A school with chapters in more than one
+  branch (Discovery Canyon and Rampart run Business and Health) gets one pin,
+  coloured with the neutral accent rather than either branch, whose popup
+  lists every chapter there. Lookups cover the US and Canada; widen
   `countrycodes` in the script if a chapter opens elsewhere.
 
   The static SVG fallback only draws the United States and only carries the
