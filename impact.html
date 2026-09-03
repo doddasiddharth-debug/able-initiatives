@@ -22,7 +22,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;1,9..144,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=8">
+<link rel="stylesheet" href="assets/css/style.css?v=9">
 <link rel="stylesheet" href="assets/vendor/leaflet-1.9.3/leaflet.css">
 <noscript><style>
   /* Scroll-reveal hides content until JS marks it in-view. If JS never runs,
@@ -139,19 +139,19 @@
 
         <div class="chapter-list">
           <h3>Our chapters</h3>
-          <!-- Each card carries the chapter's coordinates for the map. data-lat /
-               data-lng are the city centre until a street address is on file;
-               put the address in data-address and its coordinates in the two
-               fields, and the marker moves there. Cards that share a location
-               share one marker. See the README for how to look up coordinates. -->
-          <div class="chapter-card business" data-lat="38.8339" data-lng="-104.8214" data-address="Colorado Springs, CO">
+          <!-- Each card carries the chapter's coordinates for the map: put the
+               street address in data-address and its latitude/longitude in
+               data-lat / data-lng, and the marker lands there. Cards that share
+               a location share one marker. See the README for how to look up
+               coordinates for a new address. -->
+          <div class="chapter-card business" data-lat="38.9873" data-lng="-104.7746" data-address="1810 Grand Lawn Circle, Colorado Springs, CO 80924">
             <div class="chapter-city">Colorado Springs, CO</div>
-            <div class="chapter-name">DCC</div>
+            <div class="chapter-name">Discovery Canyon Campus High School</div>
             <span class="event-branch business">ABLE Business</span>
           </div>
-          <div class="chapter-card business" data-lat="38.8339" data-lng="-104.8214" data-address="Colorado Springs, CO">
+          <div class="chapter-card business" data-lat="39.0125" data-lng="-104.8150" data-address="975 Stout Road, Colorado Springs, CO 80921">
             <div class="chapter-city">Colorado Springs, CO</div>
-            <div class="chapter-name">TCA</div>
+            <div class="chapter-name">The Classical Academy High School</div>
             <span class="event-branch business">ABLE Business</span>
           </div>
           <div class="chapter-card business" data-lat="39.7392" data-lng="-104.9903" data-address="Denver, CO">
@@ -225,8 +225,8 @@
   </div>
 </footer>
 
-<script src="assets/js/main.js?v=8"></script>
+<script src="assets/js/main.js?v=9"></script>
 <script src="assets/vendor/leaflet-1.9.3/leaflet.js"></script>
-<script src="assets/js/chapter-map.js?v=8"></script>
+<script src="assets/js/chapter-map.js?v=9"></script>
 </body>
 </html>

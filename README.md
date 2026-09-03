@@ -146,8 +146,15 @@ python3 -m http.server 8000
   the pins — there is no separate list of coordinates to keep in sync. To add a
   chapter, copy a card and fill in the three attributes. To move one to its real
   address, change the same three attributes. Cards that share a location share a
-  single pin whose popup lists them all, which is why DCC and TCA, both on the
-  Colorado Springs city centre for now, don't hide each other.
+  single pin whose popup lists them all, so two chapters at one school would
+  not hide each other.
+
+  The two Colorado Springs pins are Discovery Canyon Campus High School (1810
+  Grand Lawn Circle) and The Classical Academy High School (975 Stout Road).
+  Their coordinates were entered from the addresses without a geocoder to
+  hand, so they should be within a few blocks; if a pin looks off, look the
+  address up as described below and paste the exact numbers in. The Denver
+  pin is still the city centre until that chapter has an address.
 
   To turn an address into coordinates: search for it on
   [openstreetmap.org](https://www.openstreetmap.org), right-click the spot and

@@ -162,7 +162,8 @@ document.addEventListener("DOMContentLoaded", () => {
     btn.textContent = "Show on map";
     btn.addEventListener("click", () => {
       const target = marker.getLatLng();
-      const zoom = Math.max(map.getZoom(), 12);
+      // Street level: close enough to see the school and the roads around it.
+      const zoom = Math.max(map.getZoom(), 15);
       if (reduceMotion.matches) {
         map.setView(target, zoom);
         marker.openPopup();
