@@ -131,18 +131,48 @@ python3 -m http.server 8000
   The Aug 3 entry has no photo and carries a dashed placeholder tile. Give it a
   real one when the photos arrive.
 
-- `impact.html`: Impact. Chapters, the students reached, and a US map.
+- `impact.html`: Impact. Chapters, the students reached, and a map.
 
-  The map is **inline SVG** — no library, no image file. The outline is a coarse
-  set of real lat/lon border waypoints projected equirectangularly about 39°N,
-  which is why Colorado can be a plain `<rect>`: it is a true lat/lon rectangle
-  (37–41°N, 102–109°W) and lands as an exact rectangle under that projection.
-  Both pins are the cities' real coordinates.
+  **The map is interactive**: pan, pinch, +/- or scroll to zoom, a pin per
+  chapter with a popup, and a "Show on map" button on each chapter card that
+  flies to its pin. It is built by `assets/js/chapter-map.js` on top of
+  [Leaflet](https://leafletjs.com), vendored under
+  `assets/vendor/leaflet-1.9.3/` so it doesn't depend on a CDN staying up, with
+  tiles from OpenStreetMap, which needs no API key or billing account. (Google
+  Maps would need both; the Leaflet code is the same shape if you ever switch.)
 
-  Denver and Colorado Springs are only about 20px apart at national scale, so
-  their labels sit outside the state on leader lines instead of beside the pins.
-  If you add a chapter, project its coordinates the same way rather than
-  eyeballing a position.
+  **The chapter cards are the source of truth.** Each `.chapter-card` carries
+  `data-lat`, `data-lng` and `data-address`, and the script reads those to place
+  the pins — there is no separate list of coordinates to keep in sync. To add a
+  chapter, copy a card and fill in the three attributes. To move one to its real
+  address, change the same three attributes. Cards that share a location share a
+  single pin whose popup lists them all, which is why DCC and TCA, both on the
+  Colorado Springs city centre for now, don't hide each other.
+
+  To turn an address into coordinates: search for it on
+  [openstreetmap.org](https://www.openstreetmap.org), right-click the spot and
+  choose "Show address", or in Google Maps right-click and click the
+  coordinates at the top of the menu to copy them. Latitude is the first number
+  (about 38–40 for Colorado), longitude the second (about -104 to -105). Four
+  decimal places is plenty.
+
+  Scroll-wheel zoom is off until the map is clicked or focused, and off again
+  when the pointer leaves, so a wheel passing over the map never hijacks the page
+  scroll. The +/- buttons always work, as do pinch and keyboard arrows.
+
+  **The inline SVG map is still there, as the fallback.** It is what shows
+  before the script runs and what stays if Leaflet fails to load or an older
+  `chapter-map.js` is cached: the script sets `.is-live` on the container only
+  once it has built the live map, the same gate the timeline spine and the
+  speaker marquee use. The outline is a coarse set of real lat/lon border
+  waypoints projected equirectangularly about 39°N, which is why Colorado can be
+  a plain `<rect>`; its pins are the cities' real coordinates. It doesn't need
+  updating for new chapters unless you want the no-JS view to match.
+
+  Tile usage: OpenStreetMap's public tile servers are fine for a site this
+  size, and the attribution Leaflet shows in the corner is required by their
+  licence — leave it in. If traffic ever grows a lot, switch the tile URL in
+  `chapter-map.js` to a hosted provider.
 
 - `preps.html` / `health.html` / `business.html` / `engineering.html`: One page per branch
 - `get-involved.html`: Students, members, and chapter leads
@@ -151,10 +181,12 @@ python3 -m http.server 8000
 - `404.html`: Not-found page
 
 Shared styles live in `assets/css/style.css`, shared behavior in `assets/js/main.js`.
-Every page pins both with a `?v=N` query string. GitHub Pages caches the two
-files for ten minutes, so **after changing either one, run
-`./bump-asset-version.sh`** — it increments the number in all fourteen pages and
-prints a count so you can see it hit every file.
+Every page pins them (and `chapter-map.js` on the Impact page) with a `?v=N`
+query string. GitHub Pages caches these files for ten minutes, so **after
+changing any of them, run `./bump-asset-version.sh`** — it increments the
+number on every first-party CSS and JS reference in all fourteen pages and
+prints a count so you can see it hit every file. Vendored libraries carry their
+version in the directory name instead and don't need it.
 
 There is no templating, so **the header and footer are duplicated in every page** —
 a nav change is a fourteen-file edit, and scripted find-and-replace across them
