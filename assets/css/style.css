@@ -1761,12 +1761,6 @@ a { color: inherit; text-decoration: none; }
 }
 .impact-figure p { font-size: 15px; color: var(--ink); margin-bottom: 0; }
 
-.impact-map-layout {
-  display: grid;
-  grid-template-columns: 1.55fr 1fr;
-  gap: 44px;
-  align-items: center;
-}
 .impact-map {
   background: var(--paper);
   border: 1px solid var(--line);
@@ -1808,9 +1802,9 @@ a { color: inherit; text-decoration: none; }
 .impact-map.is-live .chapter-map-canvas {
   display: block;
   width: 100%;
-  aspect-ratio: 16 / 11;
-  min-height: 360px;
-  max-height: 560px;
+  aspect-ratio: 16 / 9;
+  min-height: 380px;
+  max-height: 620px;
   border-radius: var(--radius-lg);
   background: var(--bg-alt);
   font-family: var(--font-body);
@@ -1852,7 +1846,8 @@ a { color: inherit; text-decoration: none; }
   color: var(--ink-soft);
 }
 .leaflet-popup-content { margin: 14px 16px; line-height: 1.45; }
-.chapter-popup .event-branch { margin-bottom: 6px; }
+.chapter-popup-badges { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 6px; }
+.chapter-popup .event-branch { margin-bottom: 0; }
 .chapter-popup-name {
   font-family: var(--font-display);
   font-weight: 700;
@@ -1881,6 +1876,33 @@ a { color: inherit; text-decoration: none; }
   color: var(--muted);
   background: rgba(255, 255, 255, 0.8);
 }
+/* Legend, bottom-left of the live map. Swatches are the real pin markup at a
+   smaller size, so the legend can never drift from what the pins look like. */
+.chapter-legend {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  padding: 10px 12px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink);
+  display: grid;
+  gap: 7px;
+}
+.chapter-legend-row { display: flex; align-items: center; gap: 9px; white-space: nowrap; }
+.chapter-pin.chapter-legend-pin {
+  width: 18px;
+  height: 18px;
+  border-width: 2px;
+  box-shadow: 0 1px 3px rgba(20, 20, 58, 0.25);
+  flex: none;
+}
+.chapter-pin.chapter-legend-pin .chapter-pin-core { inset: 4px; }
+@media (max-width: 560px) {
+  .chapter-legend { padding: 8px 10px; font-size: 11.5px; gap: 5px; }
+}
+
 /* The "Show on map" button chapter-map.js adds to each card. Built by the
    script, so it never appears without the map it drives. */
 .chapter-locate {
@@ -1902,14 +1924,53 @@ a { color: inherit; text-decoration: none; }
   .impact-map.is-live .chapter-map-canvas { aspect-ratio: 4 / 3; min-height: 320px; }
 }
 
-.chapter-list h3 { font-size: 19px; margin-bottom: 18px; }
+/* The chapter list, folded under the map. The cards inside are the source of
+   the pins, so they stay in the markup even though the legend on the map is
+   what most visitors will read. */
+.chapter-list {
+  margin-top: 22px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--paper);
+  padding: 0 22px;
+}
+.chapter-list summary {
+  cursor: pointer;
+  padding: 16px 0;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 15.5px;
+  color: var(--ink);
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.chapter-list summary::-webkit-details-marker { display: none; }
+.chapter-list summary::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(-45deg);
+  transition: transform 0.18s ease;
+  margin-left: 2px;
+}
+.chapter-list[open] summary::before { transform: rotate(45deg); }
+.chapter-list[open] summary { border-bottom: 1px solid var(--line); }
+.chapter-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 14px;
+  padding: 18px 0 4px;
+}
 .chapter-card {
   background: var(--paper);
   border: 1px solid var(--line);
   border-left: 4px solid var(--line-strong);
   border-radius: var(--radius-md);
   padding: 18px 20px;
-  margin-bottom: 14px;
 }
 .chapter-card.business { border-left-color: var(--business); }
 .chapter-card.sat { border-left-color: var(--sat); }
@@ -1922,12 +1983,11 @@ a { color: inherit; text-decoration: none; }
   color: var(--ink);
   margin: 2px 0 10px;
 }
-.chapter-note { font-size: 13.5px; color: var(--muted); margin: 20px 0 0; }
+.chapter-note { font-size: 13.5px; color: var(--muted); margin: 4px 0 18px; }
 .chapter-note a { color: var(--accent-dark); font-weight: 600; text-decoration: underline; }
 
 @media (max-width: 900px) {
   .impact-figures { grid-template-columns: 1fr; margin-bottom: 44px; }
-  .impact-map-layout { grid-template-columns: 1fr; gap: 32px; }
   .impact-num { font-size: 38px; }
   /* The leader-line labels are sized for the wide layout; at phone width the
      map is small enough that they overwhelm it. */

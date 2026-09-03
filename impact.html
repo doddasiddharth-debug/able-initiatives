@@ -22,7 +22,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;1,9..144,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=10">
+<link rel="stylesheet" href="assets/css/style.css?v=11">
 <link rel="stylesheet" href="assets/vendor/leaflet-1.9.3/leaflet.css">
 <noscript><style>
   /* Scroll-reveal hides content until JS marks it in-view. If JS never runs,
@@ -102,43 +102,48 @@
         </div>
       </div>
 
-      <div class="impact-map-layout reveal">
-        <!-- The live map is built into .chapter-map-canvas by chapter-map.js from
-             the .chapter-card data attributes beside it. The SVG is what shows
-             until that has happened, and what stays if it never does. -->
-        <div class="impact-map" data-chapter-map>
-          <div class="chapter-map-canvas"></div>
-          <!-- Continental US outline, drawn from a coarse set of real lat/lon
-               border waypoints projected equirectangularly about 39°N. Colorado
-               is a true lat/lon rectangle (37-41°N, 102-109°W), so it lands as
-               an exact rect under that projection rather than a traced shape.
-               Both markers are the cities' real coordinates. -->
-          <svg viewBox="0 0 960 512" role="img" aria-labelledby="map-title map-desc" preserveAspectRatio="xMidYMid meet">
-            <title id="map-title">Map of the United States showing ABLE chapters</title>
-            <desc id="map-desc">ABLE chapters in Colorado Springs and Denver, Colorado. The full list of chapters, including those outside Colorado, follows the map.</desc>
-            <path class="map-land" d="M 0.0,12.9 L 8.4,43.0 L 11.7,58.1 L 10.0,94.7 L 5.0,122.7 L 5.0,150.6 L 5.0,185.1 L 16.7,215.2 L 28.4,236.7 L 38.5,253.9 L 46.8,273.3 L 68.6,301.3 L 83.6,314.2 L 103.7,322.8 L 117.1,335.7 L 127.1,355.1 L 167.2,350.8 L 199.0,368.0 L 229.1,380.9 L 276.0,380.9 L 276.0,370.2 L 304.4,370.2 L 331.1,396.0 L 371.3,413.2 L 399.7,426.1 L 421.5,451.9 L 436.5,486.4 L 456.6,497.1 L 456.6,467.0 L 473.3,443.3 L 500.1,417.5 L 516.8,415.3 L 545.2,417.5 L 577.0,428.3 L 592.1,408.9 L 613.8,400.3 L 627.2,402.4 L 653.9,408.9 L 680.7,415.3 L 702.4,432.6 L 704.1,456.2 L 712.5,486.4 L 727.5,512.2 L 740.9,512.2 L 747.6,479.9 L 739.2,443.3 L 724.2,400.3 L 734.2,365.9 L 749.3,348.6 L 782.7,322.8 L 806.1,309.9 L 822.9,288.4 L 814.5,260.4 L 827.9,236.7 L 831.2,219.5 L 844.6,202.3 L 847.9,182.9 L 876.4,170.0 L 891.4,163.6 L 906.5,154.9 L 901.5,135.6 L 911.5,116.2 L 950.0,96.8 L 960.0,81.8 L 951.6,43.0 L 941.6,34.4 L 928.2,49.5 L 896.4,79.6 L 859.7,86.1 L 836.2,86.1 L 811.1,103.3 L 807.8,116.2 L 764.3,122.7 L 766.0,133.4 L 750.9,144.2 L 702.4,157.1 L 697.4,144.2 L 707.5,129.1 L 705.8,107.6 L 690.7,86.1 L 680.7,68.9 L 670.7,64.6 L 664.0,53.8 L 613.8,47.3 L 573.7,51.6 L 545.2,49.5 L 588.7,21.5 L 540.2,15.1 L 493.4,0.0 L 346.2,0.0 L 128.8,0.0 L 28.4,0.0 L 0.0,12.9 Z"/>
-            <rect class="map-state-active" x="262.6" y="172.2" width="117.1" height="86.1" rx="2"/>
-            <g class="map-pin">
-              <circle cx="329.6" cy="199.3" r="7"/>
-              <circle class="map-pin-core" cx="329.6" cy="199.3" r="2.6"/>
-            </g>
-            <g class="map-pin">
-              <circle cx="332.5" cy="218.8" r="7"/>
-              <circle class="map-pin-core" cx="332.5" cy="218.8" r="2.6"/>
-            </g>
-            <g class="map-label">
-              <line x1="338" y1="199.3" x2="430" y2="176"/>
-              <text x="437" y="180">Denver</text>
-            </g>
-            <g class="map-label">
-              <line x1="341" y1="218.8" x2="430" y2="242"/>
-              <text x="437" y="246">Colorado Springs</text>
-            </g>
-          </svg>
-        </div>
+      <div class="reveal">
+      <!-- The live map is built into .chapter-map-canvas by chapter-map.js from
+           the .chapter-card data attributes beside it. The SVG is what shows
+           until that has happened, and what stays if it never does. -->
+      <div class="impact-map" data-chapter-map>
+        <div class="chapter-map-canvas"></div>
+        <!-- Continental US outline, drawn from a coarse set of real lat/lon
+             border waypoints projected equirectangularly about 39°N. Colorado
+             is a true lat/lon rectangle (37-41°N, 102-109°W), so it lands as
+             an exact rect under that projection rather than a traced shape.
+             Both markers are the cities' real coordinates. -->
+        <svg viewBox="0 0 960 512" role="img" aria-labelledby="map-title map-desc" preserveAspectRatio="xMidYMid meet">
+          <title id="map-title">Map of the United States showing ABLE chapters</title>
+          <desc id="map-desc">ABLE chapters in Colorado Springs and Denver, Colorado. The full list of chapters, including those outside Colorado, follows the map.</desc>
+          <path class="map-land" d="M 0.0,12.9 L 8.4,43.0 L 11.7,58.1 L 10.0,94.7 L 5.0,122.7 L 5.0,150.6 L 5.0,185.1 L 16.7,215.2 L 28.4,236.7 L 38.5,253.9 L 46.8,273.3 L 68.6,301.3 L 83.6,314.2 L 103.7,322.8 L 117.1,335.7 L 127.1,355.1 L 167.2,350.8 L 199.0,368.0 L 229.1,380.9 L 276.0,380.9 L 276.0,370.2 L 304.4,370.2 L 331.1,396.0 L 371.3,413.2 L 399.7,426.1 L 421.5,451.9 L 436.5,486.4 L 456.6,497.1 L 456.6,467.0 L 473.3,443.3 L 500.1,417.5 L 516.8,415.3 L 545.2,417.5 L 577.0,428.3 L 592.1,408.9 L 613.8,400.3 L 627.2,402.4 L 653.9,408.9 L 680.7,415.3 L 702.4,432.6 L 704.1,456.2 L 712.5,486.4 L 727.5,512.2 L 740.9,512.2 L 747.6,479.9 L 739.2,443.3 L 724.2,400.3 L 734.2,365.9 L 749.3,348.6 L 782.7,322.8 L 806.1,309.9 L 822.9,288.4 L 814.5,260.4 L 827.9,236.7 L 831.2,219.5 L 844.6,202.3 L 847.9,182.9 L 876.4,170.0 L 891.4,163.6 L 906.5,154.9 L 901.5,135.6 L 911.5,116.2 L 950.0,96.8 L 960.0,81.8 L 951.6,43.0 L 941.6,34.4 L 928.2,49.5 L 896.4,79.6 L 859.7,86.1 L 836.2,86.1 L 811.1,103.3 L 807.8,116.2 L 764.3,122.7 L 766.0,133.4 L 750.9,144.2 L 702.4,157.1 L 697.4,144.2 L 707.5,129.1 L 705.8,107.6 L 690.7,86.1 L 680.7,68.9 L 670.7,64.6 L 664.0,53.8 L 613.8,47.3 L 573.7,51.6 L 545.2,49.5 L 588.7,21.5 L 540.2,15.1 L 493.4,0.0 L 346.2,0.0 L 128.8,0.0 L 28.4,0.0 L 0.0,12.9 Z"/>
+          <rect class="map-state-active" x="262.6" y="172.2" width="117.1" height="86.1" rx="2"/>
+          <g class="map-pin">
+            <circle cx="329.6" cy="199.3" r="7"/>
+            <circle class="map-pin-core" cx="329.6" cy="199.3" r="2.6"/>
+          </g>
+          <g class="map-pin">
+            <circle cx="332.5" cy="218.8" r="7"/>
+            <circle class="map-pin-core" cx="332.5" cy="218.8" r="2.6"/>
+          </g>
+          <g class="map-label">
+            <line x1="338" y1="199.3" x2="430" y2="176"/>
+            <text x="437" y="180">Denver</text>
+          </g>
+          <g class="map-label">
+            <line x1="341" y1="218.8" x2="430" y2="242"/>
+            <text x="437" y="246">Colorado Springs</text>
+          </g>
+        </svg>
+      </div>
 
-        <div class="chapter-list">
-          <h3>Our chapters</h3>
+      <!-- The cards are what the pins are built from (chapter-map.js) and what
+           the geocode workflow fills in, so they stay in the markup; they are
+           just folded away under the map, where the legend does the explaining.
+           Screen readers and no-script visitors still get the full list. -->
+      <details class="chapter-list">
+        <summary>All chapters as a list</summary>
+        <div class="chapter-grid">
           <!-- Each card carries the chapter's address and coordinates for the map.
                Only data-address is meant to be edited by hand: the "Geocode
                chapter addresses" workflow (.github/workflows/geocode.yml) looks
@@ -190,9 +195,9 @@
             <div class="chapter-name">Vancouver</div>
             <span class="event-branch business">ABLE Business</span>
           </div>
-          <p class="chapter-note">Want ABLE at your school? A chapter runs the same free, member-led branches, and we help with structure and materials. <a href="get-involved.html">Start a chapter</a>.</p>
         </div>
-      </div>
+        <p class="chapter-note">Want ABLE at your school? A chapter runs the same free, member-led branches, and we help with structure and materials. <a href="get-involved.html">Start a chapter</a>.</p>
+      </details>
     </div>
   </section>
 
@@ -256,8 +261,8 @@
   </div>
 </footer>
 
-<script src="assets/js/main.js?v=10"></script>
+<script src="assets/js/main.js?v=11"></script>
 <script src="assets/vendor/leaflet-1.9.3/leaflet.js"></script>
-<script src="assets/js/chapter-map.js?v=10"></script>
+<script src="assets/js/chapter-map.js?v=11"></script>
 </body>
 </html>

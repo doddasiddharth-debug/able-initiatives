@@ -78,38 +78,65 @@ document.addEventListener("DOMContentLoaded", () => {
   const escape = (s) =>
     String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
-  const popupFor = (group) =>
-    group.cards
-      .map((card) => {
-        const name = card.querySelector(".chapter-name");
-        const city = card.querySelector(".chapter-city");
-        const badge = card.querySelector(".event-branch");
-        const address = card.dataset.address || "";
-        const cityText = city ? city.textContent.trim() : "";
-        // The address line is only worth showing once it says more than the city.
-        const where = address && address !== cityText ? address : cityText;
-        return (
+  // One entry per place in the popup: a school running two branches shows its
+  // name and address once, with a badge for each branch.
+  const popupFor = (group) => {
+    const places = [];
+    group.cards.forEach((card) => {
+      const name = card.querySelector(".chapter-name")?.textContent.trim() || "Chapter";
+      const cityText = card.querySelector(".chapter-city")?.textContent.trim() || "";
+      const address = card.dataset.address || "";
+      // The address line is only worth showing once it says more than the city.
+      const where = address && address !== cityText ? address : cityText;
+      const badge = card.querySelector(".event-branch");
+      const badgeHtml = badge ? '<span class="event-branch ' + escape(branchOf(card)) + '">' + escape(badge.textContent.trim()) + "</span>" : "";
+      let place = places.find((p) => p.name === name && p.where === where);
+      if (!place) places.push((place = { name, where, badges: [] }));
+      if (badgeHtml && !place.badges.includes(badgeHtml)) place.badges.push(badgeHtml);
+    });
+    return places
+      .map(
+        (p) =>
           '<div class="chapter-popup">' +
-          (badge ? '<span class="event-branch ' + escape(branchOf(card)) + '">' + escape(badge.textContent.trim()) + "</span>" : "") +
-          '<div class="chapter-popup-name">' + escape(name ? name.textContent.trim() : "Chapter") + "</div>" +
-          '<div class="chapter-popup-where">' + escape(where) + "</div>" +
+          '<div class="chapter-popup-badges">' + p.badges.join("") + "</div>" +
+          '<div class="chapter-popup-name">' + escape(p.name) + "</div>" +
+          '<div class="chapter-popup-where">' + escape(p.where) + "</div>" +
           "</div>"
-        );
-      })
+      )
       .join('<hr class="chapter-popup-rule">');
+  };
+
+  // Branch order and labels for the legend and for the segments of a split pin.
+  const BRANCHES = [
+    ["sat", "ABLE Preps"],
+    ["health", "ABLE Health"],
+    ["business", "ABLE Business"],
+    ["eng", "ABLE Engineering"],
+  ];
+  const branchesOf = (cards) => BRANCHES.map(([b]) => b).filter((b) => cards.some((c) => branchOf(c) === b));
+
+  // One colour for a single branch; a location with several branches gets a pin
+  // divided into equal wedges, one per branch, so two branches read as a
+  // half-and-half pin. Colours come from the same CSS variables the badges use.
+  const pinHtml = (branches, extraClass) => {
+    if (branches.length <= 1) {
+      return '<span class="chapter-pin ' + (branches[0] || "") + ' ' + (extraClass || "") + '"><span class="chapter-pin-core"></span></span>';
+    }
+    const step = 100 / branches.length;
+    const stops = branches.map((b, i) => "var(--" + b + ") " + (i * step) + "% " + ((i + 1) * step) + "%").join(", ");
+    return '<span class="chapter-pin ' + (extraClass || "") + '" style="background: conic-gradient(' + stops + ')"><span class="chapter-pin-core"></span></span>';
+  };
 
   const markers = [];
   const markerFor = new Map();
+  let anySplit = false;
   groups.forEach((group) => {
-    // A pin takes its branch colour only when every chapter there is the same
-    // branch; a school running two branches gets the neutral accent instead of
-    // whichever card happened to come first.
-    const branches = new Set(group.cards.map(branchOf));
-    const branch = branches.size === 1 ? group.cards[0] && branchOf(group.cards[0]) : "";
+    const branches = branchesOf(group.cards);
+    if (branches.length > 1) anySplit = true;
     const label = group.cards.map((c) => c.querySelector(".chapter-name")?.textContent.trim()).filter(Boolean).join(" and ");
     const icon = L.divIcon({
       className: "chapter-pin-wrap",
-      html: '<span class="chapter-pin ' + branch + '"><span class="chapter-pin-core"></span></span>',
+      html: pinHtml(branches),
       iconSize: [28, 28],
       iconAnchor: [14, 14],
       popupAnchor: [0, -14],
@@ -145,6 +172,29 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   new ResetControl({ position: "topright" }).addTo(map);
 
+  // Legend: only the branches actually on the map, plus the split pin if any
+  // location runs more than one.
+  const present = branchesOf(cards);
+  const LegendControl = L.Control.extend({
+    onAdd() {
+      const box = L.DomUtil.create("div", "chapter-legend");
+      box.setAttribute("aria-label", "Map legend");
+      let rows = present
+        .map((b) => {
+          const name = BRANCHES.find(([key]) => key === b)[1];
+          return '<div class="chapter-legend-row">' + pinHtml([b], "chapter-legend-pin") + "<span>" + name + "</span></div>";
+        })
+        .join("");
+      if (anySplit) {
+        rows += '<div class="chapter-legend-row">' + pinHtml(present.slice(0, 2), "chapter-legend-pin") + "<span>More than one branch</span></div>";
+      }
+      box.innerHTML = rows;
+      L.DomEvent.disableClickPropagation(box);
+      return box;
+    },
+  });
+  new LegendControl({ position: "bottomleft" }).addTo(map);
+
   // Wheel zoom only while the map is deliberately in use.
   const wheelOn = () => map.scrollWheelZoom.enable();
   const wheelOff = () => map.scrollWheelZoom.disable();
@@ -175,8 +225,8 @@ document.addEventListener("DOMContentLoaded", () => {
         map.once("moveend", () => marker.openPopup());
         map.flyTo(target, zoom, { duration: 0.9 });
       }
-      // On a phone the map sits above the list, so bring it back into view.
-      if (window.innerWidth <= 900) container.scrollIntoView({ behavior: reduceMotion.matches ? "auto" : "smooth", block: "center" });
+      // The list sits below the map, so bring the map back into view.
+      container.scrollIntoView({ behavior: reduceMotion.matches ? "auto" : "smooth", block: "center" });
     });
     card.appendChild(btn);
   });

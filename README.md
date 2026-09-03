@@ -134,8 +134,12 @@ python3 -m http.server 8000
 - `impact.html`: Impact. Chapters, the students reached, and a map.
 
   **The map is interactive**: pan, pinch, +/- or scroll to zoom, a pin per
-  chapter with a popup, and a "Show on map" button on each chapter card that
-  flies to its pin. It is built by `assets/js/chapter-map.js` on top of
+  location with a popup, and a legend (bottom-left) listing the branches on
+  the map. A location running more than one branch gets a pin split into equal
+  wedges, one per branch, so two branches read as a half-and-half pin; the
+  legend shows that too. The chapter list is folded under the map in a
+  `<details>` ("All chapters as a list"), with a "Show on map" button on each
+  card that flies to its pin. It is built by `assets/js/chapter-map.js` on top of
   [Leaflet](https://leafletjs.com), vendored under
   `assets/vendor/leaflet-1.9.3/` so it doesn't depend on a CDN staying up, with
   tiles from OpenStreetMap, which needs no API key or billing account. (Google
@@ -169,9 +173,8 @@ python3 -m http.server 8000
   the school itself, so no street address needs to be typed in. The Denver,
   Cupertino and Vancouver chapters have only a city on file, so their pins are
   the city centre until they get one. A school with chapters in more than one
-  branch (Discovery Canyon and Rampart run Business and Health) gets one pin,
-  coloured with the neutral accent rather than either branch, whose popup
-  lists every chapter there. Lookups cover the US and Canada; widen
+  branch (Discovery Canyon and Rampart run Business and Health) gets one split
+  pin, and its popup shows the school once with a badge per branch. Lookups cover the US and Canada; widen
   `countrycodes` in the script if a chapter opens elsewhere.
 
   The static SVG fallback only draws the United States and only carries the
