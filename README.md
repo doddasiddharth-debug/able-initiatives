@@ -52,9 +52,9 @@ python3 -m http.server 8000
   Cards carry name and role, plus an optional bio. They used to list "Pine
   Creek HS" on every card, which was the same string eighteen times.
 
-  **Bios.** A card may hold a `.team-bio` div of one or more paragraphs. Most
-  branch officers have one now; the executive officers and a few others don't,
-  and a card without one behaves exactly as it always did. Where one exists, `main.js` wraps that card's
+  **Bios.** A card may hold a `.team-bio` div of one or more paragraphs. The
+  founder and most branch officers have one now; the other executive officers
+  and a few others don't, and a card without one behaves exactly as it always did. Where one exists, `main.js` wraps that card's
   avatar in a button and the photo opens a dialog showing the bio over an
   enlarged, dimmed copy of the picture. Adding another bio is a markup edit
   alone — paste a `.team-bio` into the card and it is wired on load.
