@@ -527,15 +527,18 @@ that page and not its neighbour.
       "Search and social tags" below. `CNAME` already pointed at
       `ableinitiatives.com`, so the domain these were waiting on was in fact
       settled.
-- [ ] **Replace the `mailto:` intake links** on `get-involved.html` with a real form
-      (Google Forms, Tally). `mailto:` often does nothing on school Chromebooks, and a
-      form gives you an actual roster.
+- [x] ~~**Replace the `mailto:` intake links** on `get-involved.html` with a real form~~
+      — done. The three pathway buttons open Google Forms: students
+      `forms.gle/3mq1C2gRZqZVioHN6` (access to resources, webinars and
+      workshops), members `forms.gle/KPtiCPXArUukL6tm6` (Global Youth
+      Ambassador), chapter leads `forms.gle/JyyCF639f93D8igc7` (Global
+      Nonprofit Founder). They open in a new tab. If a form is replaced, the
+      link lives only in that one button.
 - [ ] **Check the rewritten member roles** on `get-involved.html`. The old roles
       ("Subject mentor", "College consultant") described one-on-one work ABLE
       doesn't do. They now read Workshop leader / Resource creator / Speaker
       coordinator / Operations & outreach — a best guess at what volunteers
-      actually do. Correct them if that's off; the same four names also appear
-      inside the "Become a member" mailto body.
+      actually do. Correct them if that's off.
 - [ ] **Keep the event count current.** The timeline intro on `timeline.html` reads
       "Five sessions and a brand-new branch since July" — update that wording
       whenever you add a `.timeline-entry`, so the two never drift apart.
