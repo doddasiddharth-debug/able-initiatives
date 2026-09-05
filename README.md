@@ -53,9 +53,8 @@ python3 -m http.server 8000
   Creek HS" on every card, which was the same string eighteen times.
 
   **Bios.** A card may hold a `.team-bio` div of one or more paragraphs. The
-  executive officers other than the Chief Communications Officer, and most
-  branch officers, have one now; the rest don't, and a card without one behaves
-  exactly as it always did. Where one exists, `main.js` wraps that card's
+  five executive officers and most branch officers have one now; the rest
+  don't, and a card without one behaves exactly as it always did. Where one exists, `main.js` wraps that card's
   avatar in a button and the photo opens a dialog showing the bio over an
   enlarged, dimmed copy of the picture. Adding another bio is a markup edit
   alone — paste a `.team-bio` into the card and it is wired on load.
