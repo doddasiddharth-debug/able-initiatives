@@ -73,9 +73,9 @@
   /* 5.1 on its tint, 6.1 under white. */
   --eng-ink: #0A6B87;
 
-  --radius-sm: 6px;
-  --radius-md: 12px;
-  --radius-lg: 20px;
+  --radius-sm: 5px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
 
   --shadow-sm: 0 1px 2px rgba(20, 20, 58, 0.05), 0 2px 8px rgba(20, 20, 58, 0.05);
   --shadow-md: 0 2px 6px rgba(20, 20, 58, 0.06), 0 12px 32px rgba(20, 20, 58, 0.10);
@@ -83,12 +83,14 @@
 
   --container: 1160px;
 
-  --font-display: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-display: "Archivo", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-body: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  /* Editorial serif for headlines only. Numbers, UI chrome, the wordmark, and
-     fallback initials stay on --font-display: serif numerals and serif UI
-     labels read as decoration, headlines read as a voice. */
-  --font-head: "Fraunces", Georgia, "Times New Roman", serif;
+  /* Headlines are Archivo, set heavy and slightly expanded — the width axis is
+     what gives them their voice, so they read as signage rather than as body
+     copy scaled up. It replaced an editorial serif, which was doing borrowed
+     gravitas for a student organisation that doesn't need any. Numbers, the
+     wordmark and UI chrome share the family so the page has one voice. */
+  --font-head: "Archivo", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
 
@@ -149,21 +151,26 @@ img { max-width: 100%; display: block; }
 h1, h2, h3, h4 {
   font-family: var(--font-head);
   color: var(--ink);
-  line-height: 1.14;
+  line-height: 1.1;
   margin: 0 0 0.5em;
-  /* Fraunces carries more ink per stroke than DM Sans did; 600 at these sizes
-     matches the old 700's weight on the page, and the serif wants far less
-     negative tracking. */
-  font-weight: 600;
-  letter-spacing: -0.01em;
+  /* Heavy and slightly wide. The width comes from Archivo's wdth axis; a
+     browser that ignores font-stretch just renders the normal cut, which is
+     still the right weight and tracking. */
+  font-weight: 800;
+  font-stretch: 105%;
+  letter-spacing: -0.021em;
 }
+h2 { font-size: clamp(26px, 3.1vw, 35px); }
+h3 { font-weight: 700; letter-spacing: -0.015em; }
+h4 { font-weight: 700; letter-spacing: -0.012em; }
 
-/* Gold italic accent inside the hero headline. Plain <em>, so it reads
-   normally without the stylesheet. Scoped to the dark hero: gold text fails
+/* Gold accent inside the hero headline. Plain <em>, so it still reads as
+   emphasis without the stylesheet. Scoped to the dark hero: gold text fails
    contrast on the light page ground, so this must not leak to ordinary
-   headings. */
+   headings. It is not italicised — the italic was a serif mannerism left over
+   from the old headline face. */
 .hero-banner h1 em {
-  font-style: italic;
+  font-style: normal;
   color: var(--gold);
 }
 
@@ -177,28 +184,21 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ---------- utility ---------- */
+/* Kept only where it labels something the heading doesn't already say (which
+   card is for whom, what ABLE is under the hero headline). No rule, no caps,
+   no letterspacing: it is a line of text, not a decoration. */
 .eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 12.5px;
+  display: block;
+  font-family: var(--font-display);
+  font-size: 14px;
   font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
   color: var(--accent-dark);
-  margin-bottom: 14px;
+  margin-bottom: 10px;
 }
-.eyebrow::before {
-  content: "";
-  width: 18px;
-  height: 2px;
-  background: var(--accent);
-  display: inline-block;
-}
-.section { padding: 96px 0; }
+.section { padding: 88px 0; }
 .section-alt { background: var(--bg-alt); }
 .section-tight { padding: 64px 0; }
-.section-head { max-width: 640px; margin-bottom: 56px; }
+.section-head { max-width: 660px; margin-bottom: 48px; }
 .section-head.center { margin-left: auto; margin-right: auto; text-align: center; }
 .lede { font-size: 19px; color: var(--ink-soft); }
 .muted { color: var(--muted); }
@@ -234,7 +234,11 @@ a { color: inherit; text-decoration: none; }
 .btn-outline { background: transparent; color: var(--ink); border-color: var(--line-strong); }
 .btn-outline:hover { border-color: var(--ink); }
 .btn-sm { padding: 9px 18px; font-size: 13.5px; }
-.btn-block { width: 100%; justify-content: center; }
+/* A full-width button has no reason to stay on one line, and the sign-up
+   labels ("Apply as a Global Nonprofit Founder") are longer than a phone-width
+   card's inner width — nowrap was forcing the card itself wider than the
+   screen. */
+.btn-block { width: 100%; justify-content: center; white-space: normal; text-align: center; }
 
 /* ---------- nav ---------- */
 .site-header {
@@ -577,7 +581,6 @@ a { color: inherit; text-decoration: none; }
   text-wrap: balance;
 }
 .hero-banner .eyebrow { color: var(--gold); }
-.hero-banner .eyebrow::before { background: var(--gold); }
 /* Spells out the acronym, with the initials picked out in gold so the letters
    read as A.B.L.E. without needing to write the dotted form separately. It is
    plain text, so a screen reader still reads the phrase normally. */
@@ -591,8 +594,7 @@ a { color: inherit; text-decoration: none; }
 }
 .hero-acronym .ini {
   color: var(--gold);
-  font-weight: 800;
-  font-size: 1.18em;
+  font-weight: 700;
 }
 .hero-banner .lede { color: #E6E8F5; margin-bottom: 32px; }
 .hero-banner .hero-note { color: #B9BEDC; }
@@ -667,34 +669,38 @@ a { color: inherit; text-decoration: none; }
 
 .card {
   background: var(--paper);
-  border: 1px solid var(--line);
+  border: 1px solid var(--line-strong);
   border-radius: var(--radius-md);
-  padding: 28px;
-  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  padding: 26px;
+  transition: border-color 0.18s ease;
 }
-.card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: var(--line-strong); }
+.card:hover { border-color: var(--ink); }
 
 /* program card */
+/* Flat panels. The branch used to be signalled by a coloured bar across the
+   top of a rounded, lifting card — the branch cue is worth keeping, the bar
+   is not, so the colour moved to the tag beside the branch logo. */
 .program-card {
   background: var(--paper);
-  border: 1px solid var(--line);
-  border-top: 4px solid var(--accent);
+  border: 1px solid var(--line-strong);
   border-radius: var(--radius-md);
-  padding: 30px;
+  padding: 28px;
   display: flex;
   flex-direction: column;
   gap: 16px;
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  transition: border-color 0.18s ease;
 }
-.program-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
-.program-card.sat { border-top-color: var(--sat); }
-.program-card.health { border-top-color: var(--health); }
-.program-card.business { border-top-color: var(--business); }
-.program-card.eng { border-top-color: var(--eng); }
+.program-card:hover { border-color: var(--ink); }
 
 .program-head { display: flex; align-items: center; gap: 14px; }
 .program-name { font-size: 19px; margin: 0; }
-.program-tag { font-size: 12.5px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+/* Carries the branch colour now that the card's top rail is gone. The -ink
+   values are the ones that clear contrast on the page ground. */
+.program-tag { font-size: 13px; font-weight: 600; color: var(--muted); }
+.program-card.sat .program-tag { color: var(--sat-ink); }
+.program-card.health .program-tag { color: var(--health-ink); }
+.program-card.business .program-tag { color: var(--business-ink); }
+.program-card.eng .program-tag { color: var(--eng-ink); }
 
 /* logo slot (upload area for branch logos) */
 .logo-slot {
@@ -839,21 +845,18 @@ a { color: inherit; text-decoration: none; }
 /* ---------- steps / how it works ---------- */
 .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; counter-reset: step; }
 .step { position: relative; padding-top: 8px; }
+/* The order is real information, so the numbers stay — but as numbers, not as
+   outlined circles holding "01". */
 .step-num {
-  font-family: var(--font-display);
+  font-family: var(--font-head);
   font-size: 15px;
-  font-weight: 700;
-  color: var(--accent);
-  border: 1.5px solid var(--accent);
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 18px;
+  font-weight: 800;
+  font-stretch: 105%;
+  color: var(--accent-dark);
+  margin-bottom: 10px;
 }
-.step h3 { font-size: 18px; margin-bottom: 8px; }
+.step { border-top: 2px solid var(--line-strong); padding-top: 18px; }
+.step h3 { font-size: 19px; margin-bottom: 8px; }
 .step p { font-size: 14.5px; margin-bottom: 0; }
 @media (max-width: 860px) { .steps { grid-template-columns: 1fr; } }
 
@@ -1128,24 +1131,28 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ---------- values ---------- */
-.value-card { display: flex; flex-direction: column; gap: 10px; }
-.value-icon {
-  width: 42px; height: 42px;
-  border-radius: 10px;
-  background: var(--accent-tint);
-  color: var(--accent-dark);
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-display);
-  font-weight: 700;
+/* The three principles. These used to sit in white cards behind little tinted
+   squares holding invented monograms ("$0", "ALL", "SL") standing in for
+   icons, which told the reader nothing the heading didn't. Now the heading
+   carries it, over a rule. */
+.value-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 18px;
+  border-top: 2px solid var(--line-strong);
 }
+.value-card h3 { font-size: 19px; margin: 0; }
+.value-card p { margin: 0; font-size: 15px; }
 
 /* ---------- pathway cards (get-involved) ---------- */
 .pathway-card {
   background: var(--paper);
-  border: 1px solid var(--line);
+  border: 1px solid var(--line-strong);
   border-radius: var(--radius-lg);
-  padding: 36px;
+  padding: 32px;
 }
+@media (max-width: 480px) { .pathway-card { padding: 24px 20px; } }
 .pathway-card h3 { font-size: 22px; }
 .role-list { list-style: none; margin: 20px 0 0; padding: 0; display: grid; gap: 14px; }
 .role-list li {
@@ -1171,7 +1178,6 @@ a { color: inherit; text-decoration: none; }
 /* The eyebrow sits on the dark panel, so it needs the on-panel scale rather
    than the page-background accent, which would nearly disappear here. */
 .contact-panel .eyebrow { color: var(--on-panel-soft); }
-.contact-panel .eyebrow::before { background: var(--on-panel-soft); }
 .contact-panel a.btn-accent { margin-top: 10px; }
 .contact-panel .muted { color: var(--on-panel-soft); }
 
@@ -1274,37 +1280,24 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ---------- testimonial ---------- */
-/* One quote, set like a pull quote rather than a card: the serif voice at
-   reading size, an oversized gold quote mark as the only ornament, and the
-   attribution back in the UI face. Centered, since it sits alone between two
-   full-width sections. */
+/* One quote, set as a pull quote rather than a card, with the attribution in
+   the UI face beneath it. */
+/* A pull quote, set left with a rule down its edge. The previous version was
+   centred italic serif under a 110px decorative quote mark, which is ornament
+   doing the job the words should do. */
 .testimonial {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 0 8px;
-  text-align: center;
+  max-width: 760px;
+  padding-left: 26px;
+  border-left: 3px solid var(--gold);
 }
-.testimonial blockquote {
-  position: relative;
-  margin: 0 0 26px;
-  padding-top: 46px;
-}
-.testimonial blockquote::before {
-  content: "\201C";
-  position: absolute;
-  top: -18px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-family: var(--font-head);
-  font-size: 110px;
-  line-height: 1;
-  color: var(--gold);
-}
+.testimonial blockquote { margin: 0 0 20px; }
 .testimonial blockquote p {
   font-family: var(--font-head);
-  font-size: clamp(19px, 2.4vw, 24px);
-  font-style: italic;
-  line-height: 1.55;
+  font-size: clamp(20px, 2.5vw, 27px);
+  font-weight: 600;
+  font-stretch: 103%;
+  letter-spacing: -0.018em;
+  line-height: 1.32;
   color: var(--ink);
   margin: 0;
   text-wrap: pretty;
@@ -1394,36 +1387,34 @@ a { color: inherit; text-decoration: none; }
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
 }
+/* Figures, not cards. Boxing every number in its own rounded panel made three
+   unrelated statistics look like product tiers; a rule and a column of text is
+   what a figure actually wants. */
 .world-stat {
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  padding: 30px 26px;
-  box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
+  padding-top: 20px;
+  border-top: 3px solid var(--ink);
 }
+/* Solid ink. These were gradient-filled via background-clip, which is
+   decoration a statistic does not need and which fails awkwardly wherever the
+   clip is unsupported. */
 .world-num {
-  font-family: var(--font-display);
-  font-size: 46px;
-  font-weight: 700;
-  line-height: 1;
-  letter-spacing: -0.03em;
-  /* Gradient ink. The solid colour stays as the paint fallback: browsers that
-     skip background-clip render it untouched. */
+  font-family: var(--font-head);
+  font-size: clamp(42px, 5vw, 58px);
+  font-weight: 800;
+  font-stretch: 105%;
+  line-height: 0.95;
+  letter-spacing: -0.035em;
   color: var(--accent-dark);
-  background: linear-gradient(115deg, var(--accent) 10%, var(--accent-dark) 55%, #33339A 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  width: fit-content;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 .world-stat p {
-  font-size: 15px;
+  font-size: 15.5px;
   color: var(--ink);
-  margin-bottom: 16px;
+  margin-bottom: 14px;
   flex: 1;
+  max-width: 34ch;
 }
 /* Sourcing every figure is the whole point of this section: an uncited stat on
    a nonprofit site is a liability, not a credential. */
@@ -1739,27 +1730,20 @@ a { color: inherit; text-decoration: none; }
   margin-bottom: 64px;
 }
 .impact-figure {
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  padding: 30px 26px;
-  box-shadow: var(--shadow-sm);
+  padding-top: 20px;
+  border-top: 3px solid var(--ink);
 }
 .impact-num {
-  font-family: var(--font-display);
-  font-size: 46px;
-  font-weight: 700;
-  line-height: 1;
-  letter-spacing: -0.03em;
+  font-family: var(--font-head);
+  font-size: clamp(42px, 5vw, 58px);
+  font-weight: 800;
+  font-stretch: 105%;
+  line-height: 0.95;
+  letter-spacing: -0.035em;
   color: var(--accent-dark);
-  background: linear-gradient(115deg, var(--accent) 10%, var(--accent-dark) 55%, #33339A 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  width: fit-content;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
-.impact-figure p { font-size: 15px; color: var(--ink); margin-bottom: 0; }
+.impact-figure p { font-size: 15.5px; color: var(--ink); margin-bottom: 0; max-width: 34ch; }
 
 .impact-map {
   background: var(--paper);

@@ -327,6 +327,35 @@ aspect ratio means updating the `width`/`height` attributes on the banner `<img>
 in `index.html` (currently 784×725), which is what reserves the right space while
 the image loads.
 
+### Type and the house style
+
+Headlines are **Archivo**, weight 800, slightly expanded via its width axis
+(`font-stretch: 105%`); body copy is **DM Sans**. Both load from Google Fonts.
+The headline face was an editorial serif (Fraunces) set in 600 with a gold
+*italic* phrase in the hero. That pairing, and a set of habits that came with
+it, made the site read as generated rather than designed, so the following are
+deliberate and worth not reintroducing:
+
+- **No eyebrow labels above headings.** Every section on every page used to open
+  with a short rule followed by letterspaced uppercase ("WHAT WE DO", "HOW IT
+  WORKS") — 43 of them across 14 pages, nearly all just restating the heading
+  underneath. Four survive, on Get Involved and in the hero, where they label
+  something the heading genuinely doesn't say. A heading that needs a label
+  above it usually needs a better heading.
+- **Numbers are solid ink**, not `background-clip: text` gradients, and the
+  statistic blocks are figures under a rule rather than cards.
+- **No invented monogram icons.** The three principles on Our Story sat behind
+  tinted squares reading "$0", "ALL" and "SL"; the words already said it.
+- **The steps keep their numbers** — the order is real — but as plain numerals,
+  not "01" in an outlined circle.
+- **Not everything is a card.** Border, fill, radius and shadow mean "separate
+  object"; spend them where that's true. The branch cards lost their coloured
+  top rail (the branch colour moved to the tag beside the logo, which is where
+  the reader looks anyway) and the hover lift.
+- **Vary the copy.** "No fee, no application, nothing to qualify for" and its
+  variants appeared eight times in slightly different orders. Say the specific
+  true thing instead.
+
 ### Palette
 The site runs a **light indigo palette** with gold as the branch accent, and the
 whole thing lives in CSS variables at the top of `style.css` — changing the scheme
@@ -363,8 +392,8 @@ scrim, with the headline over it. Two things to preserve if you swap the photo:
   overlay either washes out the image or leaves text unreadable over bright areas.
 - **Re-check contrast after changing the photo.** Contrast here depends on the
   photo's pixels, not on CSS values, so it has to be measured against the render.
-  Current worst-case behind the text: headline 9.7:1, gold eyebrow 6.1:1, lede
-  10.0:1. The eyebrow is the tightest — when the separate logo banner was removed
+  Current worst-case behind the text: headline 9.7:1, gold label 6.1:1, lede
+  10.0:1. That gold line is the tightest — when the separate logo banner was removed
   and the hero moved up under the nav, that line landed over the ceiling lights
   and dropped to 3.7:1, which is why the scrim's top stop is 0.72 rather than the
   0.55 it started at. Swap in a brighter photo and it needs raising again.
