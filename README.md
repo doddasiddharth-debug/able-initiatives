@@ -52,9 +52,9 @@ python3 -m http.server 8000
   Cards carry name and role, plus an optional bio. They used to list "Pine
   Creek HS" on every card, which was the same string eighteen times.
 
-  **Bios.** A card may hold a `.team-bio` div of one or more paragraphs. Most
-  branch officers have one now; the executive officers and a few others don't,
-  and a card without one behaves exactly as it always did. Where one exists, `main.js` wraps that card's
+  **Bios.** A card may hold a `.team-bio` div of one or more paragraphs. The
+  five executive officers and most branch officers have one now; the rest
+  don't, and a card without one behaves exactly as it always did. Where one exists, `main.js` wraps that card's
   avatar in a button and the photo opens a dialog showing the bio over an
   enlarged, dimmed copy of the picture. Adding another bio is a markup edit
   alone — paste a `.team-bio` into the card and it is wired on load.
@@ -131,18 +131,73 @@ python3 -m http.server 8000
   The Aug 3 entry has no photo and carries a dashed placeholder tile. Give it a
   real one when the photos arrive.
 
-- `impact.html`: Impact. Chapters, the students reached, and a US map.
+- `impact.html`: Impact. Chapters, the students reached, and a map.
 
-  The map is **inline SVG** — no library, no image file. The outline is a coarse
-  set of real lat/lon border waypoints projected equirectangularly about 39°N,
-  which is why Colorado can be a plain `<rect>`: it is a true lat/lon rectangle
-  (37–41°N, 102–109°W) and lands as an exact rectangle under that projection.
-  Both pins are the cities' real coordinates.
+  **The map is interactive**: pan, pinch, +/- or scroll to zoom, a pin per
+  location with a popup, and a legend (bottom-left) listing the branches on
+  the map. A location running more than one branch gets a pin split into equal
+  wedges, one per branch, so two branches read as a half-and-half pin; the
+  legend shows that too. The chapter list is folded under the map in a
+  `<details>` ("All chapters as a list"), with a "Show on map" button on each
+  card that flies to its pin. It is built by `assets/js/chapter-map.js` on top of
+  [Leaflet](https://leafletjs.com), vendored under
+  `assets/vendor/leaflet-1.9.3/` so it doesn't depend on a CDN staying up, with
+  tiles from OpenStreetMap, which needs no API key or billing account. (Google
+  Maps would need both; the Leaflet code is the same shape if you ever switch.)
 
-  Denver and Colorado Springs are only about 20px apart at national scale, so
-  their labels sit outside the state on leader lines instead of beside the pins.
-  If you add a chapter, project its coordinates the same way rather than
-  eyeballing a position.
+  **The chapter cards are the source of truth, and only the address is edited
+  by hand.** Each `.chapter-card` carries `data-address`, `data-lat`,
+  `data-lng` and `data-geocoded`. To add a chapter, copy a card, set its name,
+  city and `data-address`, and leave the coordinates alone. To move one, change
+  `data-address`. The **Geocode chapter addresses** workflow
+  (`.github/workflows/geocode.yml`, running `scripts/geocode-chapters.py`)
+  looks up every card whose address differs from its `data-geocoded`, writes
+  the exact coordinates in, commits the result, and re-runs the Pages deploy.
+
+  It runs by itself on any push to `main` that touches `impact.html`, so the
+  usual flow is: edit the address, commit, wait a minute, and the pin lands on
+  the building. It can also be run by hand on any branch from the Actions tab
+  ("Run workflow"). Lookups go to OpenStreetMap's Nominatim, which knows
+  building outlines so a school lands on the school, with the US Census
+  geocoder as a fallback; neither needs a key. If an address can't be found the
+  run fails and names the card — usually a spelling or a missing ZIP.
+
+  Nothing on the site fetches coordinates at page-load time. The workflow
+  bakes them into the HTML, so visitors never wait on a geocoder and the page
+  works with no third-party calls beyond the map tiles. Cards that share a
+  location share a single pin whose popup lists them all.
+
+  Four chapters are at named schools in the Colorado Springs area: Discovery
+  Canyon Campus, The Classical Academy, Rampart, and Air Academy. Their
+  `data-address` is the school's name plus town, which the geocoder resolves to
+  the school itself, so no street address needs to be typed in. The Denver,
+  Cupertino and Vancouver chapters have only a city on file, so their pins are
+  the city centre until they get one. A school with chapters in more than one
+  branch (Discovery Canyon and Rampart run Business and Health) gets one split
+  pin, and its popup shows the school once with a badge per branch. Lookups cover the US and Canada; widen
+  `countrycodes` in the script if a chapter opens elsewhere.
+
+  The static SVG fallback only draws the United States and only carries the
+  Colorado pins. It is the no-JS view, so that is acceptable, but its `<desc>`
+  points readers at the chapter list for the rest.
+
+  Scroll-wheel zoom is off until the map is clicked or focused, and off again
+  when the pointer leaves, so a wheel passing over the map never hijacks the page
+  scroll. The +/- buttons always work, as do pinch and keyboard arrows.
+
+  **The inline SVG map is still there, as the fallback.** It is what shows
+  before the script runs and what stays if Leaflet fails to load or an older
+  `chapter-map.js` is cached: the script sets `.is-live` on the container only
+  once it has built the live map, the same gate the timeline spine and the
+  speaker marquee use. The outline is a coarse set of real lat/lon border
+  waypoints projected equirectangularly about 39°N, which is why Colorado can be
+  a plain `<rect>`; its pins are the cities' real coordinates. It doesn't need
+  updating for new chapters unless you want the no-JS view to match.
+
+  Tile usage: OpenStreetMap's public tile servers are fine for a site this
+  size, and the attribution Leaflet shows in the corner is required by their
+  licence — leave it in. If traffic ever grows a lot, switch the tile URL in
+  `chapter-map.js` to a hosted provider.
 
 - `preps.html` / `health.html` / `business.html` / `engineering.html`: One page per branch
 - `get-involved.html`: Students, members, and chapter leads
@@ -151,10 +206,12 @@ python3 -m http.server 8000
 - `404.html`: Not-found page
 
 Shared styles live in `assets/css/style.css`, shared behavior in `assets/js/main.js`.
-Every page pins both with a `?v=N` query string. GitHub Pages caches the two
-files for ten minutes, so **after changing either one, run
-`./bump-asset-version.sh`** — it increments the number in all fourteen pages and
-prints a count so you can see it hit every file.
+Every page pins them (and `chapter-map.js` on the Impact page) with a `?v=N`
+query string. GitHub Pages caches these files for ten minutes, so **after
+changing any of them, run `./bump-asset-version.sh`** — it increments the
+number on every first-party CSS and JS reference in all fourteen pages and
+prints a count so you can see it hit every file. Vendored libraries carry their
+version in the directory name instead and don't need it.
 
 There is no templating, so **the header and footer are duplicated in every page** —
 a nav change is a fourteen-file edit, and scripted find-and-replace across them
@@ -270,6 +327,35 @@ aspect ratio means updating the `width`/`height` attributes on the banner `<img>
 in `index.html` (currently 784×725), which is what reserves the right space while
 the image loads.
 
+### Type and the house style
+
+Headlines are **Archivo**, weight 800, slightly expanded via its width axis
+(`font-stretch: 105%`); body copy is **DM Sans**. Both load from Google Fonts.
+The headline face was an editorial serif (Fraunces) set in 600 with a gold
+*italic* phrase in the hero. That pairing, and a set of habits that came with
+it, made the site read as generated rather than designed, so the following are
+deliberate and worth not reintroducing:
+
+- **No eyebrow labels above headings.** Every section on every page used to open
+  with a short rule followed by letterspaced uppercase ("WHAT WE DO", "HOW IT
+  WORKS") — 43 of them across 14 pages, nearly all just restating the heading
+  underneath. Four survive, on Get Involved and in the hero, where they label
+  something the heading genuinely doesn't say. A heading that needs a label
+  above it usually needs a better heading.
+- **Numbers are solid ink**, not `background-clip: text` gradients, and the
+  statistic blocks are figures under a rule rather than cards.
+- **No invented monogram icons.** The three principles on Our Story sat behind
+  tinted squares reading "$0", "ALL" and "SL"; the words already said it.
+- **The steps keep their numbers** — the order is real — but as plain numerals,
+  not "01" in an outlined circle.
+- **Not everything is a card.** Border, fill, radius and shadow mean "separate
+  object"; spend them where that's true. The branch cards lost their coloured
+  top rail (the branch colour moved to the tag beside the logo, which is where
+  the reader looks anyway) and the hover lift.
+- **Vary the copy.** "No fee, no application, nothing to qualify for" and its
+  variants appeared eight times in slightly different orders. Say the specific
+  true thing instead.
+
 ### Palette
 The site runs a **light indigo palette** with gold as the branch accent, and the
 whole thing lives in CSS variables at the top of `style.css` — changing the scheme
@@ -306,8 +392,8 @@ scrim, with the headline over it. Two things to preserve if you swap the photo:
   overlay either washes out the image or leaves text unreadable over bright areas.
 - **Re-check contrast after changing the photo.** Contrast here depends on the
   photo's pixels, not on CSS values, so it has to be measured against the render.
-  Current worst-case behind the text: headline 9.7:1, gold eyebrow 6.1:1, lede
-  10.0:1. The eyebrow is the tightest — when the separate logo banner was removed
+  Current worst-case behind the text: headline 9.7:1, gold label 6.1:1, lede
+  10.0:1. That gold line is the tightest — when the separate logo banner was removed
   and the hero moved up under the nav, that line landed over the ceiling lights
   and dropped to 3.7:1, which is why the scrim's top stop is 0.72 rather than the
   0.55 it started at. Swap in a brighter photo and it needs raising again.
@@ -470,15 +556,18 @@ that page and not its neighbour.
       "Search and social tags" below. `CNAME` already pointed at
       `ableinitiatives.com`, so the domain these were waiting on was in fact
       settled.
-- [ ] **Replace the `mailto:` intake links** on `get-involved.html` with a real form
-      (Google Forms, Tally). `mailto:` often does nothing on school Chromebooks, and a
-      form gives you an actual roster.
+- [x] ~~**Replace the `mailto:` intake links** on `get-involved.html` with a real form~~
+      — done. The three pathway buttons open Google Forms: students
+      `forms.gle/3mq1C2gRZqZVioHN6` (access to resources, webinars and
+      workshops), members `forms.gle/KPtiCPXArUukL6tm6` (Global Youth
+      Ambassador), chapter leads `forms.gle/JyyCF639f93D8igc7` (Global
+      Nonprofit Founder). They open in a new tab. If a form is replaced, the
+      link lives only in that one button.
 - [ ] **Check the rewritten member roles** on `get-involved.html`. The old roles
       ("Subject mentor", "College consultant") described one-on-one work ABLE
       doesn't do. They now read Workshop leader / Resource creator / Speaker
       coordinator / Operations & outreach — a best guess at what volunteers
-      actually do. Correct them if that's off; the same four names also appear
-      inside the "Become a member" mailto body.
+      actually do. Correct them if that's off.
 - [ ] **Keep the event count current.** The timeline intro on `timeline.html` reads
       "Five sessions and a brand-new branch since July" — update that wording
       whenever you add a `.timeline-entry`, so the two never drift apart.

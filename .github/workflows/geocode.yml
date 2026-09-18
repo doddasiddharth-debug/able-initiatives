@@ -1,0 +1,54 @@
+# Places every chapter pin on impact.html at its exact address.
+#
+# scripts/geocode-chapters.py looks up each chapter card's data-address and
+# writes the coordinates back into the page. It only touches cards whose
+# address has changed since they were last looked up, so this is cheap to run.
+#
+# Runs on its own whenever a push to main changes impact.html, and can be run
+# by hand from the Actions tab (workflow_dispatch) on any branch. If it changes
+# the page it commits the result and re-runs the Pages deploy, since a commit
+# made with the workflow token doesn't trigger other workflows by itself.
+name: Geocode chapter addresses
+
+on:
+  push:
+    branches: ["main"]
+    paths: ["impact.html", "scripts/geocode-chapters.py"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: geocode-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  geocode:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Look up chapter addresses
+        run: python3 scripts/geocode-chapters.py
+
+      - name: Commit the coordinates and redeploy
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if git diff --quiet -- impact.html; then
+            echo "No coordinates changed; nothing to commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add impact.html
+          git commit -m "Geocode chapter addresses"
+          git push
+          # The deploy workflow only listens for pushes to main.
+          if [ "$GITHUB_REF_NAME" = "main" ]; then
+            gh workflow run static.yml --ref main
+          fi
