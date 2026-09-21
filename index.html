@@ -8,7 +8,7 @@
 <link rel="canonical" href="https://ableinitiatives.com/">
 <link rel="icon" href="assets/favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-<meta name="theme-color" content="#2B2BC4">
+<meta name="theme-color" content="#2A2AB4">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="ABLE Initiatives">
 <meta property="og:title" content="ABLE Initiatives · Free educational resources for every student">
@@ -21,8 +21,8 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=14">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Libre+Baskerville:ital@1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css?v=15">
 <noscript><style>
   /* Scroll-reveal hides content until JS marks it in-view. If JS never runs,
      the page would render blank, so opt out of the animation entirely. */
@@ -57,11 +57,10 @@
       </li>
       <li><a href="get-involved.html">Get Involved</a></li>
       <li><a href="events.html">Gallery</a></li>
-      <li><a href="donate.html">Donate</a></li>
+      <li class="nav-donate"><a href="donate.html">Donate</a></li>
     </ul>
     <div class="nav-actions">
-      <a href="get-involved.html" class="btn btn-outline btn-sm">Become a Member</a>
-      <a href="donate.html" class="btn btn-accent btn-sm">Donate</a>
+      <a href="donate.html" class="btn btn-sm">Donate</a>
       <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><span></span></button>
     </div>
   </nav>
@@ -69,25 +68,51 @@
 
 <main id="main-content">
 
-  <!-- HERO BANNER -->
+  <!-- HERO: full-bleed photo under a blue tint -->
   <section class="hero-banner">
     <img class="hero-banner-img" src="assets/images/photos/hero.jpg" width="1280" height="960"
          loading="eager" fetchpriority="high" decoding="async"
          alt="Students seated in a full room listening to a speaker at an ABLE workshop">
     <div class="container hero-banner-content">
-      <p class="eyebrow">Student-run · 501(c)(3) nonprofit</p>
+      <p class="eyebrow">Student-run nonprofit</p>
       <h1>Where you start shouldn't decide <em>how far you get.</em></h1>
       <p class="hero-acronym"><span class="ini">A</span>dvancing <span class="ini">B</span>etter <span class="ini">L</span>earning <span class="ini">E</span>mpowerment</p>
-      <p class="lede">ABLE Initiatives makes educational resources free and open to every student. We run workshops, webinars, and guest speaker sessions across college prep, health, business, and engineering, so that learning doesn't come down to what your family can afford.</p>
+      <p class="lede">Free workshops, webinars, and guest speakers in college prep, health, business, and engineering — run by students, open to any student.</p>
       <div class="hero-actions">
+        <a href="get-involved.html" class="btn btn-outline">Become a Member</a>
         <a href="programs.html" class="btn btn-on-image">Explore our programs</a>
-        <a href="get-involved.html" class="btn btn-outline btn-on-dark">Become a Member</a>
       </div>
-      <p class="hero-note">Every program is free, and always has been.</p>
+    </div>
+    <p class="hero-fineprint">ABLE Initiatives is a student-run 501(c)(3) nonprofit. Every program is free, and always has been.</p>
+  </section>
+
+  <!-- LATEST: three items from the timeline, text only, on blue -->
+  <section class="section-brand section-tight">
+    <div class="container">
+      <div class="story-strip reveal">
+        <a class="story-card" href="timeline.html">
+          <span class="eyebrow">Launch</span>
+          <h3>The SAT prep course goes live</h3>
+          <time class="story-date" datetime="2026-09-13">September 13, 2026</time>
+        </a>
+        <a class="story-card" href="engineering.html">
+          <span class="eyebrow">New branch</span>
+          <h3>ABLE Engineering launches</h3>
+          <time class="story-date" datetime="2026-08-20">August 20, 2026</time>
+        </a>
+        <a class="story-card" href="timeline.html">
+          <span class="eyebrow">Event</span>
+          <h3>Exploring Business Majors Webinar</h3>
+          <time class="story-date" datetime="2026-08-15">August 15, 2026</time>
+        </a>
+      </div>
     </div>
   </section>
 
-  <!-- THE PROBLEM: GLOBAL EDUCATION ACCESS -->
+  <!-- PHOTO BREAK: a full-width photograph, nothing written on it -->
+  <img class="photo-break" src="assets/images/gallery/business-workshop/7.jpg" width="1280" height="960" loading="lazy" decoding="async" alt="Students and volunteers at the ABLE Business workshop">
+
+  <!-- WHY: the problem, then a pull quote beside a photo -->
   <section class="section">
     <div class="container">
       <div class="section-head reveal">
@@ -112,162 +137,144 @@
         </div>
       </div>
       <p class="world-note reveal">The gap isn't only overseas. In the classrooms we sit in, the students who get furthest are often the ones who happened to have access to a study plan, a practice test, or someone who had already done it. Nearly everywhere, those things carry a price. We don't think they should.</p>
-    </div>
-  </section>
 
-  <!-- OUR MISSION -->
-  <section class="section section-alt">
-    <div class="container">
-      <div class="reveal mission-copy">
-          <h2>Free educational resources, for every student.</h2>
-          <p class="lede">ABLE Initiatives exists to put learning materials, workshops, and expert sessions in front of any student who wants them, at no cost and with nothing to qualify for.</p>
-          <p>We run webinars and in-person workshops across four branches, bring in speakers who have done the work, and share the materials afterwards so they outlast the session. Anyone who wants a seat gets one.</p>
+      <div class="quote-feature reveal" style="margin-top: clamp(64px, 8vw, 110px);">
+        <div class="quote-photo">
+          <img src="assets/images/gallery/business-workshop/6.jpg" width="1280" height="960" loading="lazy" decoding="async" alt="Speaker and student panel at the ABLE Business workshop">
+          <!-- Each dot hides a fact about the picture or the organisation.
+               Positions are percentages of the photo. -->
+          <button type="button" class="hotspot tip-right" style="left:18%; top:38%;" aria-label="Fact: the speakers">
+            <span class="hotspot-tip"><strong>Guest speakers</strong>Founders, public-health leaders and college students, all giving their time for free.</span>
+          </button>
+          <button type="button" class="hotspot" style="left:58%; top:30%;" aria-label="Fact: the students">
+            <span class="hotspot-tip"><strong>300+ students</strong>Reached across every session so far, at no cost and with nothing to qualify for.</span>
+          </button>
+          <button type="button" class="hotspot tip-left" style="left:84%; top:66%;" aria-label="Fact: who runs it">
+            <span class="hotspot-tip"><strong>Run by students</strong>Every session is planned and hosted by high-school volunteers.</span>
+          </button>
+        </div>
+        <figure class="quote-text">
+          <blockquote>
+            <p>“The students behind ABLE are serious about creating meaningful educational opportunities for other students. Organizations like ABLE deserve the attention of business and community leaders who want to invest in the next generation.”</p>
+          </blockquote>
+          <figcaption><strong>Mark Bittle</strong>Founder &amp; CEO, ConnectionMark · spoke at the How to Build a $tartup Workshop</figcaption>
+        </figure>
       </div>
     </div>
   </section>
 
-  <!-- PROGRAMS PREVIEW -->
-  <section class="section">
-    <div class="container">
-      <div class="section-head reveal">
-        <h2>College prep, health, business, engineering</h2>
-        <p class="lede">Pick the one that fits where you're headed, or reach out if you're not sure.</p>
-      </div>
-
-      <div class="grid-2 reveal">
-        <div class="program-card sat">
-          <div class="program-head">
-            <div class="logo-slot sat">
-              <img src="assets/images/logos/logo-preps.png" alt="ABLE Preps logo" data-fallback>
-              <span data-fallback-el class="logo-slot-fallback">PR</span>
-            </div>
-            <div>
-              <h3 class="program-name">ABLE Preps</h3>
-              <p class="program-tag">College Prep</p>
-            </div>
-          </div>
-          <p>Workshops and webinars on SAT and ACT prep, applications, and essays, run by students who went through it recently.</p>
-          <a href="preps.html" class="btn btn-outline btn-sm">Learn more →</a>
-        </div>
-
-        <div class="program-card health">
-          <div class="program-head">
-            <div class="logo-slot health">
-              <img src="assets/images/logos/logo-health.png" width="825" height="755" loading="lazy" decoding="async" alt="ABLE Health logo" data-fallback>
-              <span data-fallback-el class="logo-slot-fallback">HE</span>
-            </div>
-            <div>
-              <h3 class="program-name">ABLE Health</h3>
-              <p class="program-tag">Healthcare</p>
-            </div>
-          </div>
-          <p>Health literacy sessions, first-aid training, and speaker panels for students considering medicine, nursing, or public health.</p>
-          <a href="health.html" class="btn btn-outline btn-sm">Learn more →</a>
-        </div>
-
-        <div class="program-card business">
-          <div class="program-head">
-            <div class="logo-slot business">
-              <img src="assets/images/logos/logo-business.png" width="878" height="804" loading="lazy" decoding="async" alt="ABLE Business logo" data-fallback>
-              <span data-fallback-el class="logo-slot-fallback">BU</span>
-            </div>
-            <div>
-              <h3 class="program-name">ABLE Business</h3>
-              <p class="program-tag">Business</p>
-            </div>
-          </div>
-          <p>Budgeting and investing basics, an entrepreneurship track, and guest workshops for students curious about business.</p>
-          <a href="business.html" class="btn btn-outline btn-sm">Learn more →</a>
-        </div>
-
-        <div class="program-card eng">
-          <div class="program-head">
-            <div class="logo-slot eng">
-              <img src="assets/images/logos/logo-engineering.png" width="909" height="783" loading="lazy" decoding="async" alt="ABLE Engineering logo" data-fallback>
-              <span data-fallback-el class="logo-slot-fallback">EN</span>
-            </div>
-            <div>
-              <h3 class="program-name">ABLE Engineering</h3>
-              <p class="program-tag">Engineering</p>
-            </div>
-          </div>
-          <p>Our newest branch: hands-on build sessions and webinars on how things are designed, built, and tested.</p>
-          <a href="engineering.html" class="btn btn-outline btn-sm">Learn more →</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- HOW IT WORKS -->
+  <!-- BRANCHES: alternating text and photo rows -->
   <section class="section section-alt">
     <div class="container">
       <div class="section-head reveal">
-        <h2>How to get to your first session</h2>
+        <h2>Four branches. Pick the one that fits where you're headed.</h2>
+        <p class="lede">Or reach out if you're not sure — that's a fine place to start.</p>
       </div>
-      <div class="steps reveal">
-        <div class="step">
-          <div class="step-num">1</div>
-          <h3>Pick a branch</h3>
-          <p>Choose the area you want to learn about: college prep, health, business, or engineering. Or ask us if you're not sure.</p>
+
+      <div class="feature-row reveal">
+        <div class="feature-copy">
+          <span class="eyebrow">ABLE Preps · College prep</span>
+          <h3>SAT prep and college advice, from students who just did it.</h3>
+          <p>Workshops and webinars on the SAT and ACT, applications, and essays — plus a free Digital SAT practice course, open to anyone.</p>
+          <a href="preps.html" class="btn btn-primary btn-sm">About ABLE Preps</a>
         </div>
-        <div class="step">
-          <div class="step-num">2</div>
-          <h3>Sign up for a session</h3>
-          <p>Tell us you're coming. That's the whole process — there is nothing to apply for and nothing to pay.</p>
+        <div class="feature-media">
+          <img src="assets/images/gallery/preps-webinar/1.jpg" width="1280" height="590" loading="lazy" decoding="async" alt="ABLE Preps webinar live Q&amp;A">
+          <span class="logo-chip"><img src="assets/images/logos/logo-preps.png" width="761" height="703" loading="lazy" decoding="async" alt=""></span>
         </div>
-        <div class="step">
-          <div class="step-num">3</div>
-          <h3>Attend, and keep the materials</h3>
-          <p>Join the workshop or webinar, then take the slides and resources with you afterwards.</p>
+      </div>
+
+      <div class="feature-row reveal">
+        <div class="feature-copy">
+          <span class="eyebrow">ABLE Health · Healthcare</span>
+          <h3>Health literacy, first aid, and a look at careers in medicine.</h3>
+          <p>Sessions on nutrition, mental health and navigating care, plus speaker panels for students considering medicine, nursing, or public health.</p>
+          <a href="health.html" class="btn btn-primary btn-sm">About ABLE Health</a>
+        </div>
+        <div class="feature-media">
+          <img src="assets/images/gallery/health-workshop/1.jpg" width="1280" height="960" loading="lazy" decoding="async" alt="ABLE Health workshop panel">
+          <span class="logo-chip"><img src="assets/images/logos/logo-health.png" width="825" height="755" loading="lazy" decoding="async" alt=""></span>
+        </div>
+      </div>
+
+      <div class="feature-row reveal">
+        <div class="feature-copy">
+          <span class="eyebrow">ABLE Business · Business</span>
+          <h3>Budgeting, investing, and how a company actually gets built.</h3>
+          <p>Money basics, an entrepreneurship track, and guest workshops with founders who have done it.</p>
+          <a href="business.html" class="btn btn-primary btn-sm">About ABLE Business</a>
+        </div>
+        <div class="feature-media">
+          <img src="assets/images/gallery/business-workshop/3.jpg" width="1280" height="960" loading="lazy" decoding="async" alt="Mark Bittle speaking at the ABLE Business workshop">
+          <span class="logo-chip"><img src="assets/images/logos/logo-business.png" width="878" height="804" loading="lazy" decoding="async" alt=""></span>
+        </div>
+      </div>
+
+      <div class="feature-row reveal">
+        <div class="feature-copy">
+          <span class="eyebrow">ABLE Engineering · Engineering</span>
+          <h3>Our newest branch: how things get designed, built, and tested.</h3>
+          <p>Hands-on build sessions and webinars, led by Luke Dulski. Just getting going — join as a student, or help run its first sessions.</p>
+          <a href="engineering.html" class="btn btn-primary btn-sm">About ABLE Engineering</a>
+        </div>
+        <div class="feature-media">
+          <img src="assets/images/gallery/business-workshop/2.jpg" width="1280" height="960" loading="lazy" decoding="async" alt="Audience watching a talk at an ABLE workshop">
+          <span class="logo-chip"><img src="assets/images/logos/logo-engineering.png" width="909" height="783" loading="lazy" decoding="async" alt=""></span>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- PHOTO GALLERY CAROUSEL -->
-  <section class="section">
+  <!-- CHAPTERS: one scrolling row of every school and city -->
+  <div class="section-brand chapter-marquee" data-marquee data-marquee-label="chapter strip" aria-label="Where ABLE has a chapter">
+    <ul class="marquee-track">
+      <li>Pine Creek High School</li>
+      <li>Discovery Canyon Campus</li>
+      <li>The Classical Academy</li>
+      <li>Rampart High School</li>
+      <li>Air Academy High School</li>
+      <li>Denver</li>
+      <li>Cupertino, CA</li>
+      <li>Vancouver, BC</li>
+    </ul>
+  </div>
+
+  <!-- NUMBERS: photos under blue, big yellow figures -->
+  <section class="stat-mosaic" aria-label="ABLE in numbers">
+    <div class="stat-tile">
+      <img src="assets/images/gallery/business-workshop/1.jpg" width="1280" height="960" loading="lazy" decoding="async" alt="">
+      <div class="stat-num">300+</div>
+      <p class="stat-label">students reached across every session we've run</p>
+    </div>
+    <div class="stat-tile">
+      <img src="assets/images/gallery/health-workshop/1.jpg" width="1280" height="960" loading="lazy" decoding="async" alt="">
+      <div class="stat-num">9</div>
+      <p class="stat-label">chapters, from Colorado to California and British Columbia</p>
+    </div>
+    <div class="stat-tile">
+      <img src="assets/images/gallery/business-workshop/8.jpg" width="1280" height="960" loading="lazy" decoding="async" alt="">
+      <div class="stat-num">$0</div>
+      <p class="stat-label">to attend anything — no fee, no application, nothing to qualify for</p>
+    </div>
+  </section>
+
+  <!-- PROMO: the SAT practice course, on the one green section -->
+  <section class="section section-green">
     <div class="container">
-      <div class="section-head reveal">
-        <h2>Photos from recent sessions</h2>
-        <p class="lede">Workshops, webinars, and career nights across our branches.</p>
-      </div>
-      <div class="carousel reveal" data-interval="4500">
-        <div class="carousel-track">
-          <div class="carousel-slide is-active">
-            <img src="assets/images/gallery/health-workshop/1.jpg" width="1280" height="960" loading="eager" fetchpriority="high" decoding="async" alt="ABLE Health workshop panel" data-fallback>
-            <div data-fallback-el class="photo-card-fallback">
-              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.5"/><circle cx="8.5" cy="9.5" r="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M21 15l-5-5-9 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              <p>Photo coming soon</p>
-            </div>
-            <div class="carousel-caption"><div class="cap-event">ABLE Health · July 16</div><div class="cap-title">Health Literacy Workshop</div></div>
-          </div>
-          <div class="carousel-slide">
-            <img src="assets/images/gallery/preps-webinar/1.jpg" width="1280" height="590" loading="lazy" decoding="async" alt="ABLE Preps webinar" data-fallback>
-            <div data-fallback-el class="photo-card-fallback">
-              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.5"/><circle cx="8.5" cy="9.5" r="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M21 15l-5-5-9 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              <p>Photo coming soon</p>
-            </div>
-            <div class="carousel-caption"><div class="cap-event">ABLE Preps · July 21</div><div class="cap-title">College Admissions Journey Webinar</div></div>
-          </div>
-          <div class="carousel-slide">
-            <img src="assets/images/gallery/business-workshop/3.jpg" width="1280" height="960" loading="lazy" decoding="async" alt="Mark Bittle speaking at the ABLE Business workshop" data-fallback>
-            <div data-fallback-el class="photo-card-fallback">
-              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.5"/><circle cx="8.5" cy="9.5" r="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M21 15l-5-5-9 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              <p>Photo coming soon</p>
-            </div>
-            <div class="carousel-caption"><div class="cap-event">ABLE Business · July 22</div><div class="cap-title">How to Build a $tartup Workshop</div></div>
-          </div>
+      <div class="promo reveal">
+        <div>
+          <span class="eyebrow">New from ABLE Preps</span>
+          <h2>Practice for the Digital SAT, <em>free.</em></h2>
+          <p class="lede">A question bank sorted by skill, timed modules in the real test's layout, a study planner, and score tools. No account, no cost.</p>
+          <a href="https://prep.ableinitiatives.com/" class="btn btn-pastel">Start practicing</a>
+          <p class="promo-note">prep.ableinitiatives.com · works on a phone</p>
         </div>
-        <button class="carousel-arrow prev" aria-label="Previous photo">‹</button>
-        <button class="carousel-arrow next" aria-label="Next photo">›</button>
-        <div class="carousel-dots">
-          <button class="dot is-active" aria-label="Slide 1"></button>
-          <button class="dot" aria-label="Slide 2"></button>
-          <button class="dot" aria-label="Slide 3"></button>
+        <div class="promo-stack" aria-hidden="true">
+          <div class="promo-stack-card"><span class="eyebrow">Question bank</span><strong>Sorted by skill</strong><span>Drill exactly the kind of question you keep missing.</span></div>
+          <div class="promo-stack-card"><span class="eyebrow">Timed modules</span><strong>The real test's layout</strong><span>Same sections, same clock, same pacing.</span></div>
+          <div class="promo-stack-card"><span class="eyebrow">Study planner</span><strong>Built around your test date</strong><span>A schedule that fits the weeks you have.</span></div>
+          <div class="promo-stack-card"><span class="eyebrow">Score tools</span><strong>See where you stand</strong><span>Track scores as you go.</span></div>
         </div>
-      </div>
-      <div style="text-align:center; margin-top:36px;">
-        <a href="events.html" class="btn btn-outline">View the full photo gallery →</a>
       </div>
     </div>
   </section>
@@ -359,33 +366,35 @@
     </div>
   </section>
 
-  <!-- TESTIMONIAL -->
-  <section class="section-tight">
-    <div class="container">
-      <figure class="testimonial reveal">
-        <blockquote>
-          <p>I was incredibly impressed by the students behind ABLE Initiatives. Their professionalism, follow-up, and thoughtful questions made it clear that they are serious about creating meaningful educational opportunities for other students. Organizations like ABLE deserve the attention of business and community leaders who want to invest in the next generation.</p>
-        </blockquote>
-        <figcaption>
-          <span class="testimonial-name">Mark Bittle</span>
-          <span class="testimonial-role">Founder &amp; CEO, ConnectionMark &middot; spoke at the How to Build a $tartup Workshop</span>
-        </figcaption>
-      </figure>
+  <!-- ACT: three ways in, laid out like a hand of cards -->
+  <section class="section action-section">
+    <div class="action-mosaic" aria-hidden="true">
+      <img src="assets/images/gallery/business-workshop/4.jpg" loading="lazy" decoding="async" alt="">
+      <img src="assets/images/gallery/health-workshop/1.jpg" loading="lazy" decoding="async" alt="">
+      <img src="assets/images/gallery/business-workshop/5.jpg" loading="lazy" decoding="async" alt="">
+      <img src="assets/images/gallery/business-webinar/2.jpg" loading="lazy" decoding="async" alt="">
     </div>
-  </section>
-
-  <!-- CTA BAND -->
-  <section class="section-tight">
     <div class="container">
-      <div class="cta-band reveal">
-        <div>
-          <h2>Ready to get involved?</h2>
-          <p>Come to a session, help run the next one, or help keep it all free.</p>
-        </div>
-        <div class="actions">
-          <a href="get-involved.html" class="btn btn-accent">Get involved</a>
-          <a href="donate.html" class="btn btn-outline btn-on-dark">Donate</a>
-        </div>
+      <div class="section-head center reveal" style="color:#fff;">
+        <h2 style="color:#fff;">Ready to get involved?</h2>
+        <p class="lede" style="color: rgba(255,255,255,0.86);">Come to a session, help run the next one, or help keep it all free.</p>
+      </div>
+      <div class="action-cards reveal">
+        <a class="action-card" href="get-involved.html">
+          <img src="assets/images/gallery/business-workshop/8.jpg" width="1280" height="960" loading="lazy" decoding="async" alt="">
+          <span class="action-card-word">join</span>
+          <span class="action-card-text">Get access to every workshop, webinar and resource our branches put out.<span>Become a member →</span></span>
+        </a>
+        <a class="action-card" href="get-involved.html">
+          <img src="assets/images/gallery/business-workshop/7.jpg" width="1280" height="960" loading="lazy" decoding="async" alt="">
+          <span class="action-card-word">volunteer</span>
+          <span class="action-card-text">Help plan and run sessions, or start a chapter at your own school.<span>Join the team →</span></span>
+        </a>
+        <a class="action-card" href="donate.html">
+          <img src="assets/images/gallery/business-workshop/2.jpg" width="1280" height="960" loading="lazy" decoding="async" alt="">
+          <span class="action-card-word">donate</span>
+          <span class="action-card-text">Entirely volunteer-led, so a gift goes straight into keeping programs free.<span>Give →</span></span>
+        </a>
       </div>
     </div>
   </section>
@@ -434,6 +443,6 @@
   </div>
 </footer>
 
-<script src="assets/js/main.js?v=14"></script>
+<script src="assets/js/main.js?v=15"></script>
 </body>
 </html>

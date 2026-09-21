@@ -7,91 +7,119 @@
    accent (#FF5A36) appeared nowhere in the mark and failed WCAG contrast at
    3.1:1 for white text on the Donate button. */
 :root {
-  --bg: #F7F8FD;
-  --bg-alt: #E9EBF8;
-  --paper: #FFFFFF;
-  --ink: #14143A;
-  --ink-soft: #4A4D70;
-  /* Darkened from the original soft grey, which sat at 3.1:1 and failed WCAG AA
-     for the small print it is used on (captions, dates, source credits, footer). */
-  --muted: #63688C;
-  --line: #E0E3F2;
-  --line-strong: #C7CBE6;
+  /* ---------- palette ----------
+     The logo's blue and gold over off-white paper. The blue carries the page:
+     nav, full-bleed bands, photo overlays and footer. Yellow is used sparingly and
+     loudly — big numbers, one word in a heading, the outline on the action
+     cards — so it stays an event rather than a texture.
 
-  --accent: #2B2BC4;
-  --accent-dark: #1B1B8F;
-  --accent-tint: #E4E4FA;
-  /* Text on --accent, and on a branch colour. Both flip together with the
-     palette, which is why they are variables rather than a hardcoded #fff. */
+     Every blue below is derived from --brand, sampled from the monogram (royal
+     blue #1010B0 shading to navy #202070), so the whole site can be retoned by
+     editing these three lines. */
+  --brand: #2A2AB4;
+  --brand-deep: #1B1B80;
+  /* Deepest of the three. Used for the hero overlay and for hovers on
+     --brand-deep grounds, where a lighter step would stop registering. */
+  --brand-darkest: #12124F;
+  --yellow: #FFD34D;
+  --gold: #E6B33F;
+  /* The one section that is neither blue nor paper, so the page isn't a
+     single hue from top to bottom. */
+  --green: #2F7A34;
+  --green-deep: #1F5B24;
+  /* Pastel pill on the coloured sections, where a white button would glare. */
+  --lavender: #C3CCF5;
+
+  /* Warm off-white rather than a blue-grey: it reads as paper next to the
+     blue, and it is what the grain texture sits on. */
+  --bg: #F5F4F2;
+  --bg-alt: #ECEAE5;
+  --paper: #FFFFFF;
+  /* Navy near-black, so body text belongs to the palette instead of sitting
+     on top of it. */
+  --ink: #14143A;
+  --ink-soft: #43466A;
+  /* 5.6:1 on --bg. Small print (dates, captions, credits) uses this. */
+  --muted: #5F6388;
+  --line: #E0DFE2;
+  --line-strong: #C9C8CF;
+
+  --accent: var(--brand);
+  --accent-dark: var(--brand-deep);
+  --accent-tint: #E6E6F8;
+  /* Text on --accent, and on a branch colour. Variables rather than a
+     hardcoded #fff so the palette can be inverted without rewriting rules. */
   --accent-ink: #FFFFFF;
   --on-brand: #FFFFFF;
-  /* The gold from the logo's swoosh, as a colour in its own right. The hero
-     accents used to borrow var(--business) purely because it happened to be
-     gold, which quietly tied the hero to a branch colour — change the Business
-     branch and the homepage headline would have changed with it. */
-  --gold: #F0C048;
-  --header-bg: rgba(247, 248, 253, 0.88);
+  --header-bg: var(--brand);
 
-  /* Dark blocks (CTA band, contact panel, primary button, skip link). Kept
-     separate from --ink so the palette can be inverted without rewriting rules:
-     --ink is "text colour", --panel is "dark surface". */
-  --panel: #14143A;
+  /* Dark blocks (blue bands, CTA band, footer, primary button, skip link).
+     Kept separate from --ink so "text colour" and "dark surface" can move
+     independently. */
+  --panel: var(--brand-deep);
   --on-panel: #FFFFFF;
-  --on-panel-soft: #AFB4D8;
-  --on-panel-line: #3A3E7A;
+  /* 6.0:1 on --panel. */
+  --on-panel-soft: #CDD0F0;
+  --on-panel-line: rgba(255, 255, 255, 0.26);
 
   /* Branch colours, taken from the branch logos themselves: the Preps mark is
-     orange, Health is red, Business is green. These used to be indigo/green/gold
-     — inherited from an earlier palette — so every branch cue on the site
-     (card top-borders, timeline markers, event badges, branch dots) contradicted
-     the logo sitting next to it.
-
-     Each --X is the hue sampled from its logo's apex, at the lightness closest
-     to the logo that still clears 3:1 against both --bg and --bg-alt, since
-     these are graphical cues that distinguish one branch from another rather
-     than decoration. Measured: Preps 3.5:1, Health 4.1:1, Business 3.5:1. */
+     orange, Health is red, Business is green, Engineering teal. Each is the
+     hue sampled from its logo's apex, at the lightness closest to the logo
+     that still clears 3:1 against both --bg and --bg-alt, since these are
+     graphical cues that distinguish one branch from another rather than
+     decoration. They are deliberately outside the blue/yellow palette: a
+     branch badge has to be identifiable at a glance, including on the chapter
+     map, where four colours have to stay apart from each other. */
   --sat: #BD7305;
   --sat-tint: #FCEED9;
   --health: #F20808;
   --health-tint: #FCD9D9;
   --business: #28991F;
   --business-tint: #E0F7DE;
-  /* Engineering's teal, sampled from its logo the same way: closest lightness
-     to the mark that still clears 3:1 on both grounds (3.4 on --bg, 3.1 on
-     --bg-alt). */
   --eng: #1791B6;
   --eng-tint: #D9F0F7;
-  /* Darkened branch colours, for text sitting on the matching tint. The branch
-     colours themselves fail badly there (the old gold read 1.5:1 on its own
-     tint). Same hue, dark enough to clear 5:1 on the tint and 4.5:1 as a
-     white-on-colour ground: 5.1 / 5.1 / 5.3 on tint, 5.9 / 6.6 / 6.0 with
-     white. Use these for any text on a branch tint, and as the ground for any
-     white text. */
+  /* Darkened branch colours, for text sitting on the matching tint, and as the
+     ground under white text. Same hue, dark enough to clear 5:1 on the tint
+     and 4.5:1 with white. */
   --sat-ink: #905804;
   --health-ink: #BC0606;
   --business-ink: #1E7217;
-  /* 5.1 on its tint, 6.1 under white. */
   --eng-ink: #0A6B87;
 
-  --radius-sm: 5px;
-  --radius-md: 10px;
-  --radius-lg: 14px;
+  /* Rounder than before, across the board. --radius-photo is the big one:
+     photographs in light sections are cut to it, which is most of what gives
+     the page its softness. */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-photo: 24px;
+  --radius-pill: 30px;
 
-  --shadow-sm: 0 1px 2px rgba(20, 20, 58, 0.05), 0 2px 8px rgba(20, 20, 58, 0.05);
-  --shadow-md: 0 2px 6px rgba(20, 20, 58, 0.06), 0 12px 32px rgba(20, 20, 58, 0.10);
-  --shadow-lg: 0 4px 10px rgba(20, 20, 58, 0.06), 0 24px 56px rgba(20, 20, 58, 0.14);
+  /* Light, because colour is doing the separating now. Cards sit on the page
+     rather than floating above it, and buttons carry no shadow at all. */
+  --shadow-sm: 0 1px 2px rgba(20, 20, 58, 0.04), 0 2px 8px rgba(20, 20, 58, 0.05);
+  --shadow-md: 0 2px 6px rgba(20, 20, 58, 0.05), 0 12px 30px rgba(20, 20, 58, 0.08);
+  --shadow-lg: 0 4px 10px rgba(20, 20, 58, 0.06), 0 24px 56px rgba(20, 20, 58, 0.12);
 
   --container: 1160px;
+  /* Prose and section headings sit in a narrower column than full-bleed
+     photography, which is what keeps the long sections readable. */
+  --measure: 980px;
 
-  --font-display: "Archivo", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-body: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  /* Headlines are Archivo, set heavy and slightly expanded — the width axis is
-     what gives them their voice, so they read as signage rather than as body
-     copy scaled up. It replaced an editorial serif, which was doing borrowed
-     gravitas for a student organisation that doesn't need any. Numbers, the
-     wordmark and UI chrome share the family so the page has one voice. */
-  --font-head: "Archivo", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  /* One geometric sans throughout. Outfit stands in for Open Sauce One: same
+     family of shapes, single-axis variable, available from Google Fonts. It
+     runs from the 58px hero down to 11px eyebrow labels, so the page has one
+     voice and only one family to load for everything but the pull quotes. */
+  --font-display: "Outfit", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-body: "Outfit", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-head: "Outfit", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  /* The counterpoint. Used italic, and only for pull quotes and the testimonial
+     — a serif italic against an otherwise entirely geometric page is the one
+     typographic surprise, and it stops working the moment it is used twice on
+     a screen. */
+  --font-serif: "Libre Baskerville", Georgia, "Times New Roman", serif;
 }
+
 
 
 
@@ -138,11 +166,16 @@ html { scroll-behavior: smooth; }
 
 body {
   margin: 0;
-  background: var(--bg);
+  /* The grain: a tiled SVG of fractal noise at 6% alpha over the paper colour.
+     It is only ever visible on the light sections, since the coloured bands
+     paint their own opaque ground on top. Purely a texture; removing the image
+     changes nothing else. */
+  background-color: var(--bg);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.08 0 0 0 0 0.08 0 0 0 0 0.25 0 0 0 0.07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   color: var(--ink-soft);
   font-family: var(--font-body);
-  font-size: 16px;
-  line-height: 1.6;
+  font-size: 17px;
+  line-height: 1.55;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -151,27 +184,29 @@ img { max-width: 100%; display: block; }
 h1, h2, h3, h4 {
   font-family: var(--font-head);
   color: var(--ink);
-  line-height: 1.1;
+  line-height: 1.05;
   margin: 0 0 0.5em;
-  /* Heavy and slightly wide. The width comes from Archivo's wdth axis; a
-     browser that ignores font-stretch just renders the normal cut, which is
-     still the right weight and tracking. */
-  font-weight: 800;
-  font-stretch: 105%;
-  letter-spacing: -0.021em;
+  letter-spacing: -0.03em;
 }
-h2 { font-size: clamp(26px, 3.1vw, 35px); }
-h3 { font-weight: 700; letter-spacing: -0.015em; }
-h4 { font-weight: 700; letter-spacing: -0.012em; }
+/* Big headings are set light, not heavy: at 40–60px a regular weight with
+   tight tracking reads as big and airy, where a bold cut of the same size
+   would be a wall. Weight comes back in as the type gets smaller, so card
+   titles at 18px are extrabold and still hold their own next to body copy. */
+h1 { font-weight: 400; letter-spacing: -0.04em; line-height: 1.0; }
+h2 { font-size: clamp(30px, 4vw, 46px); font-weight: 500; letter-spacing: -0.035em; }
+h3 { font-weight: 800; letter-spacing: -0.025em; }
+h4 { font-weight: 700; letter-spacing: -0.02em; }
 
-/* Gold accent inside the hero headline. Plain <em>, so it still reads as
-   emphasis without the stylesheet. Scoped to the dark hero: gold text fails
-   contrast on the light page ground, so this must not leak to ordinary
-   headings. It is not italicised — the italic was a serif mannerism left over
-   from the old headline face. */
-.hero-banner h1 em {
+/* Yellow accent inside a headline: one word or phrase per heading, never
+   more. Plain <em>, so it still reads as emphasis without the stylesheet.
+   Scoped to dark grounds — yellow text fails contrast on the paper — so it
+   must not leak to ordinary headings. Not italicised. */
+.hero-banner h1 em,
+.section-brand h2 em,
+.section-green h2 em,
+.page-header h1 em {
   font-style: normal;
-  color: var(--gold);
+  color: var(--yellow);
 }
 
 p { margin: 0 0 1em; }
@@ -187,20 +222,42 @@ a { color: inherit; text-decoration: none; }
 /* Kept only where it labels something the heading doesn't already say (which
    card is for whom, what ABLE is under the hero headline). No rule, no caps,
    no letterspacing: it is a line of text, not a decoration. */
+/* A small caps label: "EVENT", "FEATURE", the kind of thing that sits above a
+   card title. Deliberately tiny, so it labels without competing. */
 .eyebrow {
   display: block;
   font-family: var(--font-display);
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
   color: var(--accent-dark);
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
-.section { padding: 88px 0; }
-.section-alt { background: var(--bg-alt); }
-.section-tight { padding: 64px 0; }
-.section-head { max-width: 660px; margin-bottom: 48px; }
+/* Sections are tall. The page is meant to be read as a sequence of big
+   coloured blocks, and each needs room above and below its content for that
+   to work; the alternation of blue / paper / green does the separating, so
+   there are no rules or borders between them. */
+.section { padding: clamp(80px, 10vw, 140px) 0; }
+/* Translucent, so the paper grain shows through it too. */
+.section-alt { background: rgba(20, 20, 58, 0.04); }
+.section-tight { padding: clamp(56px, 7vw, 88px) 0; }
+/* Blue band. Everything on it is white; headings drop their ink colour. */
+.section-brand { background: var(--brand); color: #FFFFFF; }
+.section-brand h1, .section-brand h2, .section-brand h3, .section-brand h4 { color: #FFFFFF; }
+.section-brand .lede, .section-brand p { color: rgba(255, 255, 255, 0.86); }
+.section-brand .eyebrow { color: var(--yellow); }
+.section-brand .muted { color: rgba(255, 255, 255, 0.7); }
+.section-brand-deep { background: var(--brand-deep); }
+/* The one green section. */
+.section-green { background: var(--green); color: #FFFFFF; }
+.section-green h2, .section-green h3 { color: #FFFFFF; }
+.section-green p { color: rgba(255, 255, 255, 0.92); }
+/* Yellow on this green only reaches 3.7:1, so the label goes white here. */
+.section-green .eyebrow { color: #FFFFFF; }
+.section-head { max-width: 720px; margin-bottom: 52px; }
 .section-head.center { margin-left: auto; margin-right: auto; text-align: center; }
-.lede { font-size: 19px; color: var(--ink-soft); }
+.lede { font-size: 20px; line-height: 1.45; color: var(--ink-soft); }
 .muted { color: var(--muted); }
 .divider {
   border: none;
@@ -209,31 +266,43 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ---------- buttons ---------- */
+/* Pills, all of them. 1px border on every variant so an outlined and a filled
+   button are the same height side by side. No shadows, no lift on hover: the
+   colour change is the feedback. */
 .btn {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 13px 24px;
-  border-radius: 999px;
-  font-weight: 600;
-  font-size: 15px;
+  padding: 14px 26px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.2;
   border: 1px solid transparent;
   cursor: pointer;
-  transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
   white-space: nowrap;
 }
-.btn:hover { transform: translateY(-1px); }
-.btn-primary { background: var(--panel); color: var(--on-panel); }
-.btn-primary:hover { background: var(--accent-dark); }
-.btn-accent {
-  background: var(--accent);
-  color: var(--accent-ink);
-  box-shadow: 0 6px 16px rgba(43, 43, 196, 0.28);
-}
-.btn-accent:hover { background: var(--accent-dark); box-shadow: 0 8px 20px rgba(43, 43, 196, 0.34); }
-.btn-outline { background: transparent; color: var(--ink); border-color: var(--line-strong); }
-.btn-outline:hover { border-color: var(--ink); }
-.btn-sm { padding: 9px 18px; font-size: 13.5px; }
+/* Solid blue. .btn-primary and .btn-accent were two different dark fills in
+   the old palette; there is one now. */
+.btn-primary, .btn-accent { background: var(--brand); color: #FFFFFF; border-color: var(--brand); }
+.btn-primary:hover, .btn-accent:hover { background: var(--brand-deep); border-color: var(--brand-deep); }
+/* Outlined, on a light ground. */
+.btn-outline { background: transparent; color: var(--ink); border-color: var(--ink); }
+.btn-outline:hover { background: var(--ink); color: #FFFFFF; }
+/* Solid pastel, for the coloured sections where white would glare and blue
+   would vanish. Deep blue text: 7.8:1 on the lavender. */
+.btn-pastel { background: var(--lavender); color: var(--brand-darkest); border-color: var(--lavender); }
+.btn-pastel:hover { background: #FFFFFF; border-color: #FFFFFF; }
+.btn-sm { padding: 10px 20px; font-size: 14.5px; }
+/* On a coloured band every outline goes white and every solid goes white-on-
+   colour, so the same markup works on either ground. */
+.section-brand .btn-outline, .section-green .btn-outline { color: #FFFFFF; border-color: #FFFFFF; }
+.section-brand .btn-outline:hover { background: #FFFFFF; color: var(--brand); }
+.section-green .btn-outline:hover { background: #FFFFFF; color: var(--green); }
+.section-brand .btn-primary, .section-brand .btn-accent { background: #FFFFFF; color: var(--brand); border-color: #FFFFFF; }
+.section-brand .btn-primary:hover, .section-brand .btn-accent:hover { background: var(--yellow); border-color: var(--yellow); color: var(--brand-darkest); }
 /* A full-width button has no reason to stay on one line, and the sign-up
    labels ("Apply as a Global Nonprofit Founder") are longer than a phone-width
    card's inner width — nowrap was forcing the card itself wider than the
@@ -241,19 +310,19 @@ a { color: inherit; text-decoration: none; }
 .btn-block { width: 100%; justify-content: center; white-space: normal; text-align: center; }
 
 /* ---------- nav ---------- */
+/* Solid blue bar, about 100px tall, white throughout. It is opaque, so it
+   needs no blur or border to separate from what scrolls under it. */
 .site-header {
   position: sticky;
   top: 0;
   z-index: 100;
   background: var(--header-bg);
-  backdrop-filter: saturate(180%) blur(10px);
-  border-bottom: 1px solid var(--line);
 }
 .nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20px 28px;
+  padding: 24px 28px;
   max-width: var(--container);
   margin: 0 auto;
 }
@@ -262,9 +331,10 @@ a { color: inherit; text-decoration: none; }
   align-items: center;
   gap: 13px;
   font-family: var(--font-display);
-  font-weight: 700;
+  font-weight: 600;
   font-size: 22px;
-  color: var(--ink);
+  letter-spacing: -0.02em;
+  color: #FFFFFF;
   white-space: nowrap;
 }
 /* No background or border: those framed an opaque logo. The transparent
@@ -291,6 +361,11 @@ a { color: inherit; text-decoration: none; }
   width: 100%;
   height: 100%;
   object-fit: contain;
+  /* The monogram is blue and gold on a transparent ground. On the bar it is
+     flattened to a white silhouette: brightness(0) turns every opaque pixel
+     black, invert(1) turns that white, and the alpha channel is untouched. A
+     browser without filter support shows the coloured mark, which is fine. */
+  filter: brightness(0) invert(1);
 }
 .brand-mark-fallback {
   display: none;
@@ -311,9 +386,9 @@ a { color: inherit; text-decoration: none; }
   padding: 0;
 }
 .nav-links a {
-  font-size: 14.5px;
+  font-size: 16px;
   font-weight: 500;
-  color: var(--ink-soft);
+  color: rgba(255, 255, 255, 0.82);
   padding: 8px 0;
   border-bottom: 2px solid transparent;
   transition: color 0.15s ease, border-color 0.15s ease;
@@ -329,6 +404,9 @@ a { color: inherit; text-decoration: none; }
     display: inline-flex;
     align-items: center;
   }
+  /* Donate is the pill at the end of the bar; the list entry exists for the
+     phone menu, where the pill is hidden. */
+  .nav-links .nav-donate { display: none; }
 }
 /* ---- About submenu ---------------------------------------------------- */
 /* The parent is a <button>, not a link: it goes nowhere on its own, and a
@@ -336,9 +414,9 @@ a { color: inherit; text-decoration: none; }
    expands. It is styled to match the sibling links exactly. */
 .nav-parent {
   font: inherit;
-  font-size: 14.5px;
+  font-size: 16px;
   font-weight: 500;
-  color: var(--ink-soft);
+  color: rgba(255, 255, 255, 0.82);
   background: none;
   border: none;
   border-bottom: 2px solid transparent;
@@ -358,9 +436,9 @@ a { color: inherit; text-decoration: none; }
   transform: rotate(45deg) translate(-1px, -1px);
   transition: transform 0.18s ease;
 }
-.nav-parent:hover, .has-submenu.is-open .nav-parent { color: var(--ink); }
+.nav-parent:hover, .has-submenu.is-open .nav-parent { color: #FFFFFF; }
 /* Underline the parent when one of its children is the current page. */
-.has-submenu.is-current .nav-parent { color: var(--ink); border-bottom-color: var(--accent); }
+.has-submenu.is-current .nav-parent { color: #FFFFFF; border-bottom-color: var(--yellow); }
 .has-submenu.is-open .nav-parent::after { transform: rotate(-135deg) translate(-2px, -2px); }
 .has-submenu { position: relative; }
 .submenu {
@@ -420,17 +498,20 @@ a { color: inherit; text-decoration: none; }
 }
 
 .nav-links a:hover, .nav-links a[aria-current="page"] {
-  color: var(--ink);
-  border-color: var(--accent);
+  color: #FFFFFF;
+  border-color: var(--yellow);
 }
 .nav-actions { display: flex; align-items: center; gap: 12px; }
+/* The Donate pill in the bar: white outline, no fill. */
+.nav-actions .btn { color: #FFFFFF; border-color: #FFFFFF; background: transparent; }
+.nav-actions .btn:hover { background: #FFFFFF; color: var(--brand); }
 .nav-toggle {
   display: none;
   background: none;
-  border: 1px solid var(--line-strong);
+  border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: var(--radius-sm);
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
   align-items: center;
   justify-content: center;
   cursor: pointer;
@@ -440,7 +521,7 @@ a { color: inherit; text-decoration: none; }
   display: block;
   width: 18px;
   height: 2px;
-  background: var(--ink);
+  background: #FFFFFF;
   position: relative;
   transition: transform 0.2s ease, opacity 0.2s ease;
 }
@@ -462,7 +543,7 @@ a { color: inherit; text-decoration: none; }
     top: 100%;
     left: 0;
     right: 0;
-    background: var(--bg);
+    background: var(--brand-deep);
     flex-direction: column;
     align-items: stretch;
     gap: 0;
@@ -477,8 +558,7 @@ a { color: inherit; text-decoration: none; }
        fine trade for a guarantee that it is never focusable while closed. */
     visibility: hidden;
     transition: opacity 0.18s ease, transform 0.18s ease;
-    border-top: 1px solid var(--line);
-    border-bottom: 1px solid var(--line);
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
     box-shadow: var(--shadow-md);
     max-height: calc(100vh - 100%);
     overflow-y: auto;
@@ -486,7 +566,7 @@ a { color: inherit; text-decoration: none; }
   /* display:block so the width below is honoured: as inline boxes these rows
      were only as wide as their text, so their divider lines stopped short while
      the submenu parents' ran the full width of the panel. */
-  .nav-links a { display: block; width: 100%; padding: 14px 0; border-bottom: 1px solid var(--line); font-size: 17px; }
+  .nav-links a { display: block; width: 100%; padding: 14px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.18); font-size: 17px; color: #FFFFFF; }
   /* The submenu drops out of the floating-card treatment here and becomes an
      indented list inside the panel; a positioned dropdown would render off
      the edge of a phone screen. */
@@ -495,8 +575,9 @@ a { color: inherit; text-decoration: none; }
     width: 100%;
     justify-content: space-between;
     padding: 14px 0;
-    border-bottom: 1px solid var(--line);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.18);
     font-size: 17px;
+    color: #FFFFFF;
   }
   /* No pointer to bridge for here, and a static panel would put the bridge in
      the middle of the list. */
@@ -515,8 +596,8 @@ a { color: inherit; text-decoration: none; }
     display: none;
   }
   .has-submenu.is-open .submenu { display: block; }
-  .submenu a { font-size: 15.5px; padding: 12px 0; border-bottom: 1px solid var(--line); border-radius: 0; }
-  .submenu a:hover, .submenu a[aria-current="page"] { background: none; }
+  .submenu a { font-size: 15.5px; padding: 12px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.18); border-radius: 0; color: rgba(255, 255, 255, 0.85); }
+  .submenu a:hover, .submenu a[aria-current="page"] { background: none; color: #FFFFFF; }
   .nav-links li:last-child a { border-bottom: none; }
   .site-header.nav-open .nav-links {
     opacity: 1;
@@ -525,7 +606,6 @@ a { color: inherit; text-decoration: none; }
     visibility: visible;
   }
   .nav-toggle { display: flex; }
-  .nav-actions .btn-outline { display: none; }
 }
 
 @media (max-width: 560px) {
@@ -534,7 +614,7 @@ a { color: inherit; text-decoration: none; }
   .brand-mark { width: 42px; height: 42px; }
   /* Donate stays reachable inside the menu; drop the top-bar button so the
      brand name fits on one line on narrow phones. */
-  .nav-actions .btn-accent { display: none; }
+  .nav-actions .btn { display: none; }
 }
 
 /* ---------- hero banner (full-bleed photo + headline) ---------- */
@@ -543,13 +623,13 @@ a { color: inherit; text-decoration: none; }
   isolation: isolate;
   display: flex;
   align-items: flex-end;
-  min-height: clamp(440px, 62vh, 660px);
-  padding: 72px 0 64px;
+  min-height: clamp(520px, 72vh, 760px);
+  padding: 96px 0 88px;
   overflow: hidden;
   /* The text on top is white. If the photo fails to load there would otherwise
      be nothing behind it but the light page background, so the section carries
-     its own dark ground as a floor. */
-  background: #0B0B20;
+     its own blue ground as a floor. */
+  background: var(--brand-deep);
 }
 .hero-banner-img {
   position: absolute;
@@ -563,24 +643,32 @@ a { color: inherit; text-decoration: none; }
    unreadable where the image is bright, so it is a gradient: heaviest behind the
    text at the bottom-left, lifting towards the top right where the photo is
    worth seeing. The floor keeps the lightest area dark enough for white text. */
+/* The blue tint. Multiply keeps the photo's own shadows and lets its
+   highlights through as lighter blue, which is what makes it read as a
+   duotone rather than a photo behind a coloured sheet. The gradient underneath
+   deepens the bottom-left where the text sits: multiplied against a bright
+   patch of photo the flat tint alone bottoms out near 5:1 for white text, and
+   the gradient takes that worst case past 7:1. */
 .hero-banner::after {
   content: "";
   position: absolute;
   inset: 0;
   z-index: -1;
   background:
-    linear-gradient(to top, rgba(11, 11, 32, 0.95) 0%, rgba(11, 11, 32, 0.82) 45%, rgba(11, 11, 32, 0.72) 100%),
-    linear-gradient(to right, rgba(11, 11, 32, 0.55) 0%, rgba(11, 11, 32, 0) 65%);
+    linear-gradient(to top, rgba(18, 18, 79, 0.72) 0%, rgba(18, 18, 79, 0.25) 55%, rgba(18, 18, 79, 0) 100%),
+    var(--brand-deep);
+  opacity: 0.86;
+  mix-blend-mode: multiply;
 }
 .hero-banner-content { position: relative; max-width: var(--container); }
 .hero-banner-content > * { max-width: 760px; }
 .hero-banner h1 {
-  font-size: clamp(36px, 5.4vw, 60px);
+  font-size: clamp(40px, 5.4vw, 62px);
   color: #fff;
-  margin-bottom: 22px;
+  margin-bottom: 26px;
   text-wrap: balance;
 }
-.hero-banner .eyebrow { color: var(--gold); }
+.hero-banner .eyebrow { color: var(--yellow); }
 /* Spells out the acronym, with the initials picked out in gold so the letters
    read as A.B.L.E. without needing to write the dotted form separately. It is
    plain text, so a screen reader still reads the phrase normally. */
@@ -589,23 +677,40 @@ a { color: inherit; text-decoration: none; }
   font-size: clamp(17px, 2vw, 22px);
   font-weight: 600;
   letter-spacing: 0.01em;
-  color: #E6E8F5;
+  color: rgba(255, 255, 255, 0.92);
   margin: -6px 0 24px;
 }
 .hero-acronym .ini {
-  color: var(--gold);
+  color: var(--yellow);
   font-weight: 700;
 }
-.hero-banner .lede { color: #E6E8F5; margin-bottom: 32px; }
-.hero-banner .hero-note { color: #B9BEDC; }
-/* A white button reads as the primary action on a dark photo; the navy
-   .btn-primary would disappear into the scrim. */
-.btn-on-image { background: #fff; color: var(--panel); }
-.btn-on-image:hover { background: var(--gold); color: var(--panel); }
-/* .btn-on-dark's border is tuned for the flat navy CTA band; over a photograph
-   that dark indigo edge all but disappears, so lift it here. */
-.hero-banner .btn-outline { border-color: rgba(255, 255, 255, 0.45); }
-.hero-banner .btn-outline:hover { border-color: #fff; }
+.hero-banner .lede { color: rgba(255, 255, 255, 0.9); margin-bottom: 34px; }
+.hero-banner .hero-note { color: rgba(255, 255, 255, 0.72); }
+/* Solid white pill with blue text: the filled button on any dark ground. */
+.btn-on-image { background: #fff; color: var(--brand); border-color: #fff; }
+.btn-on-image:hover { background: var(--yellow); border-color: var(--yellow); color: var(--brand-darkest); }
+/* Outlined white on a photo. */
+.hero-banner .btn-outline { color: #fff; border-color: #fff; }
+.hero-banner .btn-outline:hover { background: #fff; color: var(--brand); }
+/* Small print pinned to the bottom-right corner of the hero. On phones the
+   hero is mostly text, so it drops into the flow beneath the buttons. */
+.hero-fineprint {
+  position: absolute;
+  right: 28px;
+  bottom: 24px;
+  margin: 0;
+  font-size: 12.5px;
+  color: rgba(255, 255, 255, 0.7);
+  max-width: 320px;
+  text-align: right;
+}
+@media (max-width: 900px) {
+  /* The fine print is a flex sibling of the content column, so once it stops
+     being absolutely positioned it has to take the full row or it lands
+     beside the headline. */
+  .hero-banner { flex-wrap: wrap; }
+  .hero-fineprint { position: static; flex-basis: 100%; text-align: left; max-width: none; margin: 8px 0 0; padding: 0 28px; }
+}
 
 @media (max-width: 720px) {
   .hero-banner {
@@ -616,7 +721,8 @@ a { color: inherit; text-decoration: none; }
   /* Weight the scrim evenly on small screens, where the text covers most of
      the frame and there is no "clear" side of the photo left to protect. */
   .hero-banner::after {
-    background: linear-gradient(to top, rgba(11, 11, 32, 0.94) 0%, rgba(11, 11, 32, 0.82) 100%);
+    background: linear-gradient(to top, rgba(18, 18, 79, 0.72) 0%, rgba(18, 18, 79, 0.35) 100%), var(--brand-deep);
+    opacity: 0.9;
   }
 }
 
@@ -851,7 +957,6 @@ a { color: inherit; text-decoration: none; }
   font-family: var(--font-head);
   font-size: 15px;
   font-weight: 800;
-  font-stretch: 105%;
   color: var(--accent-dark);
   margin-bottom: 10px;
 }
@@ -1092,14 +1197,14 @@ a { color: inherit; text-decoration: none; }
 .bio-panel.no-art .bio-content { margin-top: 0; padding-top: 38px; background: none; }
 .bio-name { color: var(--gold); font-size: 27px; margin: 0 0 4px; }
 .bio-role {
-  color: #E6E8F5;
+  color: rgba(255, 255, 255, 0.85);
   font-size: 12.5px;
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   margin: 0 0 18px;
 }
-.bio-text { color: #E6E8F5; font-size: 15.5px; line-height: 1.7; }
+.bio-text { color: rgba(255, 255, 255, 0.88); font-size: 15.5px; line-height: 1.7; }
 .bio-text p { margin: 0 0 0.9em; }
 .bio-text p:last-child { margin-bottom: 0; }
 /* It sits on the undimmed photo now, so it carries its own dark ground: a
@@ -1285,20 +1390,19 @@ a { color: inherit; text-decoration: none; }
 /* A pull quote, set left with a rule down its edge. The previous version was
    centred italic serif under a 110px decorative quote mark, which is ornament
    doing the job the words should do. */
-.testimonial {
-  max-width: 760px;
-  padding-left: 26px;
-  border-left: 3px solid var(--gold);
-}
-.testimonial blockquote { margin: 0 0 20px; }
+/* Serif italic, blue, on the paper: the one place the second typeface
+   appears. The measure is generous because italic Baskerville at this size
+   needs the line length to breathe. */
+.testimonial { max-width: 820px; }
+.testimonial blockquote { margin: 0 0 22px; }
 .testimonial blockquote p {
-  font-family: var(--font-head);
-  font-size: clamp(20px, 2.5vw, 27px);
-  font-weight: 600;
-  font-stretch: 103%;
-  letter-spacing: -0.018em;
-  line-height: 1.32;
-  color: var(--ink);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(21px, 2.6vw, 30px);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.38;
+  color: var(--brand-deep);
   margin: 0;
   text-wrap: pretty;
 }
@@ -1317,8 +1421,8 @@ a { color: inherit; text-decoration: none; }
 
 /* ---------- CTA band ---------- */
 .cta-band {
-  background: var(--panel);
-  border-radius: var(--radius-lg);
+  background: var(--brand);
+  border-radius: var(--radius-photo);
   padding: 56px;
   display: flex;
   align-items: center;
@@ -1330,50 +1434,48 @@ a { color: inherit; text-decoration: none; }
 .cta-band p { color: var(--on-panel-soft); margin-bottom: 0; }
 /* Outline buttons sitting on a dark panel. Replaces a hardcoded inline style
    that was duplicated in the markup and invisible to the palette. */
-.btn-on-dark { color: var(--on-panel); border-color: var(--on-panel-line); }
-.btn-on-dark:hover { border-color: var(--on-panel); }
+.btn-on-dark { color: #FFFFFF; border-color: #FFFFFF; background: transparent; }
+.btn-on-dark:hover { background: #FFFFFF; color: var(--brand); }
 .cta-band .actions { display: flex; gap: 12px; flex-wrap: wrap; }
 
 /* ---------- footer ---------- */
+/* Blue, same as the nav, so the page is bracketed top and bottom. Deep
+   blue rather than the primary so a blue section just above it still
+   reads as its own block. */
 .site-footer {
-  /* A shade below --panel so the CTA band (which is --panel, and often sits
-     just above) still reads as its own object rather than melting into the
-     footer. */
-  background: #0D0D2B;
-  padding: 76px 0 36px;
-  margin-top: 72px;
+  background: var(--brand-deep);
+  padding: 88px 0 40px;
+  margin-top: 0;
 }
 .site-footer .brand { color: #FFFFFF; }
-/* The monogram is indigo-on-transparent and would sink into the navy, so the
-   footer's mark sits on a light chip. */
-.site-footer .brand-mark { background: var(--bg); }
-.site-footer .footer-brand p { color: var(--on-panel-soft); }
+.site-footer .footer-brand p { color: rgba(255, 255, 255, 0.78); }
 .footer-grid {
   display: grid;
   grid-template-columns: 1.4fr 1fr 1fr 1fr;
   gap: 40px;
   margin-bottom: 48px;
 }
-.footer-brand p { font-size: 14px; max-width: 280px; }
+.footer-brand p { font-size: 15px; max-width: 300px; margin-top: 16px; }
+/* Bold white headings, regular white links. */
 .footer-col h4 {
-  font-family: var(--font-body);
-  font-size: 13px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: #8A8FBF;
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #FFFFFF;
   margin-bottom: 16px;
 }
-.footer-col ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
-.footer-col a { font-size: 14.5px; color: #C6CAE8; }
-.footer-col a:hover { color: #FFFFFF; }
+.footer-col ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 11px; }
+.footer-col a { font-size: 15.5px; color: rgba(255, 255, 255, 0.82); }
+.footer-col a:hover { color: var(--yellow); }
 .footer-bottom {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding-top: 28px;
-  border-top: 1px solid #292C5C;
-  font-size: 13px;
-  color: #8A8FBF;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  font-size: 13.5px;
+  color: rgba(255, 255, 255, 0.7);
   flex-wrap: wrap;
   gap: 12px;
 }
@@ -1403,7 +1505,6 @@ a { color: inherit; text-decoration: none; }
   font-family: var(--font-head);
   font-size: clamp(42px, 5vw, 58px);
   font-weight: 800;
-  font-stretch: 105%;
   line-height: 0.95;
   letter-spacing: -0.035em;
   color: var(--accent-dark);
@@ -1740,7 +1841,6 @@ a { color: inherit; text-decoration: none; }
   font-family: var(--font-head);
   font-size: clamp(42px, 5vw, 58px);
   font-weight: 800;
-  font-stretch: 105%;
   line-height: 0.95;
   letter-spacing: -0.035em;
   color: var(--accent-dark);
@@ -1982,22 +2082,25 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ---------- reveal-on-scroll ---------- */
-.reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.5s ease, transform 0.5s ease; }
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.65s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.65s cubic-bezier(0.2, 0.7, 0.2, 1); }
 .reveal.in-view { opacity: 1; transform: translateY(0); }
 
 /* ---------- page header (inner pages) ---------- */
+/* Every inner page opens on a blue band, so the nav runs straight into it
+   and the site reads as one thing from page to page. */
 .page-header {
-  padding: 88px 0 64px;
-  /* A warm gold wash from the top corner against a cool indigo one below:
-     enough temperature to lift the header off the flat page ground without
-     becoming a "banner". Both stay under 15% alpha so text contrast is
-     untouched. */
-  background:
-    radial-gradient(640px 320px at 88% -10%, rgba(240, 192, 72, 0.16), transparent 70%),
-    radial-gradient(720px 360px at 4% 110%, rgba(43, 43, 196, 0.07), transparent 70%);
+  padding: clamp(72px, 9vw, 120px) 0 clamp(64px, 8vw, 96px);
+  background: var(--brand);
+  color: #FFFFFF;
 }
-.page-header h1 { font-size: clamp(34px, 4.8vw, 52px); max-width: 18ch; text-wrap: balance; }
-.page-header .lede { max-width: 620px; }
+.page-header h1 { font-size: clamp(38px, 5.2vw, 60px); max-width: 18ch; text-wrap: balance; color: #FFFFFF; }
+.page-header .lede { max-width: 640px; color: rgba(255, 255, 255, 0.88); }
+.page-header .eyebrow { color: var(--yellow); }
+.page-header .muted { color: rgba(255, 255, 255, 0.72); }
+.page-header .btn-outline { color: #FFFFFF; border-color: #FFFFFF; }
+.page-header .btn-outline:hover { background: #FFFFFF; color: var(--brand); }
+.page-header .btn-primary, .page-header .btn-accent { background: #FFFFFF; color: var(--brand); border-color: #FFFFFF; }
+.page-header .btn-primary:hover, .page-header .btn-accent:hover { background: var(--yellow); border-color: var(--yellow); color: var(--brand-darkest); }
 
 /* ---------- carousel (sliding photo feature) ---------- */
 .carousel {
@@ -2145,3 +2248,519 @@ a { color: inherit; text-decoration: none; }
   .section { padding: 64px 0; }
   .cta-band { padding: 36px 24px; flex-direction: column; align-items: flex-start; }
 }
+
+/* ==========================================================================
+   Homepage blocks
+   The homepage is a sequence of full-bleed bands: blue, paper, blue,
+   green. Each block below is one band's contents. They share nothing with
+   the inner pages except the buttons, headings and .reveal.
+   ========================================================================== */
+
+/* ---------- story strip (three text cards on blue) ---------- */
+/* Eyebrow, extrabold title, date. Text only, no boxes: the three columns are
+   separated by a hairline and by the rhythm of the labels. */
+.story-strip {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+}
+.story-card {
+  display: block;
+  padding-left: 22px;
+  border-left: 1px solid rgba(255, 255, 255, 0.32);
+  color: #FFFFFF;
+}
+.story-card .eyebrow { color: var(--yellow); margin-bottom: 14px; }
+.story-card h3 {
+  font-size: 21px;
+  line-height: 1.15;
+  color: #FFFFFF;
+  margin-bottom: 10px;
+  text-wrap: pretty;
+  transition: color 0.15s ease;
+}
+.story-card:hover h3 { color: var(--yellow); }
+.story-card time, .story-card .story-date { font-size: 14px; color: rgba(255, 255, 255, 0.72); }
+@media (max-width: 860px) {
+  .story-strip { grid-template-columns: 1fr; gap: 28px; }
+}
+
+/* ---------- photo break (full-width photo, nothing on it) ---------- */
+.photo-break {
+  display: block;
+  width: 100%;
+  height: clamp(300px, 46vw, 620px);
+  object-fit: cover;
+  object-position: center 40%;
+}
+
+/* ---------- quote feature (rounded photo + serif pull quote) ---------- */
+.quote-feature {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  gap: clamp(36px, 5vw, 72px);
+  align-items: center;
+}
+.quote-photo {
+  position: relative;
+  border-radius: var(--radius-photo);
+  overflow: hidden;
+  aspect-ratio: 4 / 3.4;
+  background: var(--bg-alt);
+}
+.quote-photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* The pull quote, right-aligned so it leans toward the photo. */
+.quote-text { text-align: right; }
+.quote-text blockquote { margin: 0 0 22px; }
+.quote-text blockquote p {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(22px, 2.6vw, 34px);
+  line-height: 1.3;
+  letter-spacing: -0.012em;
+  color: var(--brand-deep);
+  margin: 0;
+  text-wrap: pretty;
+}
+.quote-text figcaption { font-size: 15px; color: var(--muted); }
+.quote-text figcaption strong { display: block; color: var(--ink); font-weight: 700; }
+@media (max-width: 860px) {
+  .quote-feature { grid-template-columns: 1fr; }
+  .quote-text { text-align: left; }
+}
+
+/* ---- hotspots on the photo ---------------------------------------------- */
+/* Blue dots pinned to points on the picture, each hiding a fact. A dot is
+   a button: hover or focus shows the tip; a tap toggles it (main.js), since
+   touch has no hover. Coordinates are percentages set inline per dot. */
+.hotspot {
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  margin: -13px 0 0 -13px;
+  border-radius: 50%;
+  border: 3px solid #FFFFFF;
+  background: var(--brand);
+  box-shadow: 0 2px 10px rgba(20, 20, 58, 0.35);
+  cursor: pointer;
+  padding: 0;
+  z-index: 2;
+}
+/* The ring that breathes out from the dot, so the eye finds it. */
+.hotspot::before {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 2px solid var(--brand);
+  animation: hotspot-pulse 2.2s ease-out infinite;
+}
+@keyframes hotspot-pulse {
+  0% { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(2.1); opacity: 0; }
+}
+.hotspot-tip {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 14px);
+  transform: translateX(-50%) translateY(6px);
+  width: max-content;
+  max-width: 240px;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  background: var(--brand-darkest);
+  color: #FFFFFF;
+  font-size: 14px;
+  line-height: 1.4;
+  text-align: left;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s linear 0.18s;
+  z-index: 3;
+}
+.hotspot-tip strong { display: block; color: var(--yellow); font-size: 13px; margin-bottom: 2px; }
+.hotspot-tip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -6px;
+  border: 6px solid transparent;
+  border-top-color: var(--brand-darkest);
+}
+.hotspot:hover .hotspot-tip,
+.hotspot:focus-visible .hotspot-tip,
+.hotspot.is-open .hotspot-tip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+  transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s linear 0s;
+}
+/* A dot near the left or right edge would push its tip off the picture. */
+.hotspot.tip-right .hotspot-tip { left: 0; transform: translateX(-12px) translateY(6px); }
+.hotspot.tip-right:hover .hotspot-tip, .hotspot.tip-right:focus-visible .hotspot-tip, .hotspot.tip-right.is-open .hotspot-tip { transform: translateX(-12px) translateY(0); }
+.hotspot.tip-right .hotspot-tip::after { left: 18px; }
+.hotspot.tip-left .hotspot-tip { left: auto; right: 0; transform: translateX(12px) translateY(6px); }
+.hotspot.tip-left:hover .hotspot-tip, .hotspot.tip-left:focus-visible .hotspot-tip, .hotspot.tip-left.is-open .hotspot-tip { transform: translateX(12px) translateY(0); }
+.hotspot.tip-left .hotspot-tip::after { left: auto; right: 12px; margin-left: 0; }
+@media (prefers-reduced-motion: reduce) {
+  .hotspot::before { animation: none; opacity: 0; }
+}
+
+/* ---------- two-column feature rows (text + rounded photo) ---------- */
+.feature-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(36px, 5vw, 72px);
+  align-items: center;
+}
+.feature-row + .feature-row { margin-top: clamp(64px, 8vw, 110px); }
+/* Every other row swaps sides. */
+.feature-row:nth-child(even) .feature-media { order: -1; }
+.feature-media {
+  position: relative;
+  border-radius: var(--radius-photo);
+  overflow: hidden;
+  aspect-ratio: 5 / 4;
+  background: var(--bg-alt);
+}
+.feature-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+/* The branch mark sits in the corner of its photo, on a white chip. */
+.feature-media .logo-chip {
+  position: absolute;
+  left: 18px;
+  bottom: 18px;
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  background: #FFFFFF;
+  padding: 10px;
+  box-shadow: var(--shadow-md);
+}
+.feature-media .logo-chip img { position: static; width: 100%; height: 100%; object-fit: contain; }
+.feature-copy h3 { font-size: clamp(26px, 3vw, 34px); font-weight: 600; letter-spacing: -0.03em; margin-bottom: 14px; }
+.feature-copy .eyebrow { margin-bottom: 14px; }
+.feature-copy p { font-size: 17px; }
+.feature-copy .btn { margin-top: 6px; }
+@media (max-width: 860px) {
+  .feature-row { grid-template-columns: 1fr; gap: 24px; }
+  .feature-row:nth-child(even) .feature-media { order: 0; }
+  .feature-media { aspect-ratio: 16 / 10; }
+}
+
+/* ---------- chapter marquee (single scrolling row on blue) ---------- */
+/* Like the speaker marquee, but text: the schools and cities with a chapter.
+   main.js clones the set and sets .is-live; until then the names wrap as a
+   plain centred row. */
+.chapter-marquee {
+  position: relative;
+  padding: 26px 0;
+  color: #FFFFFF;
+}
+.chapter-marquee .marquee-track {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px 40px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.chapter-marquee .marquee-track li {
+  font-family: var(--font-display);
+  font-size: clamp(18px, 2.2vw, 26px);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+/* A yellow dot between names. */
+.chapter-marquee .marquee-track li::after {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--yellow);
+  flex: none;
+}
+/* Fade the strip out at both edges, so names enter and leave softly and the
+   pause button sits on a quiet patch rather than on a word. */
+.chapter-marquee.is-live {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 90%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 8%, #000 90%, transparent);
+}
+.chapter-marquee.is-live .marquee-track {
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  width: max-content;
+  gap: 40px;
+  animation: speaker-drift 40s linear infinite;
+  will-change: transform;
+}
+.chapter-marquee.is-live:hover .marquee-track,
+.chapter-marquee.is-live:focus-within .marquee-track,
+.chapter-marquee.is-live.is-paused .marquee-track { animation-play-state: paused; }
+.chapter-marquee .marquee-pause {
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.4);
+  color: #FFFFFF;
+  box-shadow: none;
+}
+.chapter-marquee .marquee-pause:hover { background: rgba(255, 255, 255, 0.24); color: #FFFFFF; border-color: #FFFFFF; }
+@media (prefers-reduced-motion: reduce) {
+  .chapter-marquee.is-live .marquee-track { animation: none; }
+  .chapter-marquee.is-live { overflow-x: auto; }
+}
+
+/* ---------- stat mosaic (photos, blue overlay, huge yellow numbers) ---------- */
+/* Edge to edge, no gaps, no radii: three photographs multiplied to blue with
+   a number sitting on each. The number is the whole point, so it is set as
+   big as the tile allows and the label under it stays small. */
+.stat-mosaic {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  background: var(--brand-deep);
+}
+.stat-tile {
+  position: relative;
+  isolation: isolate;
+  min-height: clamp(300px, 34vw, 460px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: clamp(28px, 3.4vw, 48px);
+  color: #FFFFFF;
+  overflow: hidden;
+}
+.stat-tile img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+}
+.stat-tile::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(to top, rgba(18, 18, 79, 0.55), rgba(18, 18, 79, 0) 60%), var(--brand);
+  mix-blend-mode: multiply;
+  opacity: 0.88;
+}
+.stat-num {
+  font-family: var(--font-display);
+  font-size: clamp(64px, 7.6vw, 104px);
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+  color: var(--yellow);
+  margin-bottom: 12px;
+}
+.stat-label {
+  font-size: clamp(16px, 1.5vw, 19px);
+  font-weight: 500;
+  line-height: 1.3;
+  max-width: 22ch;
+  margin: 0;
+  color: #FFFFFF;
+}
+@media (max-width: 860px) {
+  .stat-mosaic { grid-template-columns: 1fr; }
+  .stat-tile { min-height: 260px; }
+}
+
+/* ---------- action cards (three tilted photo cards on blue) ---------- */
+/* The section behind them is a photo mosaic pushed down to a blue wash, so
+   the cards read as objects laid on a table. */
+.action-section {
+  position: relative;
+  isolation: isolate;
+  background: var(--brand);
+  overflow: hidden;
+}
+.action-mosaic {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+.action-mosaic img { width: 100%; height: 100%; object-fit: cover; }
+.action-section::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--brand);
+  opacity: 0.9;
+  mix-blend-mode: multiply;
+}
+/* A second, plain layer on top of the multiply so the wash is opaque enough
+   for the white copy: multiply alone lets bright photo areas through. */
+.action-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: rgba(27, 27, 128, 0.74);
+}
+.action-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  padding: 24px 0 12px;
+}
+.action-card {
+  position: relative;
+  display: block;
+  aspect-ratio: 3 / 4;
+  border-radius: var(--radius-photo);
+  border: 5px solid var(--yellow);
+  overflow: hidden;
+  background: var(--brand);
+  color: #FFFFFF;
+  box-shadow: 0 22px 50px rgba(20, 20, 58, 0.4);
+  transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 0.35s ease;
+}
+/* Fanned like a hand of cards: outer two tilt away from the middle. */
+.action-card:nth-child(1) { transform: rotate(-4deg) translateY(10px); }
+.action-card:nth-child(2) { transform: rotate(0deg) translateY(-6px); }
+.action-card:nth-child(3) { transform: rotate(4deg) translateY(10px); }
+.action-card:hover, .action-card:focus-visible {
+  transform: rotate(0deg) translateY(-14px) scale(1.03);
+  box-shadow: 0 32px 64px rgba(20, 20, 58, 0.5);
+}
+.action-card img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.action-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(18, 18, 79, 0.55) 0%, rgba(18, 18, 79, 0.1) 40%, rgba(18, 18, 79, 0.8) 100%);
+}
+.action-card-word {
+  position: absolute;
+  top: 22px;
+  left: 24px;
+  z-index: 1;
+  font-family: var(--font-display);
+  font-size: clamp(34px, 3.6vw, 48px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  text-transform: lowercase;
+  color: #FFFFFF;
+}
+.action-card-text {
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  bottom: 22px;
+  z-index: 1;
+  font-size: 15.5px;
+  line-height: 1.4;
+  color: #FFFFFF;
+}
+.action-card-text span { display: block; color: var(--yellow); font-weight: 700; margin-top: 8px; }
+@media (max-width: 860px) {
+  .action-cards { grid-template-columns: 1fr; max-width: 360px; margin: 0 auto; gap: 26px; }
+  .action-card:nth-child(1) { transform: rotate(-2deg); }
+  .action-card:nth-child(3) { transform: rotate(2deg); }
+  .action-card { aspect-ratio: 4 / 3; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .action-card:hover, .action-card:focus-visible { transform: rotate(0deg); }
+}
+
+/* ---------- promo (the one green section) ---------- */
+/* A deeper green shape swept across the right-hand side, behind the product.
+   It is a rotated rounded rectangle, oversized so its corners never show. */
+.section-green { position: relative; isolation: isolate; overflow: hidden; }
+.section-green::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: -20%;
+  bottom: -20%;
+  right: -12%;
+  width: 58%;
+  background: var(--green-deep);
+  border-radius: 48% 40% 44% 52%;
+  transform: rotate(-12deg);
+}
+.promo {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: clamp(36px, 5vw, 72px);
+  align-items: center;
+}
+.promo h2 { margin-bottom: 18px; }
+.promo .lede { color: rgba(255, 255, 255, 0.94); margin-bottom: 28px; }
+.promo-note { font-size: 14px; color: rgba(255, 255, 255, 0.92); margin: 16px 0 0; }
+/* The "product": a stack of the app's four tools as cards, since the app is
+   a website and has no box to photograph. Tilted and overlapped like the
+   action cards, in the same yellow-edged idiom. */
+.promo-stack {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  max-width: 440px;
+  margin-left: auto;
+}
+.promo-stack-card {
+  position: absolute;
+  width: 62%;
+  padding: 20px 22px 22px;
+  border-radius: var(--radius-lg);
+  background: #FFFFFF;
+  color: var(--ink);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.25);
+}
+/* Laid out as two loose columns so every card's title stays readable; only
+   the corners overlap. */
+.promo-stack-card:nth-child(1) { left: 0; top: 0; transform: rotate(-5deg); }
+.promo-stack-card:nth-child(2) { right: 0; top: 21%; transform: rotate(3deg); }
+.promo-stack-card:nth-child(3) { left: 0; top: 45%; transform: rotate(-2deg); }
+.promo-stack-card:nth-child(4) { right: 0; top: 66%; transform: rotate(4deg); border: 4px solid var(--yellow); }
+.promo-stack-card { width: 54%; }
+.promo-stack-card .eyebrow { color: var(--green); margin-bottom: 6px; }
+.promo-stack-card strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  color: var(--ink);
+}
+.promo-stack-card span { display: block; font-size: 13.5px; color: var(--muted); margin-top: 6px; line-height: 1.35; }
+@media (max-width: 860px) {
+  .promo { grid-template-columns: 1fr; }
+  .promo-stack { margin: 12px auto 0; max-width: 360px; }
+  .section-green::before { top: auto; height: 60%; right: -30%; width: 90%; }
+}
+
+/* ---------- inner-page numbers ---------- */
+/* The impact page's figures, in the same idiom as the homepage mosaic: yellow
+   on blue. */
+.section-brand .world-num, .section-brand .impact-num { color: var(--yellow); }

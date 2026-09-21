@@ -327,85 +327,84 @@ aspect ratio means updating the `width`/`height` attributes on the banner `<img>
 in `index.html` (currently 784×725), which is what reserves the right space while
 the image loads.
 
-### Type and the house style
+### The design system
 
-Headlines are **Archivo**, weight 800, slightly expanded via its width axis
-(`font-stretch: 105%`); body copy is **DM Sans**. Both load from Google Fonts.
-The headline face was an editorial serif (Fraunces) set in 600 with a gold
-*italic* phrase in the hero. That pairing, and a set of habits that came with
-it, made the site read as generated rather than designed, so the following are
-deliberate and worth not reintroducing:
+The visual language takes its cues from cancerkidsfirst.org, at the founder's
+request: bold colour blocking, big airy type, real photographs of people, pill
+buttons, and one serif italic used as a counterpoint. The colours are ABLE's
+own — the logo's royal blue and gold, not the reference site's purple — and
+everything is driven from the variable block at the top of `style.css`.
 
-- **No eyebrow labels above headings.** Every section on every page used to open
-  with a short rule followed by letterspaced uppercase ("WHAT WE DO", "HOW IT
-  WORKS") — 43 of them across 14 pages, nearly all just restating the heading
-  underneath. Four survive, on Get Involved and in the hero, where they label
-  something the heading genuinely doesn't say. A heading that needs a label
-  above it usually needs a better heading.
-- **Numbers are solid ink**, not `background-clip: text` gradients, and the
-  statistic blocks are figures under a rule rather than cards.
-- **No invented monogram icons.** The three principles on Our Story sat behind
-  tinted squares reading "$0", "ALL" and "SL"; the words already said it.
-- **The steps keep their numbers** — the order is real — but as plain numerals,
-  not "01" in an outlined circle.
-- **Not everything is a card.** Border, fill, radius and shadow mean "separate
-  object"; spend them where that's true. The branch cards lost their coloured
-  top rail (the branch colour moved to the tag beside the logo, which is where
-  the reader looks anyway) and the hover lift.
-- **Vary the copy.** "No fee, no application, nothing to qualify for" and its
-  variants appeared eight times in slightly different orders. Say the specific
-  true thing instead.
+**Colour.** `--brand` (#2A2AB4), `--brand-deep` (#1B1B80) and `--brand-darkest`
+(#12124F) are sampled from the monogram (royal blue #1010B0 shading to navy
+#202070). They carry the nav, the full-bleed bands, the photo overlays and the
+footer. `--yellow` (#FFD34D) is for the big numbers, one word in a heading, and
+the outline on the action cards — loud and rare. `--bg` is a warm off-white
+paper with a faint SVG grain behind it. `--green` is the one section that is
+neither blue nor paper (the SAT-course promo), so the homepage isn't a single
+hue. The branch colours (`--sat`, `--health`, `--business`, `--eng`) stay
+outside this palette on purpose: a branch badge and a map pin have to be
+identifiable at a glance, including next to each other.
 
-### Palette
-The site runs a **light indigo palette** with gold as the branch accent, and the
-whole thing lives in CSS variables at the top of `style.css` — changing the scheme
-means editing that one block. A dark navy variant was built and tested against the
-same markup, so inverting it is a palette edit rather than a rewrite.
+Retoning the site is an edit to the three `--brand` lines. Photo overlays use
+`mix-blend-mode: multiply` over the brand colour rather than a flat tint, which
+is what makes them read as duotone.
 
-Several variables exist specifically so that inversion stays possible:
+**Type.** One geometric sans, **Outfit**, from the 62px hero down to the 11px
+labels, plus **Libre Baskerville italic** for pull quotes and the testimonial
+and nothing else. Big headings are set *light* — `h1` is weight 400 with
+`letter-spacing: -0.04em` and `line-height: 1`, `h2` is 500 — and weight comes
+back as the size drops, so card titles (`h3`) are 800 at 18–21px. Body is 17px.
+Do not put Baskerville on a second element in the same viewport; it only works
+as the exception.
 
-- `--ink` means "highest contrast against the page", so here it is the *light*
-  end of the scale. Anything needing "a dark block with light text on it" uses
-  `--panel` / `--on-panel` instead. Don't put `color: #fff` on a `var(--ink)`
-  background; on this palette that is white on near-white.
-- `--accent-dark` is used for small text on the page background, so on a dark
-  palette it is *lighter* than `--accent`, not darker.
-- `--on-brand` is the text colour on a branch colour (`--sat`/`--health`/
-  `--business`), which flips with the theme the same way `--accent-ink` does.
-  It is close to vestigial now: since the branch colours were re-pointed at the
-  logos, nothing puts text directly on one — the places that used to (the
-  logo-slot fallbacks) sit on the darker `-ink` value instead, so white always
-  works. Keep it if you invert the palette, or drop it and the three base rules
-  that still reference it.
-- Shadows need to be far denser on a dark ground; light-theme shadow values are
-  invisible there.
+**Eyebrows** are back, in a specific form: 11px, 700, uppercase, 0.14em
+tracking, and only as a *label* on a card or block ("EVENT", "NEW BRANCH",
+"ABLE PREPS · COLLEGE PREP"). Not as a rule-and-caps decoration above every
+section heading, which is what they were before and why they were removed.
 
-Inverting the palette is only possible because every logo is transparent — opaque
-logos render as white slabs on a dark page.
+**Buttons** are all pills (`--radius-pill`), 16px, 1px border on every variant
+so filled and outlined sit at the same height, no shadow, no hover lift. On a
+dark ground the outline goes white and the solid goes white-on-blue; `.btn-pastel`
+(lavender) is for the green section, where white glares.
 
-### The hero banner
-The homepage opens with a full-bleed photo (`photos/hero.jpg`) under a gradient
-scrim, with the headline over it. Two things to preserve if you swap the photo:
+**Sections** are tall (`clamp(80px, 10vw, 140px)`) and alternate paper /
+`.section-brand` / paper / `.section-green`. The colour does the separating —
+no rules or borders between bands. Every inner page opens on a `.page-header`
+in `--brand`, so the nav runs straight into it.
 
-- The scrim is a **gradient, not a flat overlay** — heaviest bottom-left behind
-  the text, lifting toward the top-right so the photo is still legible. A flat
-  overlay either washes out the image or leaves text unreadable over bright areas.
-- **Re-check contrast after changing the photo.** Contrast here depends on the
-  photo's pixels, not on CSS values, so it has to be measured against the render.
-  Current worst-case behind the text: headline 9.7:1, gold label 6.1:1, lede
-  10.0:1. That gold line is the tightest — when the separate logo banner was removed
-  and the hero moved up under the nav, that line landed over the ceiling lights
-  and dropped to 3.7:1, which is why the scrim's top stop is 0.72 rather than the
-  0.55 it started at. Swap in a brighter photo and it needs raising again.
+**Photos** get `--radius-photo` (24px) in light sections and no radius in the
+dark mosaics (`.stat-mosaic`, `.action-section`), where they run edge to edge.
 
-The section also carries its own dark `background`, so if the photo ever fails to
-load the white text still lands on something dark instead of the light page.
+**Homepage blocks**, top to bottom, with the class that owns each: hero with
+blue multiply overlay and fine print bottom-right (`.hero-banner`,
+`.hero-fineprint`); three text-only story cards on blue (`.story-strip`, fed by
+hand from the timeline — update when a new entry goes in); a full-width
+photograph with nothing on it (`.photo-break`); the world statistics and then
+a rounded photo with hotspot dots beside a serif pull quote (`.quote-feature`,
+`.hotspot`); alternating text/photo rows for the four branches (`.feature-row`);
+a scrolling strip of chapter schools and cities (`.chapter-marquee`, cloned by
+the same code as the speaker marquee — add an `<li>` per new chapter); the
+stats mosaic (`.stat-mosaic`, three tiles, keep the numbers in step with
+`impact.html`); the green promo (`.section-green`, `.promo`); the speaker
+marquee; and the three tilted action cards (`.action-section`, `.action-cards`).
 
-The banner sits directly under the nav — there is deliberately no logo block
-between them. The header carries the logo instead, at 52px.
+**Nav** is a 100px solid blue bar. The monogram is turned white with
+`filter: brightness(0) invert(1)`, which only works because the PNG has an
+alpha channel — an opaque logo would become a white square. The Donate pill is
+the bar's only button; "Donate" also stays in the link list for the phone menu,
+hidden on desktop by `.nav-donate`.
+
+### Hero contrast
+The hero text sits on a photograph, so its contrast depends on the pixels, not
+on CSS values, and has to be measured against the render after any change of
+photo. The overlay is `--brand-deep` multiplied at 0.86 with a gradient
+deepening the bottom-left under the text. A brighter photo means raising the
+gradient's bottom stop. The section carries its own blue `background` so a
+failed image still leaves white text on something dark.
 
 `.hero-acronym` spells out A.B.L.E. (Advancing Better Learning Empowerment) with
-the initials picked out in gold. It is plain text, so screen readers read the
+the initials picked out in yellow. It is plain text, so screen readers read the
 phrase normally rather than announcing four separate letters.
 
 ## Homepage sections that need updating as ABLE grows

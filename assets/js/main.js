@@ -260,9 +260,12 @@ document.addEventListener("DOMContentLoaded", () => {
   // source of truth, and — more importantly — so the copies can be marked
   // aria-hidden. Duplicated in the markup, every speaker would be announced
   // three times to a screen reader.
-  document.querySelectorAll("[data-speaker-marquee]").forEach((marquee) => {
-    const track = marquee.querySelector(".speaker-track");
+  // The chapter strip on the homepage ([data-marquee]) is the same mechanism
+  // with text items instead of cards, so it shares this code.
+  document.querySelectorAll("[data-speaker-marquee], [data-marquee]").forEach((marquee) => {
+    const track = marquee.querySelector(".speaker-track, .marquee-track");
     if (!track) return;
+    const what = marquee.dataset.marqueeLabel || "guest speaker strip";
     const originals = Array.from(track.children);
     if (!originals.length) return;
 
@@ -299,10 +302,7 @@ document.addEventListener("DOMContentLoaded", () => {
     toggle.className = "marquee-pause";
     const syncToggle = () => {
       toggle.textContent = userPaused ? "▶" : "❚❚";
-      toggle.setAttribute(
-        "aria-label",
-        userPaused ? "Play the guest speaker strip" : "Pause the guest speaker strip"
-      );
+      toggle.setAttribute("aria-label", (userPaused ? "Play the " : "Pause the ") + what);
       marquee.classList.toggle("is-paused", userPaused);
     };
     toggle.addEventListener("click", () => {
@@ -318,6 +318,37 @@ document.addEventListener("DOMContentLoaded", () => {
       syncToggle();
     });
   });
+
+  // Photo hotspots (homepage quote feature).
+  //
+  // Hover and keyboard focus show a tip through CSS alone; this adds a tap
+  // toggle for touch, where there is no hover, and closes an open tip when
+  // anything else is tapped. aria-expanded tracks the open state.
+  const hotspots = Array.from(document.querySelectorAll(".hotspot"));
+  if (hotspots.length) {
+    const closeAll = (except) => {
+      hotspots.forEach((h) => {
+        if (h !== except) {
+          h.classList.remove("is-open");
+          h.setAttribute("aria-expanded", "false");
+        }
+      });
+    };
+    hotspots.forEach((h) => {
+      h.setAttribute("aria-expanded", "false");
+      h.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const open = !h.classList.contains("is-open");
+        closeAll(h);
+        h.classList.toggle("is-open", open);
+        h.setAttribute("aria-expanded", String(open));
+      });
+    });
+    document.addEventListener("click", () => closeAll(null));
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeAll(null);
+    });
+  }
 
   // Sliding photo carousel
   document.querySelectorAll(".carousel").forEach((carousel) => {
