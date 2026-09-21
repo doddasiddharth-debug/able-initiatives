@@ -1685,6 +1685,9 @@ a { color: inherit; text-decoration: none; }
 .entry-date { font-size: 13px; color: var(--muted); }
 .entry-body h3 { font-size: 20px; margin-bottom: 8px; }
 .entry-body p { font-size: 14.5px; margin-bottom: 0; }
+/* Links are transparent site-wide (a { color: inherit }), so one inside an
+   entry has to say so itself. */
+.entry-body p a { color: var(--accent-dark); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
 .entry-speaker {
   margin-top: 14px !important;
   padding-top: 12px;
