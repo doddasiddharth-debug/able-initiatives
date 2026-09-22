@@ -22,14 +22,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Libre+Baskerville:ital@1&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=15">
+<link rel="stylesheet" href="assets/css/style.css?v=17">
 <noscript><style>
   /* Scroll-reveal hides content until JS marks it in-view. If JS never runs,
      the page would render blank, so opt out of the animation entirely. */
   .reveal { opacity: 1 !important; transform: none !important; }
 </style></noscript>
 </head>
-<body>
+<body class="branch-preps">
 
 <a class="skip-link" href="#main-content">Skip to main content</a>
 
@@ -141,6 +141,102 @@
     </div>
   </section>
 
+  <!-- WHAT THIS BRANCH HAS BEEN DOING: one card per session, newest last.
+       Add a card here when the branch runs something, and add the matching
+       entry to timeline.html. -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">What we've been doing</span>
+        <h2>Every session we've run so far.</h2>
+        <p class="lede">Free to attend, and the slides and materials go home with everyone who comes.</p>
+      </div>
+      <div class="session-grid reveal">
+        <article class="session-card">
+          <div class="session-photo">
+            <img src="assets/images/gallery/preps-webinar/1.jpg" width="1280" height="590" loading="lazy" decoding="async" alt="The ABLE Preps webinar in progress, with the live Q&amp;A open" data-fallback>
+            <div data-fallback-el class="session-photo-fallback"><span>Photo coming soon</span></div>
+          </div>
+          <div class="session-body">
+            <div class="session-date"><time datetime="2026-07-21">July 21, 2026</time></div>
+            <h3>College Admissions Journey Webinar</h3>
+            <p>SAT prep and the college application process, in a live online Q&amp;A.</p>
+            <p class="session-speaker">Emma Luu · Student, Stanford University</p>
+          </div>
+        </article>
+        <article class="session-card">
+          <div class="session-photo">
+            <div class="session-photo-fallback" style="display:flex"><span>Photos coming soon</span></div>
+          </div>
+          <div class="session-body">
+            <div class="session-date"><time datetime="2026-08-03">August 3, 2026</time></div>
+            <h3>College Admissions Journey Panel</h3>
+            <p>An in-person panel on the college admissions process.</p>
+          </div>
+        </article>
+        <article class="session-card">
+          <div class="session-photo is-mark">
+            <img src="assets/images/logos/logo-preps.png" width="761" height="703" loading="lazy" decoding="async" alt="The ABLE Preps logo" data-fallback>
+            <div data-fallback-el class="session-photo-fallback"><span>ABLE Preps</span></div>
+          </div>
+          <div class="session-body">
+            <div class="session-date"><time datetime="2026-09-13">September 13, 2026</time></div>
+            <h3>The SAT prep course goes live</h3>
+            <p>Our Digital SAT course, free at <a href="https://prep.ableinitiatives.com/">prep.ableinitiatives.com</a>: a question bank by skill, timed modules in the real test's layout, a study planner, and score tools.</p>
+          </div>
+        </article>
+      </div>
+      <p style="margin:32px 0 0;"><a href="timeline.html" class="btn btn-outline">See the full timeline →</a></p>
+    </div>
+  </section>
+
+  <!-- THE BRANCH TEAM. Mirrors the branch block on our-team.html; keep the
+       two in step. No bios here — the team page holds those. -->
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Who runs it</span>
+        <h2>The ABLE Preps team</h2>
+        <p class="lede">Students who volunteer their time alongside school to plan and run every session.</p>
+      </div>
+      <div class="officer-grid reveal">
+        <div class="officer">
+          <div class="officer-photo">
+            <img src="assets/images/team/helen-wan.jpg" loading="lazy" decoding="async" alt="Helen Wan" data-fallback style="object-position:center 30%;">
+            <span data-fallback-el class="logo-slot-fallback">HW</span>
+          </div>
+          <div class="officer-name">Helen Wan</div>
+          <div class="officer-role">President</div>
+        </div>
+        <div class="officer">
+          <div class="officer-photo">
+            <img src="assets/images/team/advait-jadhav.jpg" width="800" height="800" loading="lazy" decoding="async" alt="Advait Jadhav" data-fallback>
+            <span data-fallback-el class="logo-slot-fallback">AJ</span>
+          </div>
+          <div class="officer-name">Advait Jadhav</div>
+          <div class="officer-role">Vice President</div>
+        </div>
+        <div class="officer">
+          <div class="officer-photo">
+            <img src="assets/images/team/farah-tibin.jpg" loading="lazy" decoding="async" alt="Farah Tibin" data-fallback style="object-position:center 22%;">
+            <span data-fallback-el class="logo-slot-fallback">FT</span>
+          </div>
+          <div class="officer-name">Farah Tibin</div>
+          <div class="officer-role">Vice President of Outreach</div>
+        </div>
+        <div class="officer">
+          <div class="officer-photo">
+            <img src="assets/images/team/angelina-wan.jpg" width="700" height="700" loading="lazy" decoding="async" alt="Angelina Wan" data-fallback>
+            <span data-fallback-el class="logo-slot-fallback">AW</span>
+          </div>
+          <div class="officer-name">Angelina Wan</div>
+          <div class="officer-role">Vice President of PR</div>
+        </div>
+      </div>
+      <p style="margin:32px 0 0;"><a href="our-team.html" class="btn btn-outline">Meet the whole team →</a></p>
+    </div>
+  </section>
+
   <section class="section-tight">
     <div class="container">
       <div class="cta-band reveal">
@@ -199,6 +295,6 @@
   </div>
 </footer>
 
-<script src="assets/js/main.js?v=15"></script>
+<script src="assets/js/main.js?v=17"></script>
 </body>
 </html>

@@ -22,14 +22,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Libre+Baskerville:ital@1&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=15">
+<link rel="stylesheet" href="assets/css/style.css?v=17">
 <noscript><style>
   /* Scroll-reveal hides content until JS marks it in-view. If JS never runs,
      the page would render blank, so opt out of the animation entirely. */
   .reveal { opacity: 1 !important; transform: none !important; }
 </style></noscript>
 </head>
-<body>
+<body class="branch-health">
 
 <a class="skip-link" href="#main-content">Skip to main content</a>
 
@@ -139,6 +139,89 @@
     </div>
   </section>
 
+  <!-- WHAT THIS BRANCH HAS BEEN DOING: one card per session, newest last.
+       Add a card here when the branch runs something, and add the matching
+       entry to timeline.html. -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">What we've been doing</span>
+        <h2>What we've run so far.</h2>
+        <p class="lede">Free to attend, and the slides and materials go home with everyone who comes.</p>
+      </div>
+      <div class="session-grid reveal">
+        <article class="session-card">
+          <div class="session-photo">
+            <img src="assets/images/gallery/health-workshop/1.jpg" width="1280" height="960" loading="lazy" decoding="async" alt="The ABLE Health workshop panel" data-fallback>
+            <div data-fallback-el class="session-photo-fallback"><span>Photo coming soon</span></div>
+          </div>
+          <div class="session-body">
+            <div class="session-date"><time datetime="2026-07-16">July 16, 2026</time></div>
+            <h3>Health Literacy Workshop</h3>
+            <p>A panel on health literacy: the basics school tends to skip.</p>
+            <p class="session-speaker">Michelle Beyrle · Deputy Executive Director, El Paso County Public Health</p>
+          </div>
+        </article>
+      </div>
+      <p style="margin:32px 0 0;"><a href="timeline.html" class="btn btn-outline">See the full timeline →</a></p>
+    </div>
+  </section>
+
+  <!-- THE BRANCH TEAM. Mirrors the branch block on our-team.html; keep the
+       two in step. No bios here — the team page holds those. -->
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Who runs it</span>
+        <h2>The ABLE Health team</h2>
+        <p class="lede">Students who volunteer their time alongside school to plan and run every session.</p>
+      </div>
+      <div class="officer-grid reveal">
+        <div class="officer">
+          <div class="officer-photo">
+            <img src="assets/images/team/Eric-Huang.jpeg" width="900" height="900" loading="lazy" decoding="async" alt="Eric Huang" data-fallback>
+            <span data-fallback-el class="logo-slot-fallback">EH</span>
+          </div>
+          <div class="officer-name">Eric Huang</div>
+          <div class="officer-role">President</div>
+        </div>
+        <div class="officer">
+          <div class="officer-photo">
+            <img src="assets/images/team/chelsea-ogden.jpg" width="710" height="800" loading="lazy" decoding="async" alt="Chelsea Ogden" data-fallback>
+            <span data-fallback-el class="logo-slot-fallback">CO</span>
+          </div>
+          <div class="officer-name">Chelsea Ogden</div>
+          <div class="officer-role">Vice President</div>
+        </div>
+        <div class="officer">
+          <div class="officer-photo">
+            <img src="assets/images/team/neerav-shrestha.jpg" width="330" height="330" loading="lazy" decoding="async" alt="Neerav Shrestha" data-fallback>
+            <span data-fallback-el class="logo-slot-fallback">NS</span>
+          </div>
+          <div class="officer-name">Neerav Shrestha</div>
+          <div class="officer-role">Co-Vice President of Outreach</div>
+        </div>
+        <div class="officer">
+          <div class="officer-photo">
+            <img src="assets/images/team/ayaan-tencheri.jpg" width="900" height="900" loading="lazy" decoding="async" alt="Ayaan Tencheri" data-fallback>
+            <span data-fallback-el class="logo-slot-fallback">AT</span>
+          </div>
+          <div class="officer-name">Ayaan Tencheri</div>
+          <div class="officer-role">Co-Vice President of Outreach</div>
+        </div>
+        <div class="officer">
+          <div class="officer-photo">
+            <img src="assets/images/team/Praful-Meka.jpeg" width="326" height="522" loading="lazy" decoding="async" alt="Praful Meka" data-fallback style="object-position:center 20%;">
+            <span data-fallback-el class="logo-slot-fallback">PM</span>
+          </div>
+          <div class="officer-name">Praful Meka</div>
+          <div class="officer-role">Vice President of PR</div>
+        </div>
+      </div>
+      <p style="margin:32px 0 0;"><a href="our-team.html" class="btn btn-outline">Meet the whole team →</a></p>
+    </div>
+  </section>
+
   <section class="section-tight">
     <div class="container">
       <div class="cta-band reveal">
@@ -197,6 +280,6 @@
   </div>
 </footer>
 
-<script src="assets/js/main.js?v=15"></script>
+<script src="assets/js/main.js?v=17"></script>
 </body>
 </html>

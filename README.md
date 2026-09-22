@@ -395,6 +395,45 @@ alpha channel — an opaque logo would become a white square. The Donate pill is
 the bar's only button; "Donate" also stays in the link list for the phone menu,
 hidden on desktop by `.nav-donate`.
 
+### Branch pages take their branch's colour
+
+`preps.html`, `health.html`, `business.html` and `engineering.html` each carry
+a class on `<body>` — `branch-preps`, `branch-health`, `branch-business`,
+`branch-eng` — and that is the whole mechanism. The class sets four custom
+properties and every rule in the stylesheet already reads them, so the nav,
+page header, buttons, links, eyebrows, `.section-alt` tint, CTA band and footer
+all retint together. Nothing else on the site changes.
+
+- `--accent` is the branch's `-ink` value. It has to work both as a ground for
+  white text and as small text on the paper, and all four clear 5.8:1 for both.
+- `--accent-dark` and `--branch-band` are a step darker again, for the
+  full-bleed bands where the lede and the yellow accent also need 4.5:1
+  (white ≥7.5:1, yellow ≥5.2:1 on all four).
+- `--branch` is the bright logo colour. Graphical cues only — pin rings, card
+  borders, the rule above a speaker credit. Never put text on it.
+
+Adding a branch means adding one `body.branch-*` block beside the others.
+
+Each branch page has two sections that need updating as the branch runs things:
+
+- **"What we've been doing"** (`.session-grid`) — one `.session-card` per
+  session. A session with no photograph yet uses the "Photos coming soon"
+  fallback; a milestone rather than a session uses `.session-photo.is-mark`,
+  which shows the branch logo contained rather than cropped. A branch that has
+  run nothing shows `.session-empty` instead. Add the matching entry to
+  `timeline.html` at the same time.
+- **"Who runs it"** (`.officer-grid`) — mirrors that branch's block on
+  `our-team.html`; keep the two in step. Deliberately its own component rather
+  than `.team-card`, so the bio-dialog code on the team page has nothing to
+  bind to here. No bios — the team page holds those.
+
+### The logo is never recoloured
+The monogram keeps its own blue and gold everywhere. It is dark on a
+transparent ground and the bars behind it are dark, so `.brand-mark` gives it a
+white disc to sit on. An earlier version flattened it to a white silhouette
+with `filter: brightness(0) invert(1)`; don't. If the mark needs to sit on a new
+dark ground, give it a light chip, don't repaint it.
+
 ### Hero contrast
 The hero text sits on a photograph, so its contrast depends on the pixels, not
 on CSS values, and has to be measured against the render after any change of

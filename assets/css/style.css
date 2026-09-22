@@ -23,10 +23,12 @@
   --brand-darkest: #12124F;
   --yellow: #FFD34D;
   --gold: #E6B33F;
-  /* The one section that is neither blue nor paper, so the page isn't a
-     single hue from top to bottom. */
-  --green: #2F7A34;
-  --green-deep: #1F5B24;
+  /* The Preps band: the one section that is neither blue nor paper, so the
+     page isn't a single hue top to bottom. Gold, because the section promotes
+     an ABLE Preps product and gold is the Preps mark's colour. It is the one
+     light-coloured band on the site, so its text is --ink, not white. */
+  --preps: #E6B33F;
+  --preps-deep: #CE9A22;
   /* Pastel pill on the coloured sections, where a white button would glare. */
   --lavender: #C3CCF5;
 
@@ -203,7 +205,6 @@ h4 { font-weight: 700; letter-spacing: -0.02em; }
    must not leak to ordinary headings. Not italicised. */
 .hero-banner h1 em,
 .section-brand h2 em,
-.section-green h2 em,
 .page-header h1 em {
   font-style: normal;
   color: var(--yellow);
@@ -249,12 +250,14 @@ a { color: inherit; text-decoration: none; }
 .section-brand .eyebrow { color: var(--yellow); }
 .section-brand .muted { color: rgba(255, 255, 255, 0.7); }
 .section-brand-deep { background: var(--brand-deep); }
-/* The one green section. */
-.section-green { background: var(--green); color: #FFFFFF; }
-.section-green h2, .section-green h3 { color: #FFFFFF; }
-.section-green p { color: rgba(255, 255, 255, 0.92); }
-/* Yellow on this green only reaches 3.7:1, so the label goes white here. */
-.section-green .eyebrow { color: #FFFFFF; }
+/* The gold Preps band. Dark text, unlike every other coloured band. */
+.section-preps { background: var(--preps); color: var(--ink); }
+.section-preps h2, .section-preps h3 { color: var(--ink); }
+.section-preps p { color: #413F5E; }
+.section-preps .eyebrow { color: var(--brand-deep); }
+/* The highlighted word goes blue here: yellow-on-gold is invisible, and the
+   blue ties the band back to the rest of the palette. 7.2:1. */
+.section-preps h2 em { font-style: normal; color: var(--brand-deep); }
 .section-head { max-width: 720px; margin-bottom: 52px; }
 .section-head.center { margin-left: auto; margin-right: auto; text-align: center; }
 .lede { font-size: 20px; line-height: 1.45; color: var(--ink-soft); }
@@ -286,8 +289,8 @@ a { color: inherit; text-decoration: none; }
 }
 /* Solid blue. .btn-primary and .btn-accent were two different dark fills in
    the old palette; there is one now. */
-.btn-primary, .btn-accent { background: var(--brand); color: #FFFFFF; border-color: var(--brand); }
-.btn-primary:hover, .btn-accent:hover { background: var(--brand-deep); border-color: var(--brand-deep); }
+.btn-primary, .btn-accent { background: var(--accent); color: #FFFFFF; border-color: var(--accent); }
+.btn-primary:hover, .btn-accent:hover { background: var(--accent-dark); border-color: var(--accent-dark); }
 /* Outlined, on a light ground. */
 .btn-outline { background: transparent; color: var(--ink); border-color: var(--ink); }
 .btn-outline:hover { background: var(--ink); color: #FFFFFF; }
@@ -295,12 +298,18 @@ a { color: inherit; text-decoration: none; }
    would vanish. Deep blue text: 7.8:1 on the lavender. */
 .btn-pastel { background: var(--lavender); color: var(--brand-darkest); border-color: var(--lavender); }
 .btn-pastel:hover { background: #FFFFFF; border-color: #FFFFFF; }
+/* On the gold band the pastel pill has nothing to contrast against, so the
+   promo's call to action is solid blue. */
+.section-preps .btn-pastel { background: var(--brand-deep); color: #FFFFFF; border-color: var(--brand-deep); }
+.section-preps .btn-pastel:hover { background: var(--ink); border-color: var(--ink); }
 .btn-sm { padding: 10px 20px; font-size: 14.5px; }
 /* On a coloured band every outline goes white and every solid goes white-on-
    colour, so the same markup works on either ground. */
-.section-brand .btn-outline, .section-green .btn-outline { color: #FFFFFF; border-color: #FFFFFF; }
+.section-brand .btn-outline { color: #FFFFFF; border-color: #FFFFFF; }
 .section-brand .btn-outline:hover { background: #FFFFFF; color: var(--brand); }
-.section-green .btn-outline:hover { background: #FFFFFF; color: var(--green); }
+/* The gold band is light, so its buttons are the light-ground pair. */
+.section-preps .btn-outline { color: var(--ink); border-color: var(--ink); }
+.section-preps .btn-outline:hover { background: var(--ink); color: #FFFFFF; }
 .section-brand .btn-primary, .section-brand .btn-accent { background: #FFFFFF; color: var(--brand); border-color: #FFFFFF; }
 .section-brand .btn-primary:hover, .section-brand .btn-accent:hover { background: var(--yellow); border-color: var(--yellow); color: var(--brand-darkest); }
 /* A full-width button has no reason to stay on one line, and the sign-up
@@ -337,13 +346,14 @@ a { color: inherit; text-decoration: none; }
   color: #FFFFFF;
   white-space: nowrap;
 }
-/* No background or border: those framed an opaque logo. The transparent
-   monogram sits straight on the header. The tinted box moves to the fallback,
-   which still needs to read as a deliberate placeholder. */
+/* The monogram keeps its own blue-and-gold: it is the logo, and it should not
+   be recoloured. Since it is dark on transparent and the bar behind it is
+   blue, it sits on a white disc so it reads at full strength. */
 .brand-mark {
   width: 52px;
   height: 52px;
-  border-radius: 12px;
+  border-radius: 50%;
+  background: #FFFFFF;
   color: var(--muted);
   display: flex;
   align-items: center;
@@ -361,11 +371,9 @@ a { color: inherit; text-decoration: none; }
   width: 100%;
   height: 100%;
   object-fit: contain;
-  /* The monogram is blue and gold on a transparent ground. On the bar it is
-     flattened to a white silhouette: brightness(0) turns every opaque pixel
-     black, invert(1) turns that white, and the alpha channel is untouched. A
-     browser without filter support shows the coloured mark, which is fine. */
-  filter: brightness(0) invert(1);
+  /* Inset from the disc's edge so the mark doesn't touch the curve. */
+  padding: 7px;
+  box-sizing: border-box;
 }
 .brand-mark-fallback {
   display: none;
@@ -375,7 +383,7 @@ a { color: inherit; text-decoration: none; }
   inset: 0;
   background: var(--bg-alt);
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: 50%;
 }
 .nav-links {
   display: flex;
@@ -483,12 +491,16 @@ a { color: inherit; text-decoration: none; }
   transform: translateY(0);
   transition: opacity 0.16s ease 0s, transform 0.16s ease 0s, visibility 0s linear 0s;
 }
+/* The panel is a white card, but these links inherit .nav-links a, which is
+   white for the blue bar above — so they need their own colour or they are
+   invisible. The mobile breakpoint re-whitens them, where the panel is blue. */
 .submenu a {
   display: block;
   padding: 9px 12px;
   border-radius: var(--radius-sm);
   border-bottom: none;
-  font-size: 14.5px;
+  font-size: 15px;
+  color: var(--ink);
   white-space: nowrap;
 }
 .submenu a:hover, .submenu a[aria-current="page"] {
@@ -504,7 +516,7 @@ a { color: inherit; text-decoration: none; }
 .nav-actions { display: flex; align-items: center; gap: 12px; }
 /* The Donate pill in the bar: white outline, no fill. */
 .nav-actions .btn { color: #FFFFFF; border-color: #FFFFFF; background: transparent; }
-.nav-actions .btn:hover { background: #FFFFFF; color: var(--brand); }
+.nav-actions .btn:hover { background: #FFFFFF; color: var(--accent); }
 .nav-toggle {
   display: none;
   background: none;
@@ -1421,7 +1433,7 @@ a { color: inherit; text-decoration: none; }
 
 /* ---------- CTA band ---------- */
 .cta-band {
-  background: var(--brand);
+  background: var(--branch-band, var(--brand));
   border-radius: var(--radius-photo);
   padding: 56px;
   display: flex;
@@ -1435,7 +1447,7 @@ a { color: inherit; text-decoration: none; }
 /* Outline buttons sitting on a dark panel. Replaces a hardcoded inline style
    that was duplicated in the markup and invisible to the palette. */
 .btn-on-dark { color: #FFFFFF; border-color: #FFFFFF; background: transparent; }
-.btn-on-dark:hover { background: #FFFFFF; color: var(--brand); }
+.btn-on-dark:hover { background: #FFFFFF; color: var(--accent); }
 .cta-band .actions { display: flex; gap: 12px; flex-wrap: wrap; }
 
 /* ---------- footer ---------- */
@@ -1443,7 +1455,7 @@ a { color: inherit; text-decoration: none; }
    blue rather than the primary so a blue section just above it still
    reads as its own block. */
 .site-footer {
-  background: var(--brand-deep);
+  background: var(--branch-band, var(--brand-deep));
   padding: 88px 0 40px;
   margin-top: 0;
 }
@@ -1688,21 +1700,50 @@ a { color: inherit; text-decoration: none; }
   left: 50%;
   top: 8px;
   bottom: 8px;
-  width: 3px;
-  margin-left: -1.5px;
+  width: 4px;
+  margin-left: -2px;
   background: var(--line-strong);
-  border-radius: 2px;
-  overflow: hidden;
+  border-radius: 3px;
+}
+/* A terminal dot at the foot of the line, so the chronology ends on something
+   rather than just stopping. */
+.timeline-spine::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -9px;
+  width: 14px;
+  height: 14px;
+  margin-left: -7px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 4px solid var(--line-strong);
 }
 /* Filled portion. Height is driven by scroll in main.js; the default of 100%
    is what a no-JS or reduced-motion visitor sees, so the spine reads as a
    finished line rather than an empty channel. */
+/* Filled portion. Blue at the top running to yellow at the leading edge, so
+   the line reads as something being drawn rather than a static rule. */
 .timeline-fill {
   display: block;
+  position: relative;
   width: 100%;
   height: 100%;
-  background: linear-gradient(to bottom, var(--accent), var(--accent-dark));
-  border-radius: 2px;
+  background: linear-gradient(to bottom, var(--brand-deep), var(--brand) 55%, var(--yellow));
+  border-radius: 3px;
+}
+/* The head of the line: a lit dot that travels down as you scroll. */
+.timeline-rich.is-live .timeline-fill::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -7px;
+  width: 16px;
+  height: 16px;
+  margin-left: -8px;
+  border-radius: 50%;
+  background: var(--yellow);
+  box-shadow: 0 0 0 5px rgba(255, 211, 77, 0.28), 0 3px 10px rgba(20, 20, 58, 0.28);
 }
 /* Gated on .is-live, which main.js sets only once it has actually taken over
    this spine — NOT on `html.js`, which merely says scripting exists. A cached
@@ -1714,40 +1755,93 @@ a { color: inherit; text-decoration: none; }
 .timeline-entry {
   position: relative;
   width: 50%;
-  padding: 0 46px 56px 0;
+  padding: 0 52px 64px 0;
   box-sizing: border-box;
 }
-.timeline-entry:nth-child(even) { margin-left: 50%; padding: 0 0 56px 46px; }
+.timeline-entry:nth-child(even) { margin-left: 50%; padding: 0 0 64px 52px; }
 .timeline-entry:last-child { padding-bottom: 0; }
+
+/* ---- month chips ----
+   The first entry of each month carries one. It is centred on the spine above
+   its card, which groups the run of entries underneath it into a month. It
+   lives inside the <li> rather than being its own list item so the left/right
+   alternation (:nth-child(even)) keeps working, and its <li> carries
+   .has-month so the extra top padding needs no :has() support. */
+.timeline-entry.has-month { padding-top: 76px; }
+.entry-month {
+  position: absolute;
+  top: 8px;
+  right: 0;
+  transform: translateX(50%);
+  z-index: 3;
+  padding: 7px 18px;
+  border-radius: var(--radius-pill);
+  background: var(--brand);
+  color: #FFFFFF;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  box-shadow: 0 2px 10px rgba(20, 20, 58, 0.22);
+}
+.timeline-entry:nth-child(even) .entry-month { right: auto; left: 0; transform: translateX(-50%); }
 
 .entry-marker {
   position: absolute;
-  top: 26px;
-  right: -9px;
-  width: 18px;
-  height: 18px;
+  top: 28px;
+  right: -11px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
   background: var(--paper);
-  border: 3px solid var(--line-strong);
+  border: 4px solid var(--line-strong);
   z-index: 2;
-  transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  transition: border-color 0.35s ease, transform 0.35s ease, box-shadow 0.35s ease;
 }
-.timeline-entry:nth-child(even) .entry-marker { right: auto; left: -9px; }
+.timeline-entry.has-month .entry-marker { top: 104px; }
+.timeline-entry:nth-child(even) .entry-marker { right: auto; left: -11px; }
 /* Lit once the spine's fill has reached it, so the markers colour in as you
    scroll rather than all at once. */
-.timeline-entry.sat.is-reached .entry-marker { border-color: var(--sat); box-shadow: 0 0 0 5px var(--sat-tint); }
-.timeline-entry.health.is-reached .entry-marker { border-color: var(--health); box-shadow: 0 0 0 5px var(--health-tint); }
-.timeline-entry.business.is-reached .entry-marker { border-color: var(--business); box-shadow: 0 0 0 5px var(--business-tint); }
-.timeline-entry.eng.is-reached .entry-marker { border-color: var(--eng); box-shadow: 0 0 0 5px var(--eng-tint); }
-.timeline-entry.is-reached .entry-marker { transform: scale(1.15); }
+.timeline-entry.sat.is-reached .entry-marker { border-color: var(--sat); box-shadow: 0 0 0 7px var(--sat-tint); }
+.timeline-entry.health.is-reached .entry-marker { border-color: var(--health); box-shadow: 0 0 0 7px var(--health-tint); }
+.timeline-entry.business.is-reached .entry-marker { border-color: var(--business); box-shadow: 0 0 0 7px var(--business-tint); }
+.timeline-entry.eng.is-reached .entry-marker { border-color: var(--eng); box-shadow: 0 0 0 7px var(--eng-tint); }
+.timeline-entry.is-reached .entry-marker { transform: scale(1.18); }
+/* The card's own edge picks up the branch colour once the line reaches it, so
+   the colour cue isn't only a 22px dot. */
+.timeline-entry.sat.is-reached .entry-card { border-color: var(--sat); }
+.timeline-entry.health.is-reached .entry-card { border-color: var(--health); }
+.timeline-entry.business.is-reached .entry-card { border-color: var(--business); }
+.timeline-entry.eng.is-reached .entry-card { border-color: var(--eng); }
 
 .entry-card {
+  position: relative;
   background: var(--paper);
   border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-photo);
   overflow: hidden;
   box-shadow: var(--shadow-sm);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.35s ease;
+}
+/* The newest entry flags itself. Keyed off :last-child rather than a class in
+   the markup, so it moves on its own when an entry is added. */
+.timeline-entry:last-child .entry-card::after {
+  content: "Latest";
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 2;
+  padding: 5px 13px;
+  border-radius: var(--radius-pill);
+  background: var(--yellow);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 .entry-card:hover {
   transform: translateY(-4px);
@@ -1783,9 +1877,14 @@ a { color: inherit; text-decoration: none; }
 .entry-body { padding: 22px 24px 24px; }
 .entry-meta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 10px; }
 .entry-meta .event-branch { margin-bottom: 0; }
-.entry-date { font-size: 13px; color: var(--muted); }
-.entry-body h3 { font-size: 20px; margin-bottom: 8px; }
-.entry-body p { font-size: 14.5px; margin-bottom: 0; }
+.entry-date {
+  font-family: var(--font-display);
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--muted);
+}
+.entry-body h3 { font-size: 21px; margin-bottom: 8px; }
+.entry-body p { font-size: 15px; margin-bottom: 0; }
 /* Links are transparent site-wide (a { color: inherit }), so one inside an
    entry has to say so itself. */
 .entry-body p a { color: var(--accent-dark); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
@@ -1806,21 +1905,28 @@ a { color: inherit; text-decoration: none; }
 
 @media (max-width: 860px) {
   /* One column: the spine moves to the far left and every card sits beside it. */
-  .timeline-spine { left: 9px; margin-left: 0; }
+  .timeline-spine { left: 10px; margin-left: 0; }
   .timeline-entry,
   .timeline-entry:nth-child(even) {
     width: 100%;
     margin-left: 0;
-    padding: 0 0 40px 42px;
+    padding: 0 0 40px 46px;
   }
   .timeline-entry .entry-marker,
-  .timeline-entry:nth-child(even) .entry-marker { left: 1px; right: auto; }
+  .timeline-entry:nth-child(even) .entry-marker { left: 0; right: auto; }
+  /* No room to centre a chip on the line here, so it sits at the card's edge. */
+  .timeline-entry.has-month { padding-top: 58px; }
+  .timeline-entry .entry-month,
+  .timeline-entry:nth-child(even) .entry-month { left: 46px; right: auto; top: 0; transform: none; }
+  .timeline-entry.has-month .entry-marker { top: 86px; }
   .js .timeline-entry.reveal,
   .js .timeline-entry:nth-child(even).reveal { transform: translateY(16px); }
   .js .timeline-entry.reveal.in-view { transform: translateY(0); }
 }
 @media (prefers-reduced-motion: reduce) {
   .js .timeline-fill { height: 100%; transition: none; }
+  /* Nothing is travelling, so a leading dot would just be a stray blob. */
+  .timeline-rich.is-live .timeline-fill::after { display: none; }
   .js .timeline-entry.reveal { opacity: 1; transform: none; }
   .entry-card:hover { transform: none; }
   .entry-card:hover .entry-photo img { transform: none; }
@@ -2090,7 +2196,7 @@ a { color: inherit; text-decoration: none; }
    and the site reads as one thing from page to page. */
 .page-header {
   padding: clamp(72px, 9vw, 120px) 0 clamp(64px, 8vw, 96px);
-  background: var(--brand);
+  background: var(--branch-band, var(--brand));
   color: #FFFFFF;
 }
 .page-header h1 { font-size: clamp(38px, 5.2vw, 60px); max-width: 18ch; text-wrap: balance; color: #FFFFFF; }
@@ -2098,8 +2204,8 @@ a { color: inherit; text-decoration: none; }
 .page-header .eyebrow { color: var(--yellow); }
 .page-header .muted { color: rgba(255, 255, 255, 0.72); }
 .page-header .btn-outline { color: #FFFFFF; border-color: #FFFFFF; }
-.page-header .btn-outline:hover { background: #FFFFFF; color: var(--brand); }
-.page-header .btn-primary, .page-header .btn-accent { background: #FFFFFF; color: var(--brand); border-color: #FFFFFF; }
+.page-header .btn-outline:hover { background: #FFFFFF; color: var(--accent); }
+.page-header .btn-primary, .page-header .btn-accent { background: #FFFFFF; color: var(--accent); border-color: #FFFFFF; }
 .page-header .btn-primary:hover, .page-header .btn-accent:hover { background: var(--yellow); border-color: var(--yellow); color: var(--brand-darkest); }
 
 /* ---------- carousel (sliding photo feature) ---------- */
@@ -2259,10 +2365,29 @@ a { color: inherit; text-decoration: none; }
 /* ---------- story strip (three text cards on blue) ---------- */
 /* Eyebrow, extrabold title, date. Text only, no boxes: the three columns are
    separated by a hairline and by the rhythm of the labels. */
+/* A title column on the left, then the three cards — so the strip says what
+   it is instead of being three unlabelled headlines. */
+.latest {
+  display: grid;
+  grid-template-columns: minmax(200px, 250px) 1fr;
+  gap: clamp(32px, 4vw, 64px);
+  align-items: start;
+}
+.latest-head h2 {
+  font-size: clamp(26px, 2.6vw, 34px);
+  color: #FFFFFF;
+  margin-bottom: 10px;
+}
+.latest-head p { font-size: 15.5px; color: rgba(255, 255, 255, 0.82); margin-bottom: 18px; }
+.latest-head .eyebrow { color: var(--yellow); }
+.latest-head .btn { font-size: 14.5px; padding: 10px 20px; }
 .story-strip {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 40px;
+  gap: 36px;
+}
+@media (max-width: 1000px) {
+  .latest { grid-template-columns: 1fr; gap: 28px; }
 }
 .story-card {
   display: block;
@@ -2282,7 +2407,7 @@ a { color: inherit; text-decoration: none; }
 .story-card:hover h3 { color: var(--yellow); }
 .story-card time, .story-card .story-date { font-size: 14px; color: rgba(255, 255, 255, 0.72); }
 @media (max-width: 860px) {
-  .story-strip { grid-template-columns: 1fr; gap: 28px; }
+  .story-strip { grid-template-columns: 1fr; gap: 26px; }
 }
 
 /* ---------- photo break (full-width photo, nothing on it) ---------- */
@@ -2692,11 +2817,11 @@ a { color: inherit; text-decoration: none; }
   .action-card:hover, .action-card:focus-visible { transform: rotate(0deg); }
 }
 
-/* ---------- promo (the one green section) ---------- */
-/* A deeper green shape swept across the right-hand side, behind the product.
+/* ---------- promo (the gold Preps section) ---------- */
+/* A deeper gold shape swept across the right-hand side, behind the product.
    It is a rotated rounded rectangle, oversized so its corners never show. */
-.section-green { position: relative; isolation: isolate; overflow: hidden; }
-.section-green::before {
+.section-preps { position: relative; isolation: isolate; overflow: hidden; }
+.section-preps::before {
   content: "";
   position: absolute;
   z-index: -1;
@@ -2704,7 +2829,7 @@ a { color: inherit; text-decoration: none; }
   bottom: -20%;
   right: -12%;
   width: 58%;
-  background: var(--green-deep);
+  background: var(--preps-deep);
   border-radius: 48% 40% 44% 52%;
   transform: rotate(-12deg);
 }
@@ -2715,8 +2840,8 @@ a { color: inherit; text-decoration: none; }
   align-items: center;
 }
 .promo h2 { margin-bottom: 18px; }
-.promo .lede { color: rgba(255, 255, 255, 0.94); margin-bottom: 28px; }
-.promo-note { font-size: 14px; color: rgba(255, 255, 255, 0.92); margin: 16px 0 0; }
+.promo .lede { color: #413F5E; margin-bottom: 28px; }
+.promo-note { font-size: 14px; color: #4F4C6B; margin: 16px 0 0; }
 /* The "product": a stack of the app's four tools as cards, since the app is
    a website and has no box to photograph. Tilted and overlapped like the
    action cards, in the same yellow-edged idiom. */
@@ -2734,16 +2859,18 @@ a { color: inherit; text-decoration: none; }
   border-radius: var(--radius-lg);
   background: #FFFFFF;
   color: var(--ink);
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 18px 40px rgba(20, 20, 58, 0.22);
 }
 /* Laid out as two loose columns so every card's title stays readable; only
    the corners overlap. */
 .promo-stack-card:nth-child(1) { left: 0; top: 0; transform: rotate(-5deg); }
 .promo-stack-card:nth-child(2) { right: 0; top: 21%; transform: rotate(3deg); }
 .promo-stack-card:nth-child(3) { left: 0; top: 45%; transform: rotate(-2deg); }
-.promo-stack-card:nth-child(4) { right: 0; top: 66%; transform: rotate(4deg); border: 4px solid var(--yellow); }
+/* The last card is ringed in blue: on a gold ground the yellow ring that the
+   action cards use would disappear. */
+.promo-stack-card:nth-child(4) { right: 0; top: 66%; transform: rotate(4deg); border: 4px solid var(--brand); }
 .promo-stack-card { width: 54%; }
-.promo-stack-card .eyebrow { color: var(--green); margin-bottom: 6px; }
+.promo-stack-card .eyebrow { color: var(--sat-ink); margin-bottom: 6px; }
 .promo-stack-card strong {
   display: block;
   font-family: var(--font-display);
@@ -2757,10 +2884,187 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 860px) {
   .promo { grid-template-columns: 1fr; }
   .promo-stack { margin: 12px auto 0; max-width: 360px; }
-  .section-green::before { top: auto; height: 60%; right: -30%; width: 90%; }
+  .section-preps::before { top: auto; height: 60%; right: -30%; width: 90%; }
 }
 
 /* ---------- inner-page numbers ---------- */
 /* The impact page's figures, in the same idiom as the homepage mosaic: yellow
    on blue. */
 .section-brand .world-num, .section-brand .impact-num { color: var(--yellow); }
+
+
+/* ==========================================================================
+   Branch pages (preps / health / business / engineering)
+   Each page declares its branch on <body>, and the whole page retints: nav,
+   page header, buttons, links, eyebrows, footer. Only these four custom
+   properties change — every rule above already reads them.
+
+   --accent is the branch's `-ink` value, which is dark enough both for white
+   text sitting on it (≥5.8:1) and for small text sitting on the paper
+   (≥5.8:1). --branch-band is a further step down, used for the full-bleed
+   bands where the lede and the yellow accent also have to clear 4.5:1
+   (white ≥7.5:1, yellow ≥5.2:1 on all four). --branch is the bright logo
+   colour, for graphical cues only — never behind text.
+   ========================================================================== */
+body.branch-preps {
+  --branch: var(--sat);
+  --accent: var(--sat-ink);
+  --accent-dark: #7A4A03;
+  --accent-tint: var(--sat-tint);
+  --branch-band: #7A4A03;
+  --header-bg: #7A4A03;
+}
+body.branch-health {
+  --branch: var(--health);
+  --accent: var(--health-ink);
+  --accent-dark: #9E0505;
+  --accent-tint: var(--health-tint);
+  --branch-band: #9E0505;
+  --header-bg: #9E0505;
+}
+body.branch-business {
+  --branch: var(--business);
+  --accent: var(--business-ink);
+  --accent-dark: #175A12;
+  --accent-tint: var(--business-tint);
+  --branch-band: #175A12;
+  --header-bg: #175A12;
+}
+body.branch-eng {
+  --branch: var(--eng);
+  --accent: var(--eng-ink);
+  --accent-dark: #075366;
+  --accent-tint: var(--eng-tint);
+  --branch-band: #075366;
+  --header-bg: #075366;
+}
+/* The mobile nav panel and the section-alt band, which are the two places
+   that name a blue directly rather than going through a variable. */
+@media (max-width: 1130px) {
+  body[class*="branch-"] .nav-links { background: var(--branch-band); }
+}
+/* A wash of the branch colour on the alternating sections, so the tint runs
+   through the page rather than only its bands. */
+body[class*="branch-"] .section-alt { background: var(--accent-tint); }
+
+/* ---------- what a branch has been doing ---------- */
+.session-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+  gap: 28px;
+}
+.session-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-photo);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.session-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--branch, var(--line-strong));
+}
+.session-photo {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: var(--bg-alt);
+  overflow: hidden;
+}
+.session-photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+.session-card:hover .session-photo img { transform: scale(1.04); }
+/* A milestone rather than a photographed session: the branch mark stands in,
+   contained and padded so the logo isn't cropped. */
+.session-photo.is-mark { background: #FFFFFF; }
+.session-photo.is-mark img { object-fit: contain; padding: 24px; }
+.session-photo-fallback {
+  position: absolute;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  font-size: 13px;
+}
+.session-body { padding: 20px 22px 22px; display: flex; flex-direction: column; flex: 1; }
+.session-date {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--accent-dark);
+  margin-bottom: 10px;
+}
+.session-card h3 { font-size: 19px; margin-bottom: 8px; }
+.session-card p { font-size: 15px; margin-bottom: 0; }
+.session-speaker {
+  margin-top: auto;
+  padding-top: 14px;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+.session-speaker::before {
+  content: "";
+  display: block;
+  width: 28px;
+  border-top: 2px solid var(--branch, var(--line-strong));
+  margin-bottom: 10px;
+}
+/* Said instead of a card when a branch has run nothing yet. */
+.session-empty {
+  border: 2px dashed var(--line-strong);
+  border-radius: var(--radius-photo);
+  padding: 34px 28px;
+  text-align: center;
+  color: var(--ink-soft);
+}
+.session-empty p { margin: 0; }
+
+/* ---------- a branch's officers ---------- */
+/* Its own component rather than .team-card, so the bio-dialog code on the
+   team page has nothing to bind to here. */
+.officer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 24px;
+}
+.officer { text-align: center; }
+.officer-photo {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  margin: 0 auto 14px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--accent-tint);
+  border: 3px solid var(--branch, var(--line-strong));
+}
+.officer-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.officer-photo .logo-slot-fallback {
+  position: absolute;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent);
+  color: #FFFFFF;
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 700;
+}
+.officer-name { font-family: var(--font-display); font-weight: 700; font-size: 16px; color: var(--ink); letter-spacing: -0.02em; }
+.officer-role { font-size: 13.5px; color: var(--accent-dark); margin-top: 2px; }
+@media (max-width: 560px) {
+  .officer-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+}
