@@ -131,7 +131,7 @@ python3 -m http.server 8000
   The Aug 3 entry has no photo and carries a dashed placeholder tile. Give it a
   real one when the photos arrive.
 
-- `impact.html`: Impact. Chapters, the students reached, and a map.
+- `impact.html`: Impact. Chapters, the people reached, and a map.
 
   **The map is interactive**: pan, pinch, +/- or scroll to zoom, a pin per
   location with a popup, and a legend (bottom-left) listing the branches on
