@@ -1943,6 +1943,98 @@ a { color: inherit; text-decoration: none; }
   .entry-card:hover .entry-photo img { transform: none; }
 }
 
+/* ---- the timeline's background -----------------------------------------
+   Alternating cards leave half the width empty beside every entry, which read
+   as a bare column down the page. Two things fill it, both decorative and both
+   behind the content:
+
+   1. A wash of each branch's colour, placed down the section roughly where
+      that branch's entries fall, so scrolling the page moves through gold, red,
+      green and teal rather than sitting on one flat grey. Wide and heavily
+      feathered, so it reads as a temperature change rather than a shape. Every
+      word on this page sits inside a white card or on the blue header, so the
+      wash never sits behind body text — check that again before reusing it on
+      a section that does.
+   2. A ghost of each entry's date, set large and outlined, in the empty half
+      opposite its card. It is marked aria-hidden and the real date stays in
+      the card, so this adds nothing for a screen reader to repeat.
+   ------------------------------------------------------------------------ */
+.section-timeline {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+.section-timeline::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(620px 460px at 10% 6%,   rgba(189, 115, 5, 0.17), transparent 70%),
+    radial-gradient(560px 440px at 92% 22%,  rgba(242, 8, 8, 0.11),   transparent 70%),
+    radial-gradient(640px 500px at 6% 44%,   rgba(40, 153, 31, 0.14), transparent 70%),
+    radial-gradient(580px 460px at 94% 64%,  rgba(23, 145, 182, 0.16), transparent 70%),
+    radial-gradient(600px 480px at 12% 88%,  rgba(189, 115, 5, 0.15), transparent 70%);
+}
+
+.entry-ghost {
+  position: absolute;
+  top: 6px;
+  left: 100%;
+  width: 100%;
+  padding-left: 56px;
+  z-index: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  line-height: 0.8;
+  letter-spacing: -0.05em;
+  /* Outline only. A filled numeral this size would compete with the cards;
+     an outlined one reads as a watermark. */
+  color: transparent;
+  -webkit-text-stroke: 2px var(--line-strong);
+  opacity: 0.85;
+  user-select: none;
+  pointer-events: none;
+  transition: -webkit-text-stroke-color 0.5s ease, opacity 0.5s ease;
+}
+.entry-ghost .g-month {
+  display: block;
+  font-size: clamp(20px, 2.1vw, 28px);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  -webkit-text-stroke-width: 1.2px;
+  margin-bottom: 8px;
+}
+.entry-ghost .g-day {
+  display: block;
+  font-size: clamp(88px, 11vw, 148px);
+}
+.timeline-entry.has-month .entry-ghost { top: 82px; }
+/* The ghost mirrors its card: card on the left, ghost on the right. */
+.timeline-entry:nth-child(even) .entry-ghost {
+  left: auto;
+  right: 100%;
+  padding: 0 56px 0 0;
+  text-align: right;
+}
+.timeline-entry:nth-child(even).has-month .entry-ghost { top: 82px; }
+/* Once the spine reaches an entry its ghost takes the branch's colour, so the
+   empty column fills in behind you as you read down. */
+.timeline-entry.sat.is-reached .entry-ghost { -webkit-text-stroke-color: var(--sat); opacity: 0.5; }
+.timeline-entry.health.is-reached .entry-ghost { -webkit-text-stroke-color: var(--health); opacity: 0.4; }
+.timeline-entry.business.is-reached .entry-ghost { -webkit-text-stroke-color: var(--business); opacity: 0.45; }
+.timeline-entry.eng.is-reached .entry-ghost { -webkit-text-stroke-color: var(--eng); opacity: 0.5; }
+/* Safari and Firefox both support -webkit-text-stroke; anything that doesn't
+   would paint a solid block of colour, so the fallback is no ghost at all. */
+@supports not ((-webkit-text-stroke: 1px red) or (text-stroke: 1px red)) {
+  .entry-ghost { display: none; }
+}
+@media (max-width: 860px) {
+  /* One column here, so there is no empty half for a ghost to live in. */
+  .entry-ghost { display: none; }
+}
+
 /* ---------- impact page ---------- */
 .impact-figures {
   display: grid;

@@ -465,6 +465,30 @@ Two things to do to any photo before committing it:
 A 5.8MB 5712x4284 iPhone photo was being served on two pages before this was
 tightened up. Check the file size of anything new.
 
+### The timeline's background
+Alternating cards leave half the page width empty beside every entry, which
+read as a bare column. Two things fill it, both decorative, both behind the
+content, both on `.section-timeline`:
+
+- **A wash of branch colour** (`.section-timeline::before`), five wide,
+  heavily feathered radial gradients placed roughly where each branch's
+  entries fall, so scrolling moves the page through gold, red, green and
+  teal instead of one flat grey. Every word on this page sits inside a white
+  card or on the blue header, so the wash never lands behind body text —
+  re-check that before reusing it on a section where it would.
+- **A ghost of each entry's date** (`.entry-ghost`), set large and outlined
+  in the empty half opposite its card. It takes the branch's colour once the
+  spine reaches that entry, so the column fills in behind you as you read.
+  Outline rather than fill: a solid numeral that size competes with the
+  cards, a hollow one reads as a watermark.
+
+The ghost is `aria-hidden` and the real date stays in the card, so it adds
+nothing for a screen reader to repeat. It is hidden below 860px, where the
+layout is one column and there is no empty half, and hidden entirely where
+`-webkit-text-stroke` is unsupported, since the fallback there would be a
+solid block of colour. **A new entry needs its own ghost span** — copy the
+block, it carries the abbreviated month and the day.
+
 ### Hero contrast
 The hero text sits on a photograph, so its contrast depends on the pixels, not
 on CSS values, and has to be measured against the render after any change of
