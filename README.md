@@ -434,6 +434,37 @@ white disc to sit on. An earlier version flattened it to a white silhouette
 with `filter: brightness(0) invert(1)`; don't. If the mark needs to sit on a new
 dark ground, give it a light chip, don't repaint it.
 
+Every logo PNG is **cropped to its own artwork**. They used to carry uneven
+transparent margins (the main mark had 9px of space on the left and 95px on the
+right, 0 above and 97px below), and since `object-fit: contain` centres the
+canvas rather than the ink, the mark rendered small and shoved up and to the
+left inside its disc. Keep replacements cropped tight.
+
+The mark's inset inside the disc is **15%**, and that number is measured, not
+guessed. The mark is nearly square and the disc is round, so the corners of its
+bounding box fall outside the circle; what matters is the furthest *opaque*
+pixel, which for this mark is the A's feet on the last row. At 15% they sit
+27.2px from the centre of a 58px disc, inside its 29px radius with a pixel to
+spare. At 13.8% the margin is 0.46px and antialiasing eats it. Re-measure if
+the mark is ever replaced with one of a different shape.
+
+### Photographs
+Headshots in `team/` and `speakers/` are capped at **1000px on the long edge** —
+they show at about 200px in the grids and at most 460px in the bio dialog, so
+that covers a 2x display. Gallery photographs and the hero run full-bleed and
+stay at 1280px; they are re-encoded at quality 85 rather than resized.
+
+Two things to do to any photo before committing it:
+
+- **Apply EXIF rotation into the pixels, then drop the metadata.** Phone photos
+  carry an orientation flag; stripping it without transposing first turns the
+  photo on its side. `PIL.ImageOps.exif_transpose` does this.
+- **Declare `width` and `height` on the `<img>`**, matching the file exactly, so
+  the grid reserves the right box before the photo arrives.
+
+A 5.8MB 5712x4284 iPhone photo was being served on two pages before this was
+tightened up. Check the file size of anything new.
+
 ### Hero contrast
 The hero text sits on a photograph, so its contrast depends on the pixels, not
 on CSS values, and has to be measured against the render after any change of
