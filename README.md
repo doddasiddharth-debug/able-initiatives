@@ -398,8 +398,8 @@ a rounded photo with hotspot dots beside a serif pull quote (`.quote-feature`,
 `.hotspot`); alternating text/photo rows for the four branches (`.feature-row`);
 a scrolling strip of chapter schools and cities (`.chapter-marquee`, cloned by
 the same code as the speaker marquee — add an `<li>` per new chapter); the
-stats mosaic (`.stat-mosaic`, three tiles, keep the numbers in step with
-`impact.html`); the green promo (`.section-green`, `.promo`); the speaker
+stats mosaic (`.stat-mosaic`, four tiles — people reached, chapters,
+educational posts, cost — keep the numbers in step with `impact.html`); the green promo (`.section-green`, `.promo`); the speaker
 marquee; and the three tilted action cards (`.action-section`, `.action-cards`).
 
 **Nav** is a 100px solid blue bar. The monogram is turned white with
