@@ -10,8 +10,8 @@ and unchanged cards cost nothing.
 
 Lookups go to OpenStreetMap's Nominatim first (it knows building outlines, so
 a school lands on the school), then the US Census geocoder as a fallback for
-US addresses. Lookups are limited to the US and Canada, where the chapters are;
-widen `countrycodes` in nominatim() if one opens elsewhere.
+US addresses. Lookups are limited to the countries in COUNTRIES, where the
+chapters are; add a country's ISO code there when one opens somewhere new.
 Neither needs an API key. Nominatim asks for one request per second and an
 identifying User-Agent, both honoured below.
 
@@ -22,6 +22,7 @@ Standard library only.
 
 import html
 import json
+import math
 import re
 import sys
 import time
@@ -30,6 +31,13 @@ import urllib.parse
 import urllib.request
 
 PAGE = "impact.html"
+# ISO 3166-1 alpha-2 codes Nominatim may return results from. Restricting it is
+# what stops "Hyderabad" resolving to the one in India, or "Vancouver" to the
+# one in Washington.
+COUNTRIES = "us,ca,pk"
+# How far a match found by name may land from the chapter's town before it is
+# treated as a namesake somewhere else and refused.
+NEAR_KM = 60
 USER_AGENT = "ABLE Initiatives website geocoder (https://ableinitiatives.com; ableinitiativespchs@gmail.com)"
 CARD_RE = re.compile(r'<div class="chapter-card[^"]*"[^>]*>')
 ATTR_RE = re.compile(r'([a-zA-Z-]+)="([^"]*)"')
@@ -55,7 +63,7 @@ def nominatim(query):
     street or neighbourhood; failing that, the top result is returned as
     imprecise.
     """
-    params = urllib.parse.urlencode({"q": query, "format": "jsonv2", "limit": 5, "countrycodes": "us,ca"})
+    params = urllib.parse.urlencode({"q": query, "format": "jsonv2", "limit": 5, "countrycodes": COUNTRIES})
     results = fetch_json("https://nominatim.openstreetmap.org/search?" + params)
     time.sleep(1.1)  # Nominatim's rate limit
     if not results:
@@ -71,15 +79,54 @@ def nominatim(query):
 def name_variants(name):
     """'Discovery Canyon Campus High School' -> itself, 'Discovery Canyon
     Campus', 'Discovery Canyon': the map often lists a school under its short
-    name, with the level left off."""
-    variants = [name]
-    trimmed = name
-    for suffix in (" High School", " Middle School", " Elementary School", " School", " Campus", " Academy"):
-        if trimmed.lower().endswith(suffix.lower()):
-            trimmed = trimmed[: -len(suffix)].strip()
-            if trimmed and trimmed not in variants:
-                variants.append(trimmed)
+    name, with the level left off. 'Govt' and 'Government' are tried both
+    ways, since OpenStreetMap uses either for Pakistani state schools."""
+    bases = [name]
+    for short, full in (("Govt ", "Government "), ("Govt. ", "Government ")):
+        if name.startswith(short):
+            bases.append(full + name[len(short):])
+        elif name.startswith(full):
+            bases.append(short + name[len(full):])
+    variants = []
+    for base in bases:
+        trimmed = base
+        if trimmed not in variants:
+            variants.append(trimmed)
+        for suffix in (" High School", " Middle School", " Elementary School", " School", " Campus", " Academy"):
+            if trimmed.lower().endswith(suffix.lower()):
+                trimmed = trimmed[: -len(suffix)].strip()
+                if trimmed and trimmed not in variants:
+                    variants.append(trimmed)
     return variants
+
+
+INSTITUTION_WORDS = ("school", "academy", "college", "campus", "university", "institute")
+
+
+def split_address(address, name):
+    """(town, is_town_chapter) for a card's address.
+
+    The first comma-separated part is either a street, the school's own name
+    ("Rampart High School, Colorado Springs, CO") or, for a chapter that is a
+    whole city, the city itself ("Denver, CO"). Everything after it is the
+    town. A chapter whose name is its town — and isn't an institution — has
+    nothing more precise to find than the town itself.
+    """
+    parts = [p.strip() for p in address.split(",")]
+    town = ", ".join(parts[1:])
+    is_town = (
+        bool(name)
+        and parts[0].lower() == name.lower()
+        and not any(w in name.lower() for w in INSTITUTION_WORDS)
+    )
+    return town, is_town
+
+
+def distance_km(a, b):
+    """Great-circle distance between two (lat, lng, ...) tuples."""
+    lat1, lng1, lat2, lng2 = map(math.radians, (a[0], a[1], b[0], b[1]))
+    h = math.sin((lat2 - lat1) / 2) ** 2 + math.cos(lat1) * math.cos(lat2) * math.sin((lng2 - lng1) / 2) ** 2
+    return 6371 * 2 * math.asin(math.sqrt(h))
 
 
 def census(address):
@@ -104,37 +151,65 @@ def geocode(address, name):
     """Best available match for a chapter, most precise first.
 
     1. The address on OpenStreetMap. Taken as final if it resolves to the
-       building or a matched house number.
-    2. Otherwise the chapter name in the same town, which finds the school
-       itself when the address only resolved to its street.
-    3. The chapter name alone, accepted only for a school/building match.
-    4. The Census geocoder, which matches house numbers along a street.
-    5. Whatever street- or town-level match step 1 produced, as a last resort.
+       building or a matched house number, or if the chapter is a whole town
+       ("Denver, CO"), where the town is the answer.
+    2. Otherwise the chapter name — and its shorter forms — in the same town,
+       which finds the school itself when the address only resolved to its
+       street, or didn't match because OpenStreetMap spells the name
+       differently ("Stargate" for "Stargate High School").
+    3. The chapter name alone, for a school listed under a different town
+       than the one people write (a campus on a base, say).
+    4. The Census geocoder, which matches US house numbers along a street.
+    5. Whatever step 1 produced, or failing that the town itself, as a last
+       resort. Both are reported as street/town level.
+
+    Steps 2 and 3 are matches by name, and a name can belong to more than one
+    school — "Allama Iqbal" is one of the most common school names in
+    Pakistan. So a name match is accepted only if it lands within NEAR_KM of
+    the chapter's town; one further away is a namesake, and is refused rather
+    than pinned in the wrong city.
     """
+    town, is_town = split_address(address, name)
     by_address = attempt(lambda: nominatim(address))
-    if by_address and by_address[3]:
+    if by_address and (by_address[3] or is_town):
         return by_address
 
-    town = ", ".join(address.split(",")[1:]).strip()
-    if name and town and name.lower() not in address.lower():
+    anchor = attempt(lambda: nominatim(town)) if town else None
+
+    def near(hit):
+        if not hit or not hit[3]:
+            return False
+        if anchor is None:
+            return True
+        km = distance_km(hit, anchor)
+        if km > NEAR_KM:
+            print(f"    refused {hit[2]!r}: {km:.0f} km from {town}")
+            return False
+        return True
+
+    if name and town:
         for variant in name_variants(name):
-            by_name = attempt(lambda: nominatim(f"{variant}, {town}"))
-            if by_name and by_name[3]:
+            query = f"{variant}, {town}"
+            if query.lower() == address.lower():
+                continue  # step 1 already asked exactly this
+            by_name = attempt(lambda: nominatim(query))
+            if near(by_name):
                 return by_name
 
-    # The name on its own, for a school whose town on the map isn't the one
-    # people write (a campus on a base, say). Only a school/building match is
-    # accepted, since a bare name could otherwise land on a namesake anywhere.
     if name:
         by_bare_name = attempt(lambda: nominatim(name))
-        if by_bare_name and by_bare_name[3]:
+        if near(by_bare_name):
             return by_bare_name
 
     by_census = attempt(lambda: census(address))
     if by_census:
         return by_census
 
-    return by_address
+    if by_address:
+        return by_address
+    if anchor:
+        return anchor[0], anchor[1], anchor[2], False
+    return None
 
 
 def set_attr(tag, key, value):

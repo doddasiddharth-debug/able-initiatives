@@ -167,15 +167,28 @@ python3 -m http.server 8000
   works with no third-party calls beyond the map tiles. Cards that share a
   location share a single pin whose popup lists them all.
 
-  Four chapters are at named schools in the Colorado Springs area: Discovery
-  Canyon Campus, The Classical Academy, Rampart, and Air Academy. Their
-  `data-address` is the school's name plus town, which the geocoder resolves to
-  the school itself, so no street address needs to be typed in. The Denver,
-  Cupertino and Vancouver chapters have only a city on file, so their pins are
-  the city centre until they get one. A school with chapters in more than one
-  branch (Discovery Canyon and Rampart run Business and Health) gets one split
-  pin, and its popup shows the school once with a badge per branch. Lookups cover the US and Canada; widen
-  `countrycodes` in the script if a chapter opens elsewhere.
+  Most chapters are at named schools — in the Colorado Springs area Discovery
+  Canyon Campus, The Classical Academy, Rampart, Air Academy and Lewis Palmer
+  (Monument); Stargate (Thornton); and Govt Allama Iqbal High School in
+  Hyderabad, Pakistan. Their `data-address` is the school's name plus town,
+  which the geocoder resolves to the school itself, so no street address needs
+  to be typed in. It also tries shorter and alternative spellings of the name
+  in that town ("Stargate" for "Stargate High School", "Government" for
+  "Govt"), since OpenStreetMap often lists a school differently. The Denver,
+  Broomfield, Cupertino and Vancouver chapters have only a city on file, so
+  their pins are the city centre until they get one. A school with chapters in
+  more than one branch (Discovery Canyon and Rampart run Business and Health)
+  gets one split pin, and its popup shows the school once with a badge per
+  branch.
+
+  **Lookups are limited to the countries in `COUNTRIES`** at the top of the
+  script (currently `us,ca,pk`) — add the country's ISO code there when a
+  chapter opens somewhere new, or the lookup comes back empty. **A match found
+  by name is only accepted within `NEAR_KM` (60 km) of the chapter's town.**
+  School names repeat — "Allama Iqbal" is one of the most common in Pakistan —
+  and without that guard a bare-name search could pin a namesake in the wrong
+  city. A refused match is logged in the workflow run; if nothing near the town
+  is found, the pin falls back to the town itself rather than to the namesake.
 
   The static SVG fallback only draws the United States and only carries the
   Colorado pins. It is the no-JS view, so that is acceptable, but its `<desc>`
