@@ -2759,23 +2759,23 @@ a { color: inherit; text-decoration: none; }
 /* Edge to edge, no gaps, no radii: three photographs multiplied to blue with
    a number sitting on each. The number is the whole point, so it is set as
    big as the tile allows and the label under it stays small. */
-/* Four across on a wide screen, two by two on a tablet, one column on a
-   phone. The numeral scales with the column: "50,000+" is the widest figure
-   and is what these sizes are set against — it has to stay on one line at
-   every width, so re-measure if a longer figure goes in. */
+/* Three across, one column on a phone. The numeral scales with the column:
+   "50,000+" is the widest figure and is what these sizes are set against —
+   it has to stay on one line at every width, so re-measure if a longer
+   figure or a fourth tile goes in. */
 .stat-mosaic {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   background: var(--brand-deep);
 }
 .stat-tile {
   position: relative;
   isolation: isolate;
-  min-height: clamp(280px, 28vw, 400px);
+  min-height: clamp(300px, 34vw, 460px);
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding: clamp(24px, 2.6vw, 40px);
+  padding: clamp(28px, 3.4vw, 48px);
   color: #FFFFFF;
   overflow: hidden;
 }
@@ -2798,7 +2798,7 @@ a { color: inherit; text-decoration: none; }
 }
 .stat-num {
   font-family: var(--font-display);
-  font-size: clamp(52px, 5.6vw, 84px);
+  font-size: clamp(64px, 7.6vw, 104px);
   font-weight: 800;
   line-height: 0.9;
   letter-spacing: -0.05em;
@@ -2813,15 +2813,9 @@ a { color: inherit; text-decoration: none; }
   margin: 0;
   color: #FFFFFF;
 }
-@media (max-width: 1180px) {
-  .stat-mosaic { grid-template-columns: repeat(2, 1fr); }
-  .stat-tile { min-height: clamp(260px, 30vw, 340px); padding: clamp(24px, 3.4vw, 40px); }
-  .stat-num { font-size: clamp(56px, 7.6vw, 88px); }
-}
 @media (max-width: 860px) {
   .stat-mosaic { grid-template-columns: 1fr; }
-  .stat-tile { min-height: 240px; }
-  .stat-num { font-size: 64px; }
+  .stat-tile { min-height: 260px; }
 }
 
 /* ---------- action cards (three tilted photo cards on blue) ---------- */

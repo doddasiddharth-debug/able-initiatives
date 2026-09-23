@@ -147,30 +147,55 @@ document.addEventListener("DOMContentLoaded", () => {
     markers.push(marker);
   });
 
-  const bounds = L.latLngBounds(markers.map((m) => m.getLatLng()));
-  const showAll = (animate) => {
-    // Padding keeps the outermost pins off the edge; maxZoom stops a single
-    // chapter from being shown at street level, where nothing says "Colorado".
-    map.fitBounds(bounds, { padding: [48, 48], maxZoom: 11, animate });
+  // The map opens on Colorado, where most chapters are, rather than on every
+  // pin: with chapters from California to Pakistan, fitting them all means a
+  // world view in which the Colorado pins sit on top of one another. Which
+  // pins count as Colorado is worked out from their coordinates — the state is
+  // a true lat/lng rectangle — so a new Colorado chapter joins the opening
+  // view with no change here.
+  const points = markers.map((m) => m.getLatLng());
+  const inColorado = (ll) => ll.lat >= 36.99 && ll.lat <= 41.01 && ll.lng >= -109.06 && ll.lng <= -102.04;
+  const home = points.filter(inColorado);
+  const allBounds = L.latLngBounds(points);
+  const homeBounds = home.length ? L.latLngBounds(home) : allBounds;
+  const anyElsewhere = home.length > 0 && home.length < points.length;
+  const fit = (bounds, animate) => {
+    // Padding keeps the outermost pins off the edge, and at the bottom clears
+    // the legend, which on a phone covers a third of the map's height and
+    // would otherwise sit on the lowest pins. maxZoom stops a single chapter
+    // from being shown at street level, where nothing says "Colorado".
+    const legend = container.querySelector(".chapter-legend");
+    const bottom = legend ? legend.offsetHeight + 24 : 48;
+    map.fitBounds(bounds, { paddingTopLeft: [48, 48], paddingBottomRight: [48, bottom], maxZoom: 11, animate });
   };
-  showAll(false);
 
-  // "All chapters" button: brings the whole set back into view after zooming in.
-  const ResetControl = L.Control.extend({
-    onAdd() {
-      const btn = L.DomUtil.create("button", "leaflet-bar chapter-map-reset");
-      btn.type = "button";
-      btn.textContent = "All chapters";
-      btn.setAttribute("aria-label", "Zoom out to show every chapter");
-      L.DomEvent.disableClickPropagation(btn);
-      L.DomEvent.on(btn, "click", () => {
-        map.closePopup();
-        showAll(!reduceMotion.matches);
-      });
-      return btn;
-    },
-  });
-  new ResetControl({ position: "topright" }).addTo(map);
+  // "See all chapters" / "Back to Colorado": one button that swaps between
+  // the two views. Only built when there is somewhere else to go.
+  let showingAll = false;
+  let viewButton = null;
+  const syncViewButton = () => {
+    if (!viewButton) return;
+    viewButton.textContent = showingAll ? "Back to Colorado" : "See all chapters";
+    viewButton.setAttribute("aria-label", showingAll ? "Zoom back in to the Colorado chapters" : "Zoom out to show every chapter");
+  };
+  if (anyElsewhere) {
+    const ViewControl = L.Control.extend({
+      onAdd() {
+        viewButton = L.DomUtil.create("button", "leaflet-bar chapter-map-reset");
+        viewButton.type = "button";
+        syncViewButton();
+        L.DomEvent.disableClickPropagation(viewButton);
+        L.DomEvent.on(viewButton, "click", () => {
+          map.closePopup();
+          showingAll = !showingAll;
+          fit(showingAll ? allBounds : homeBounds, !reduceMotion.matches);
+          syncViewButton();
+        });
+        return viewButton;
+      },
+    });
+    new ViewControl({ position: "topright" }).addTo(map);
+  }
 
   // Legend: only the branches actually on the map, plus the split pin if any
   // location runs more than one.
@@ -195,6 +220,10 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   new LegendControl({ position: "bottomleft" }).addTo(map);
 
+  // The opening view is fitted only now, once the legend exists and its
+  // height can be allowed for.
+  fit(homeBounds, false);
+
   // Wheel zoom only while the map is deliberately in use.
   const wheelOn = () => map.scrollWheelZoom.enable();
   const wheelOff = () => map.scrollWheelZoom.disable();
@@ -215,6 +244,10 @@ document.addEventListener("DOMContentLoaded", () => {
     btn.className = "chapter-locate";
     btn.textContent = "Show on map";
     btn.addEventListener("click", () => {
+      // Flying to one chapter leaves the "all" view, so the button offers it
+      // again rather than "Back to Colorado".
+      showingAll = false;
+      syncViewButton();
       const target = marker.getLatLng();
       // Street level: close enough to see the school and the roads around it.
       const zoom = Math.max(map.getZoom(), 15);

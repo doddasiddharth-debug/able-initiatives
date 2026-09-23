@@ -137,7 +137,12 @@ python3 -m http.server 8000
   location with a popup, and a legend (bottom-left) listing the branches on
   the map. A location running more than one branch gets a pin split into equal
   wedges, one per branch, so two branches read as a half-and-half pin; the
-  legend shows that too. The chapter list is folded under the map in a
+  legend shows that too. The map **opens on Colorado** — the pins whose
+  coordinates fall inside the state's lat/lng rectangle, so a new Colorado
+  chapter joins that view on its own — and a **"See all chapters"** button
+  (top right) zooms out to every pin, then reads "Back to Colorado". Fitting
+  every pin on load would mean a world view with the Colorado pins stacked on
+  one another. The chapter list is folded under the map in a
   `<details>` ("All chapters as a list"), with a "Show on map" button on each
   card that flies to its pin. It is built by `assets/js/chapter-map.js` on top of
   [Leaflet](https://leafletjs.com), vendored under
@@ -398,8 +403,8 @@ a rounded photo with hotspot dots beside a serif pull quote (`.quote-feature`,
 `.hotspot`); alternating text/photo rows for the four branches (`.feature-row`);
 a scrolling strip of chapter schools and cities (`.chapter-marquee`, cloned by
 the same code as the speaker marquee — add an `<li>` per new chapter); the
-stats mosaic (`.stat-mosaic`, four tiles — people reached, chapters,
-educational posts, cost — keep the numbers in step with `impact.html`); the green promo (`.section-green`, `.promo`); the speaker
+stats mosaic (`.stat-mosaic`, three tiles — people reached, chapters,
+educational posts — keep the numbers in step with `impact.html`); the green promo (`.section-green`, `.promo`); the speaker
 marquee; and the three tilted action cards (`.action-section`, `.action-cards`).
 
 **Nav** is a 100px solid blue bar. The monogram is turned white with
