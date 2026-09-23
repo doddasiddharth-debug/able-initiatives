@@ -504,10 +504,21 @@ phrase normally rather than announcing four separate letters.
 ## Homepage sections that need updating as ABLE grows
 
 **Event timeline** (`timeline.html`). Add a new `<li class="timeline-entry BRANCH reveal">`
-in date order, where `BRANCH` is `sat`, `health`, or `business` — that class colours
-the marker and must match the `event-branch` span inside. Keep the `datetime`
-attribute in `YYYY-MM-DD` form; it's the machine-readable version search engines read.
-Also update the event count in the section intro.
+in date order, where `BRANCH` is `sat`, `health`, `business` or `eng` — that class
+colours the marker, the card edge and the ghost date, and must match the
+`event-branch` span inside. Keep the `datetime` attribute in `YYYY-MM-DD` form; it's
+the machine-readable version search engines read. Also update the event count in the
+section intro, and give the entry its own `.entry-ghost` span (see the timeline
+background section above). If the entry opens a new month, add `has-month` to the
+`<li>` and an `.entry-month` chip; the "Latest" badge moves on its own.
+
+**A new event touches five places**, and all five should move together:
+`timeline.html` (the entry), that branch's page (a `.session-card` under "What
+we've been doing"), `index.html` (the three-card "Recently at ABLE" strip, which
+is hand-fed — drop the oldest), `events.html` (a `.gallery-event` group, with a
+"Photos coming soon" placeholder until there are photos; the last group carries
+`style="border-bottom:none;"`, so move that down), and a guest speaker card on
+`index.html` if the event had one.
 
 **Guest speakers** (`index.html`). Copy a `.speaker-card` block. With one speaker the
 card lays out horizontally on purpose; from two onward it becomes a normal grid,
