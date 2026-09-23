@@ -691,10 +691,11 @@ in `events.html` and point its `<img src>` at a file under
 | How to Build a $tartup Workshop | ABLE Business | July 22 | 8 |
 | College Admissions Journey Panel | ABLE Preps | August 3 | 0 — placeholder tile, photos still needed |
 | Exploring Business Majors Webinar | ABLE Business | August 15 | 2 |
+| An Interview with Jamie Nau | ABLE Business | September 19 | 1 |
 
-Exploring Business Majors Webinar ran on Google Meet, so its photos are screenshots of the
-call, showing the attendees as well as the presentation. **Trim the title bar
-off any further ones.** Google Meet puts the joining code there, and published
+The Exploring Business Majors Webinar and the Jamie Nau interview both ran on Google
+Meet, so their photos are screenshots of the call, showing the attendees as well as
+the presentation. **Trim the title bar off any further ones.** Google Meet puts the joining code there, and published
 on a public page that code lets anyone drop into a later session on it — it is
 the one piece of these captures that is a security question rather than a
 judgement call. Roughly the top 9-10% of a full-screen capture does it; check
@@ -703,5 +704,11 @@ the result rather than trusting the fraction.
 Note `sips --cropOffset` silently does nothing if either offset is `0`, leaving
 the image uncropped at its original size. Pass `1` instead and lose a pixel.
 
-The two webinar events use `object-fit: contain` so their wide captures aren't
-cropped to the middle of the frame.
+The call-capture events use `object-fit: contain` so their wide frames aren't cropped
+to the middle. That is a hard-coded list of `data-event` values in `style.css` — **add
+any new call capture to it**, or it falls back to `cover` and gets eaten. The
+interview capture is 2.6:1 against a 4:3 tile, where `cover` showed half of it.
+
+The interview capture was trimmed 45px off the top (the bar carrying the joining
+code beside the clock) and 85px off the bottom (the call's control bar), leaving
+1144x437.

@@ -2446,11 +2446,13 @@ a { color: inherit; text-decoration: none; }
   gap: 18px;
 }
 .gallery-grid .event-photo { border-radius: var(--radius-md); border: 1px solid var(--line); }
-/* Wide screenshots (the webinar captures) show in full instead of being
-   cropped to the middle, so you can actually see what's on screen. Both of
-   these are 16:9-ish slides inside a 4:3 tile, so cover would eat a quarter of
-   the width and cut the speaker out of frame. */
+/* Wide screenshots (the call captures) show in full instead of being cropped
+   to the middle, so you can actually see what's on screen. These are 16:9-or-
+   wider frames inside a 4:3 tile, so cover would eat a quarter of the width or
+   more and cut the speaker out. Any new call screenshot belongs on this list —
+   the interview capture is 2.6:1, where cover would have shown half of it. */
 .gallery-grid[data-event="preps-webinar"] .event-photo img,
+.gallery-grid[data-event="business-interview"] .event-photo img,
 .gallery-grid[data-event="business-webinar"] .event-photo img { object-fit: contain; }
 
 @media (max-width: 640px) {
