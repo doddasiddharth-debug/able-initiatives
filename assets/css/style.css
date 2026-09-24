@@ -3002,10 +3002,37 @@ a { color: inherit; text-decoration: none; }
   color: var(--ink);
 }
 .promo-stack-card span { display: block; font-size: 13.5px; color: var(--muted); margin-top: 6px; line-height: 1.35; }
+/* The green ABLE Business band: the same promo layout as the gold one, for
+   the business course. Same greens as the business branch page (white on
+   the band 5.6:1). The swoosh is the deeper green. */
+.section-business { position: relative; isolation: isolate; overflow: hidden; background: #177814; color: #FFFFFF; }
+.section-business::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: -20%;
+  bottom: -20%;
+  right: -12%;
+  width: 58%;
+  background: #125D0F;
+  border-radius: 48% 40% 44% 52%;
+  transform: rotate(-12deg);
+}
+.section-business h2 { color: #FFFFFF; }
+.section-business h2 em { font-style: normal; color: var(--yellow); }
+.section-business .eyebrow { color: rgba(255, 255, 255, 0.92); }
+.section-business .promo .lede { color: rgba(255, 255, 255, 0.92); }
+.section-business .promo-note { color: rgba(255, 255, 255, 0.85); }
+.section-business .btn-primary { background: #FFFFFF; color: #177814; border-color: #FFFFFF; }
+.section-business .btn-primary:hover { background: var(--yellow); border-color: var(--yellow); color: var(--brand-darkest); }
+.section-business .promo-stack-card .eyebrow { color: var(--business-ink); }
+/* Yellow ring on the last card: it shows on green, where blue would sink. */
+.section-business .promo-stack-card:nth-child(4) { border-color: var(--yellow); }
 @media (max-width: 860px) {
   .promo { grid-template-columns: 1fr; }
   .promo-stack { margin: 12px auto 0; max-width: 360px; }
   .section-preps::before { top: auto; height: 60%; right: -30%; width: 90%; }
+  .section-business::before { top: auto; height: 60%; right: -30%; width: 90%; }
 }
 
 /* ---------- inner-page numbers ---------- */

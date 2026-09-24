@@ -556,6 +556,12 @@ quiz; four right marks it complete. Lessons 1–5 each have a calculator.
   or changed lesson before it goes live.**
 - A course for another branch would be a new page with that branch's body
   class; the styles read the branch variables, so it retints on its own.
+- **Where the course is linked:** the ABLE Business page (header button, the
+  six-lesson list, and its launch card under "What we've been doing"), the
+  timeline (launched September 24, 2026), and the homepage (the "Recently at
+  ABLE" strip, a "Take the free course" button in the Business row, and the
+  green `.section-business` promo band under the gold SAT one). Retitling a
+  lesson means updating the lists on `business.html` and in that promo.
 
 ## Homepage sections that need updating as ABLE grows
 
