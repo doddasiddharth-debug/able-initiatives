@@ -1,0 +1,222 @@
+/* Self-paced course pages (business-course.html).
+
+   Every lesson is already in the HTML, so with no JS the page reads as one
+   long course. This script turns it into an overview (#lessons) plus one
+   lesson at a time (#lesson-N), grades each lesson's quiz, and keeps
+   progress in localStorage. Nothing leaves the browser.
+
+   Markup contract (see README, "Courses"):
+     [data-course="id"]            wrapper; id namespaces the storage key
+     [data-course-home]            overview section, shown when no lesson is open
+     [data-course-lessons]         section holding every article.lesson
+     article.lesson[data-lesson]   one lesson; form[data-quiz] inside it
+     fieldset.quiz-q[data-answer]  one question, answer letter A-D
+     .lesson-tool[data-tool]       a calculator, see TOOLS below
+     [data-course-card="N"]        overview card for lesson N
+     [data-course-progress], [data-course-done], [data-course-reset]
+*/
+(() => {
+  "use strict";
+  const root = document.querySelector("[data-course]");
+  if (!root) return;
+
+  const PASS = 4;
+  const KEY = `able.course.${root.dataset.course}.v1`;
+  const home = root.querySelector("[data-course-home]");
+  const lessonsWrap = root.querySelector("[data-course-lessons]");
+  const lessons = [...root.querySelectorAll("article.lesson[data-lesson]")];
+  const total = lessons.length;
+
+  // ---------- progress ----------
+  const load = () => {
+    try { return JSON.parse(localStorage.getItem(KEY)) || { passed: {}, best: {} }; }
+    catch (e) { return { passed: {}, best: {} }; }
+  };
+  let state = load();
+  const save = () => {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* private mode: this visit only */ }
+  };
+
+  const renderProgress = () => {
+    const done = lessons.filter((l) => state.passed[l.dataset.lesson]).length;
+    root.querySelectorAll("[data-course-progress]").forEach((el) => {
+      el.hidden = false;
+      const bar = el.querySelector("span");
+      if (bar) bar.style.width = `${(done / total) * 100}%`;
+      const n = el.querySelector("[data-done]");
+      if (n) n.textContent = done;
+    });
+    root.querySelectorAll("[data-course-card]").forEach((card) => {
+      const id = card.dataset.courseCard;
+      const passed = !!state.passed[id];
+      card.classList.toggle("is-done", passed);
+      const status = card.querySelector(".course-status");
+      if (status) status.textContent = passed ? "Completed ✓" : state.best[id] != null ? `Best ${state.best[id]}/5` : "Not started";
+    });
+    const start = root.querySelector("[data-course-start]");
+    if (start) {
+      const next = lessons.find((l) => !state.passed[l.dataset.lesson]);
+      if (done === 0) { start.textContent = "Start lesson 1"; start.href = "#lesson-1"; }
+      else if (next) { start.textContent = `Continue: lesson ${next.dataset.lesson}`; start.href = `#lesson-${next.dataset.lesson}`; }
+      else { start.textContent = "Review the lessons"; start.href = "#lessons"; }
+    }
+    const finished = root.querySelector("[data-course-done]");
+    if (finished) finished.hidden = done < total;
+  };
+
+  // ---------- routing: overview or one lesson ----------
+  const show = (scroll) => {
+    const m = /^#lesson-(\d+)$/.exec(location.hash);
+    const current = m && lessons.find((l) => l.dataset.lesson === m[1]);
+    if (current) {
+      home.hidden = true;
+      lessonsWrap.hidden = false;
+      lessons.forEach((l) => { l.hidden = l !== current; });
+      if (scroll) current.scrollIntoView({ block: "start" });
+    } else {
+      home.hidden = false;
+      lessonsWrap.hidden = true;
+      if (scroll && location.hash === "#lessons") home.scrollIntoView({ block: "start" });
+    }
+  };
+  root.classList.add("course-ready");
+  window.addEventListener("hashchange", () => show(true));
+  show(!!location.hash);
+
+  // ---------- quizzes ----------
+  lessons.forEach((lesson) => {
+    const form = lesson.querySelector("form[data-quiz]");
+    if (!form) return;
+    const id = lesson.dataset.lesson;
+    const qs = [...form.querySelectorAll("fieldset.quiz-q")];
+    const result = form.querySelector(".quiz-result");
+
+    const clear = (q) => {
+      q.classList.remove("is-right", "is-wrong", "is-missing");
+      q.querySelectorAll("label").forEach((l) => l.classList.remove("is-answer", "is-picked-wrong"));
+    };
+    qs.forEach((q) => q.addEventListener("change", () => clear(q)));
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const missing = qs.filter((q) => !q.querySelector("input:checked"));
+      qs.forEach(clear);
+      if (missing.length) {
+        missing.forEach((q) => q.classList.add("is-missing"));
+        result.className = "quiz-result is-fail";
+        result.textContent = `Answer all ${qs.length} questions first (${missing.length} left).`;
+        missing[0].scrollIntoView({ block: "center", behavior: "smooth" });
+        return;
+      }
+      let score = 0;
+      qs.forEach((q) => {
+        const picked = q.querySelector("input:checked");
+        const right = picked.value === q.dataset.answer;
+        if (right) score++;
+        q.classList.add(right ? "is-right" : "is-wrong");
+        q.querySelectorAll("input").forEach((input) => {
+          if (input.value === q.dataset.answer) input.closest("label").classList.add("is-answer");
+          else if (input === picked) input.closest("label").classList.add("is-picked-wrong");
+        });
+      });
+      state.best[id] = Math.max(score, state.best[id] || 0);
+      if (score >= PASS) state.passed[id] = true;
+      save();
+      renderProgress();
+      const n = qs.length;
+      if (score >= PASS) {
+        const next = lessons[lessons.indexOf(lesson) + 1];
+        result.className = "quiz-result is-pass";
+        result.textContent = `${score} of ${n} — lesson complete!` + (next ? " On to the next one." : " That's the whole course.");
+      } else {
+        result.className = "quiz-result is-fail";
+        result.textContent = `${score} of ${n}. Read the explanations, change your answers and check again. You need ${PASS} to complete the lesson.`;
+      }
+    });
+  });
+
+  root.querySelectorAll("[data-course-reset]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      if (!window.confirm("Clear your progress on this course?")) return;
+      state = { passed: {}, best: {} };
+      save();
+      renderProgress();
+    });
+  });
+
+  // ---------- calculators ----------
+  const money = (x) => (x < 0 ? "−" : "") + "$" + Math.abs(x).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const num = (el) => { const v = parseFloat(el.value); return Number.isFinite(v) && v >= 0 ? v : 0; };
+
+  const TOOLS = {
+    budget(v, out) {
+      out.needs = money(v.income * 0.5);
+      out.wants = money(v.income * 0.3);
+      out.savings = money(v.income * 0.2);
+    },
+    paycheck(v, out) {
+      const gross = v.wage * v.hours * 2;
+      const ss = gross * 0.062, medicare = gross * 0.0145, tax = gross * (v.withholding / 100);
+      out.gross = money(gross);
+      out.ss = money(ss);
+      out.medicare = money(medicare);
+      out.tax = money(tax);
+      out.net = money(gross - ss - medicare - tax);
+    },
+    compound(v, out) {
+      // Monthly compounding; each contribution lands at the end of its month.
+      const r = v.rate / 100 / 12, months = Math.round(v.years * 12);
+      let bal = v.start;
+      for (let i = 0; i < months; i++) bal = bal * (1 + r) + v.monthly;
+      const put = v.start + v.monthly * months;
+      out.balance = money(bal);
+      out.contributed = money(put);
+      out.growth = money(bal - put);
+    },
+    payoff(v, out) {
+      // Fixed payment every month, no new charges, interest = APR / 12 on the
+      // balance, rounded to the cent (the method lesson 4's table uses).
+      const r = v.apr / 100 / 12;
+      let bal = v.balance, months = 0, interest = 0;
+      if (bal > 0 && v.payment <= bal * r) return { warn: "This payment doesn't even cover the monthly interest, so the balance never goes down." };
+      if (bal > 0 && v.payment <= 0) return { warn: "Enter a monthly payment." };
+      while (bal > 0.005 && months < 1200) {
+        const i = Math.round(bal * r * 100) / 100;
+        interest += i;
+        bal = bal + i - Math.min(v.payment, bal + i);
+        months++;
+      }
+      out.months = months >= 1200 ? "100+ years" : `${months} month${months === 1 ? "" : "s"}` + (months >= 12 ? ` (${(months / 12).toFixed(1)} yrs)` : "");
+      out.interest = money(interest);
+      out.paid = money(v.balance + interest);
+    },
+    breakeven(v, out) {
+      const margin = v.price - v.cost;
+      out.margin = money(margin);
+      if (margin <= 0) return { warn: "Each sale loses money (or makes none), so no number of sales will cover the fixed costs. Raise the price or cut the cost per unit." };
+      out.units = `${Math.ceil(v.fixed / margin - 1e-9)} units`;
+      out.revenue = money(Math.ceil(v.fixed / margin - 1e-9) * v.price);
+    },
+  };
+
+  root.querySelectorAll(".lesson-tool[data-tool]").forEach((tool) => {
+    const fn = TOOLS[tool.dataset.tool];
+    if (!fn) return;
+    const inputs = [...tool.querySelectorAll("[data-in]")];
+    const warn = tool.querySelector(".tool-warn");
+    const run = () => {
+      const v = {};
+      inputs.forEach((el) => { v[el.dataset.in] = num(el); });
+      const out = {};
+      const res = fn(v, out) || {};
+      tool.querySelectorAll("[data-out]").forEach((el) => {
+        el.textContent = res.warn && !(el.dataset.out in out) ? "—" : out[el.dataset.out] ?? "—";
+      });
+      if (warn) { warn.hidden = !res.warn; warn.textContent = res.warn || ""; }
+    };
+    inputs.forEach((el) => el.addEventListener("input", run));
+    run();
+  });
+
+  renderProgress();
+})();

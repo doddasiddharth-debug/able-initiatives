@@ -3212,3 +3212,210 @@ body[class*="branch-"] .section-alt { background: var(--accent-tint); }
 @media (max-width: 560px) {
   .officer-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
 }
+
+/* ==========================================================================
+   Courses (business-course.html)
+   One page per course. Every lesson is in the HTML, so with no JS the page is
+   simply the whole course top to bottom; course.js turns it into an overview
+   plus one lesson at a time (#lesson-N), grades the quizzes and remembers
+   progress in localStorage. Colours come from the branch variables, so a
+   course on another branch's page retints with its body class.
+   ========================================================================== */
+/* Several course blocks set their own display, which would beat the hidden
+   attribute course.js toggles. */
+[data-course] [hidden] { display: none !important; }
+.course-header .course-actions { margin-top: 26px; display: flex; gap: 12px; flex-wrap: wrap; }
+.course-progress { margin-top: 30px; max-width: 420px; }
+.course-progress-bar { height: 10px; border-radius: 999px; background: rgba(255, 255, 255, 0.24); overflow: hidden; }
+.course-progress-bar span { display: block; height: 100%; width: 0; background: #FFFFFF; border-radius: inherit; transition: width 0.5s ease; }
+.course-progress p { margin: 10px 0 0; font-size: 15px; color: rgba(255, 255, 255, 0.94); }
+
+.course-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; counter-reset: none; }
+.course-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 26px 26px 22px;
+  background: var(--paper);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-lg);
+  color: var(--ink);
+  transition: border-color 0.18s ease, transform 0.18s ease;
+}
+.course-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+.course-card-num { font-family: var(--font-display); font-weight: 800; font-size: 44px; line-height: 1; letter-spacing: -0.04em; color: var(--accent); margin-bottom: 18px; }
+.course-card h3 { font-size: 20px; margin: 0 0 8px; letter-spacing: -0.02em; }
+.course-card p { font-size: 14.5px; color: var(--ink-soft); margin: 0 0 18px; }
+.course-card-meta { margin-top: auto; display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 13.5px; color: var(--muted); }
+.course-status { font-weight: 600; font-size: 12.5px; padding: 4px 10px; border-radius: 999px; background: var(--bg-alt); color: var(--ink-soft); white-space: nowrap; }
+.course-card.is-done { border-color: var(--accent); }
+.course-card.is-done .course-status { background: var(--accent); color: #FFFFFF; }
+.course-done {
+  margin-top: 28px;
+  padding: 30px 32px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, var(--branch-band, var(--brand)) 0%, var(--branch-deep, var(--brand-deep)) 100%);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.course-done h3 { color: #FFFFFF; font-size: 24px; margin: 0 0 6px; }
+.course-done p { margin: 0; color: rgba(255, 255, 255, 0.92); }
+.course-done .btn { background: #FFFFFF; color: var(--accent); border-color: #FFFFFF; }
+.course-done .btn:hover { background: var(--yellow); border-color: var(--yellow); color: var(--brand-darkest); }
+.course-note { margin: 28px 0 0; font-size: 14px; color: var(--muted); max-width: 70ch; }
+.course-note button { background: none; border: none; padding: 0; font: inherit; color: var(--accent); text-decoration: underline; cursor: pointer; }
+
+/* ---------- a lesson ---------- */
+.course-lessons .container { max-width: 860px; }
+.lesson {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-photo);
+  padding: clamp(28px, 5vw, 56px);
+  box-shadow: var(--shadow-md);
+  margin-bottom: 40px;
+  scroll-margin-top: 96px;
+}
+.lesson-num { display: inline-block; font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent-dark); margin-bottom: 14px; }
+.lesson-head h2 { font-size: clamp(30px, 4vw, 44px); letter-spacing: -0.035em; margin: 0 0 14px; text-wrap: balance; }
+.lesson-head .lede { margin: 0 0 26px; }
+.lesson-goals { padding: 20px 24px; border-radius: var(--radius-md); background: var(--accent-tint); }
+.lesson-goals h3 { font-size: 15px; margin: 0 0 8px; color: var(--accent-dark); }
+.lesson-goals ul { margin: 0; padding-left: 20px; }
+.lesson-goals li { margin: 4px 0; }
+.lesson-body { margin-top: 12px; font-size: 17px; line-height: 1.65; color: var(--ink-soft); }
+.lesson-body strong { color: var(--ink); }
+.lesson-part { margin-top: 36px; }
+.lesson-part h3, .lesson-terms h3, .lesson-try h3 { font-size: 23px; letter-spacing: -0.02em; margin: 0 0 12px; color: var(--ink); }
+.lesson-body ul, .lesson-body ol { padding-left: 22px; }
+.lesson-body li { margin: 6px 0; }
+.lesson-callout { margin: 32px 0 0; padding: 22px 24px; border-radius: var(--radius-md); border-left: 5px solid var(--accent); }
+.lesson-callout h4 { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin: 0 0 10px; }
+.lesson-callout p:last-child { margin-bottom: 0; }
+.lesson-callout.example { background: var(--bg); border-left-color: var(--branch, var(--accent)); }
+.lesson-callout.example h4 { color: var(--accent-dark); }
+.lesson-callout.mistake { background: #FFF6D6; border-left-color: #E0A100; }
+.lesson-callout.mistake h4 { color: #7A5300; }
+.lesson-callout.key { background: linear-gradient(135deg, var(--branch-band, var(--brand)) 0%, var(--branch-deep, var(--brand-deep)) 100%); border-left: none; color: #FFFFFF; }
+.lesson-callout.key h4 { color: rgba(255, 255, 255, 0.85); }
+.lesson-callout.key p { color: #FFFFFF; font-size: 19px; line-height: 1.5; font-weight: 500; }
+.lesson-table { width: 100%; border-collapse: collapse; margin: 14px 0 16px; font-size: 15px; background: var(--paper); border-radius: var(--radius-sm); overflow: hidden; }
+.lesson-table th, .lesson-table td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.lesson-table thead th { font-size: 12.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); background: var(--bg-alt); }
+.lesson-table td:last-child, .lesson-table th:last-child { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.lesson-table tbody tr:last-child th, .lesson-table tbody tr:last-child td { border-bottom: none; }
+.lesson-terms { margin-top: 40px; }
+.lesson-terms dl { margin: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.lesson-terms dl > div { padding: 14px 16px; border: 1px solid var(--line); border-radius: var(--radius-sm); }
+.lesson-terms dt { font-weight: 700; color: var(--ink); font-size: 15.5px; }
+.lesson-terms dd { margin: 4px 0 0; font-size: 14.5px; line-height: 1.5; }
+.lesson-try { margin-top: 36px; padding: 22px 24px; border: 2px dashed var(--accent); border-radius: var(--radius-md); }
+.lesson-try p { margin: 0; }
+
+/* ---------- interactive tools ---------- */
+/* Hidden without JS: a calculator whose inputs do nothing is worse than none. */
+.lesson-tool { display: none; margin: 24px 0 8px; padding: 22px 24px; border: 1px solid var(--line-strong); border-radius: var(--radius-md); background: var(--paper); box-shadow: var(--shadow-sm); }
+.js .lesson-tool { display: block; }
+.lesson-tool h4 { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent-dark); margin: 0 0 14px; }
+.tool-inputs { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; }
+.tool-inputs label { display: grid; gap: 6px; font-size: 13.5px; font-weight: 600; color: var(--ink); line-height: 1.3; }
+.tool-inputs input { font: inherit; font-size: 17px; font-weight: 500; padding: 10px 12px; border: 1px solid var(--line-strong); border-radius: var(--radius-sm); background: var(--paper); color: var(--ink); width: 100%; }
+.tool-inputs input:focus { outline: 3px solid var(--accent-tint); border-color: var(--accent); }
+.tool-out { margin-top: 16px; display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
+.tool-out > div { padding: 12px 14px; border-radius: var(--radius-sm); background: var(--bg); }
+.tool-out span { display: block; font-size: 12.5px; color: var(--muted); line-height: 1.3; }
+.tool-out strong { display: block; margin-top: 4px; font-family: var(--font-display); font-size: 22px; font-weight: 700; letter-spacing: -0.02em; color: var(--ink); font-variant-numeric: tabular-nums; }
+.tool-out > .is-main { background: var(--accent); }
+.tool-out > .is-main span { color: rgba(255, 255, 255, 0.88); }
+.tool-out > .is-main strong { color: #FFFFFF; }
+.tool-warn { margin: 12px 0 0; padding: 10px 14px; border-radius: var(--radius-sm); background: #FCD9D9; color: #8A0505; font-size: 14.5px; font-weight: 600; }
+.tool-note { margin: 12px 0 0; font-size: 13px; line-height: 1.5; color: var(--muted); }
+
+/* ---------- quiz ---------- */
+.quiz { margin-top: 48px; padding-top: 36px; border-top: 1px solid var(--line); }
+.quiz h3 { font-size: 26px; letter-spacing: -0.025em; margin: 0 0 6px; }
+.quiz-intro { color: var(--muted); margin: 0 0 22px; }
+.quiz-q { border: 1px solid var(--line); border-radius: var(--radius-md); padding: 18px 20px 14px; margin: 0 0 14px; }
+.quiz-q legend { float: left; width: 100%; padding: 0; margin-bottom: 12px; font-weight: 600; font-size: 16.5px; line-height: 1.45; color: var(--ink); display: flex; gap: 12px; }
+.quiz-q legend + * { clear: both; }
+.quiz-n { flex: none; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: var(--accent-tint); color: var(--accent-dark); font-size: 14px; font-weight: 700; }
+.quiz-q label { display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; margin: 0 0 6px; border: 1.5px solid var(--line); border-radius: var(--radius-sm); cursor: pointer; font-size: 15.5px; line-height: 1.45; color: var(--ink-soft); transition: border-color 0.12s ease, background 0.12s ease; }
+.quiz-q label:hover { border-color: var(--accent); }
+.quiz-q input { margin: 3px 0 0; accent-color: var(--accent); flex: none; }
+.quiz-q label:has(input:checked) { border-color: var(--accent); background: var(--accent-tint); color: var(--ink); }
+.quiz-why { margin: 10px 2px 4px; font-size: 14.5px; line-height: 1.55; color: var(--ink-soft); }
+/* With JS the explanations wait until the answers are checked. */
+.js .quiz-why { display: none; }
+.js .quiz-q.is-right .quiz-why, .js .quiz-q.is-wrong .quiz-why { display: block; }
+.quiz-q.is-right { border-color: #1E7217; }
+.quiz-q.is-wrong { border-color: #BC0606; }
+/* Doubled up with :has() so the graded colours beat the "selected" style above. */
+.quiz-q label.is-answer, .quiz-q label.is-answer:has(input:checked) { border-color: #1E7217; background: #E0F7DE; color: var(--ink); }
+.quiz-q label.is-picked-wrong, .quiz-q label.is-picked-wrong:has(input:checked) { border-color: #BC0606; background: #FCD9D9; color: var(--ink); }
+.quiz-q label.is-answer::after { content: "Correct answer"; margin-left: auto; padding-left: 10px; font-size: 12px; font-weight: 700; color: #1E7217; white-space: nowrap; }
+.quiz-q.is-missing { border-color: #BC0606; }
+.quiz-actions { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; margin-top: 18px; }
+.quiz-actions .btn { display: none; }
+.js .quiz-actions .btn { display: inline-flex; }
+.quiz-result { margin: 0; font-weight: 600; color: var(--ink); }
+.quiz-result.is-pass { color: #1E7217; }
+.quiz-result.is-fail { color: #BC0606; }
+
+.lesson-nav { margin-top: 44px; padding-top: 28px; border-top: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.lesson-nav-all { font-weight: 600; color: var(--accent-dark); text-decoration: underline; text-underline-offset: 3px; }
+.lesson-nav .is-next { margin-left: auto; }
+
+@media (max-width: 900px) {
+  .course-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 640px) {
+  .course-grid { grid-template-columns: 1fr; }
+  .lesson-terms dl { grid-template-columns: 1fr; }
+  .lesson-body { font-size: 16px; }
+  .lesson-nav { flex-direction: column; align-items: stretch; }
+  .lesson-nav .btn { justify-content: center; }
+  .lesson-nav .is-next { margin-left: 0; order: -1; }
+  .lesson-nav-all { text-align: center; }
+  .quiz-q label.is-answer::after { display: none; }
+  /* Tables and long button labels are what push a lesson past a phone's
+     width: the tables scroll inside themselves, the buttons wrap. */
+  .course-lessons .container { padding: 0 16px; }
+  .lesson { padding: 24px 20px; }
+  .lesson-table { display: block; overflow-x: auto; font-size: 14px; }
+  .lesson-table th, .lesson-table td { padding: 8px 10px; }
+  .lesson-table thead th { white-space: normal; }
+  .lesson-nav .btn { white-space: normal; text-align: center; }
+  .lesson-callout, .lesson-tool, .lesson-try, .lesson-goals { padding: 18px 16px; }
+}
+
+/* The course's six lessons as a numbered list on the branch page. */
+.course-promo-list { list-style: none; margin: 0; padding: 0; counter-reset: lesson; display: grid; gap: 10px; }
+.course-promo-list li { counter-increment: lesson; }
+.course-promo-list a {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 18px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-md);
+  background: var(--paper);
+  font-weight: 600;
+  color: var(--ink);
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+.course-promo-list a::before {
+  content: counter(lesson, decimal-leading-zero);
+  flex: none;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 24px;
+  letter-spacing: -0.03em;
+  color: var(--accent);
+  min-width: 36px;
+}
+.course-promo-list a:hover { border-color: var(--accent); transform: translateX(4px); }
