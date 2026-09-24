@@ -422,11 +422,14 @@ properties and every rule in the stylesheet already reads them, so the nav,
 page header, buttons, links, eyebrows, `.section-alt` tint, CTA band and footer
 all retint together. Nothing else on the site changes.
 
-- `--accent` is the branch's `-ink` value. It has to work both as a ground for
-  white text and as small text on the paper, and all four clear 5.8:1 for both.
-- `--accent-dark` and `--branch-band` are a step darker again, for the
-  full-bleed bands where the lede and the yellow accent also need 4.5:1
-  (white ≥7.5:1, yellow ≥5.2:1 on all four).
+- `--branch-band` (= `--accent`) is the fullest-saturation shade of the
+  branch colour that still carries white text: 5.6:1 on all four, and 5.1:1+
+  as small text on the paper. Keep it vivid — the first version used
+  lightness 21–32% and read as "matte" next to the homepage blue (44%).
+- `--branch-deep` (= `--accent-dark`) is the same hue darker (8:1 with
+  white). The page header and CTA band run a 135° gradient band → deep; the
+  footer and the mobile nav sit on deep. Header eyebrow and lede go white on
+  branch pages; yellow headline `<em>` is still ≥3.9:1 (large text only).
 - `--branch` is the bright logo colour. Graphical cues only — pin rings, card
   borders, the rule above a speaker credit. Never put text on it.
 

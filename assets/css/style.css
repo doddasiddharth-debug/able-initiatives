@@ -1454,7 +1454,12 @@ a { color: inherit; text-decoration: none; }
   flex-wrap: wrap;
 }
 .cta-band h2 { color: var(--on-panel); margin-bottom: 6px; }
-.cta-band p { color: var(--on-panel-soft); margin-bottom: 0; }
+.cta-band p { color: rgba(255, 255, 255, 0.9); margin-bottom: 0; }
+/* The band is the accent colour, so an accent button on it was invisible —
+   a blue pill on blue, or on a branch page the exact same colour. On the
+   band the solid button is white, in the band's colour. */
+.cta-band .btn-accent, .cta-band .btn-primary { background: #FFFFFF; color: var(--accent); border-color: #FFFFFF; }
+.cta-band .btn-accent:hover, .cta-band .btn-primary:hover { background: var(--yellow); border-color: var(--yellow); color: var(--brand-darkest); }
 /* Outline buttons sitting on a dark panel. Replaces a hardcoded inline style
    that was duplicated in the markup and invisible to the palette. */
 .btn-on-dark { color: #FFFFFF; border-color: #FFFFFF; background: transparent; }
@@ -2038,7 +2043,7 @@ a { color: inherit; text-decoration: none; }
 /* ---------- impact page ---------- */
 .impact-figures {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 24px;
   margin-bottom: 64px;
 }
@@ -3005,52 +3010,75 @@ a { color: inherit; text-decoration: none; }
 /* ==========================================================================
    Branch pages (preps / health / business / engineering)
    Each page declares its branch on <body>, and the whole page retints: nav,
-   page header, buttons, links, eyebrows, footer. Only these four custom
+   page header, buttons, links, eyebrows, footer. Only these custom
    properties change — every rule above already reads them.
 
-   --accent is the branch's `-ink` value, which is dark enough both for white
-   text sitting on it (≥5.8:1) and for small text sitting on the paper
-   (≥5.8:1). --branch-band is a further step down, used for the full-bleed
-   bands where the lede and the yellow accent also have to clear 4.5:1
-   (white ≥7.5:1, yellow ≥5.2:1 on all four). --branch is the bright logo
-   colour, for graphical cues only — never behind text.
+   --branch-band (= --accent) carries the bands and buttons: white on it is
+   5.6:1 and it is 5.1:1 as text on the paper. --branch-deep (= --accent-dark)
+   is 8:1 under white, for the footer, hovers and small text. --branch is the
+   bright logo colour, for graphical cues only — never behind text.
    ========================================================================== */
+/* Each band is the richest shade of the branch's logo hue that still gives
+   white text a comfortable 5.6:1: full saturation, lifted as far as that
+   allows. The earlier shades were far darker (21-32% lightness against the
+   homepage blue's 44%), picked for contrast headroom nobody needed, and read
+   as muddy next to the blue. --branch-deep is the same hue at 8:1, for the
+   footer, hovers, the mobile menu and small text on the paper. Preps sits a
+   few degrees redder than its logo so that at this depth it reads orange
+   rather than ochre. */
 body.branch-preps {
   --branch: var(--sat);
-  --accent: var(--sat-ink);
-  --accent-dark: #7A4A03;
+  --branch-band: #A54F04;
+  --branch-deep: #813E03;
+  --accent: #A54F04;
+  --accent-dark: #813E03;
   --accent-tint: var(--sat-tint);
-  --branch-band: #7A4A03;
-  --header-bg: #7A4A03;
+  --header-bg: #A54F04;
 }
 body.branch-health {
   --branch: var(--health);
-  --accent: var(--health-ink);
-  --accent-dark: #9E0505;
+  --branch-band: #CF1111;
+  --branch-deep: #A30D0D;
+  --accent: #CF1111;
+  --accent-dark: #A30D0D;
   --accent-tint: var(--health-tint);
-  --branch-band: #9E0505;
-  --header-bg: #9E0505;
+  --header-bg: #CF1111;
 }
 body.branch-business {
   --branch: var(--business);
-  --accent: var(--business-ink);
-  --accent-dark: #175A12;
+  --branch-band: #177814;
+  --branch-deep: #125D0F;
+  --accent: #177814;
+  --accent-dark: #125D0F;
   --accent-tint: var(--business-tint);
-  --branch-band: #175A12;
-  --header-bg: #175A12;
+  --header-bg: #177814;
 }
 body.branch-eng {
   --branch: var(--eng);
-  --accent: var(--eng-ink);
-  --accent-dark: #075366;
+  --branch-band: #09708D;
+  --branch-deep: #07576D;
+  --accent: #09708D;
+  --accent-dark: #07576D;
   --accent-tint: var(--eng-tint);
-  --branch-band: #075366;
-  --header-bg: #075366;
+  --header-bg: #09708D;
 }
+/* Depth: the bands run from the branch colour to its deep shade, top left to
+   bottom right, the way the homepage hero gets depth from its photograph.
+   The footer takes the deep shade, so the page is bracketed like the
+   homepage's blue nav and deeper-blue footer. */
+body[class*="branch-"] .page-header,
+body[class*="branch-"] .cta-band {
+  background: linear-gradient(135deg, var(--branch-band) 0%, var(--branch-deep) 100%);
+}
+body[class*="branch-"] .site-footer { background: var(--branch-deep); }
+/* Yellow on these brighter bands is ~3.9:1: enough for a heading's
+   highlighted word, which is large text, but not for an 11px label. */
+body[class*="branch-"] .page-header .eyebrow { color: rgba(255, 255, 255, 0.92); }
+body[class*="branch-"] .page-header .lede { color: rgba(255, 255, 255, 0.94); }
 /* The mobile nav panel and the section-alt band, which are the two places
    that name a blue directly rather than going through a variable. */
 @media (max-width: 1130px) {
-  body[class*="branch-"] .nav-links { background: var(--branch-band); }
+  body[class*="branch-"] .nav-links { background: var(--branch-deep); }
 }
 /* A wash of the branch colour on the alternating sections, so the tint runs
    through the page rather than only its bands. */
