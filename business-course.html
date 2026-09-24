@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Money &amp; Business Foundations · A free course from ABLE Business</title>
-<meta name="description" content="A free, self-paced course from ABLE Business: budgeting, paychecks and taxes, saving and investing, credit, and how businesses make money. Six short lessons with quizzes. No account needed.">
+<meta name="description" content="A free, self-paced course from ABLE Business: budgeting, paychecks and taxes, saving and investing, credit, and how businesses make money. Six short lessons with quizzes, and a certificate at the end. No account needed.">
 <link rel="canonical" href="https://ableinitiatives.com/business-course.html">
 <link rel="icon" href="assets/favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
@@ -12,7 +12,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="ABLE Initiatives">
 <meta property="og:title" content="Money &amp; Business Foundations · A free course from ABLE Business">
-<meta property="og:description" content="A free, self-paced course from ABLE Business: budgeting, paychecks and taxes, saving and investing, credit, and how businesses make money. Six short lessons with quizzes. No account needed.">
+<meta property="og:description" content="A free, self-paced course from ABLE Business: budgeting, paychecks and taxes, saving and investing, credit, and how businesses make money. Six short lessons with quizzes, and a certificate at the end. No account needed.">
 <meta property="og:url" content="https://ableinitiatives.com/business-course.html">
 <meta property="og:image" content="https://ableinitiatives.com/assets/images/logos/logo-lockup.jpg">
 <meta property="og:image:width" content="1280">
@@ -22,7 +22,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Libre+Baskerville:ital@1&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=26">
+<link rel="stylesheet" href="assets/css/style.css?v=27">
 <noscript><style>
   /* Scroll-reveal hides content until JS marks it in-view. If JS never runs,
      the page would render blank, so opt out of the animation entirely. */
@@ -72,7 +72,7 @@
     <div class="container">
       <span class="eyebrow">ABLE Business · Free course</span>
       <h1>Money &amp; Business Foundations</h1>
-      <p class="lede">Six short lessons on budgeting, paychecks, saving and investing, credit, and how businesses make money. Free, self-paced, and no account needed.</p>
+      <p class="lede">Six short lessons on budgeting, paychecks, saving and investing, credit, and how businesses make money. Free, self-paced, no account needed, and a certificate at the end.</p>
       <div class="course-actions">
         <a href="#lesson-1" class="btn btn-primary" data-course-start>Start lesson 1</a>
         <a href="#lessons" class="btn btn-outline">See all lessons</a>
@@ -89,7 +89,7 @@
       <div class="section-head">
         <span class="eyebrow">The course</span>
         <h2>Six lessons, under two hours in all.</h2>
-        <p class="lede">Each lesson ends with five quick questions; get four right and it's marked complete. Take them in order or jump to the one you need. Your progress is saved in this browser only.</p>
+        <p class="lede">Each lesson ends with five quick questions; get four right and it's marked complete. Complete all six for a certificate. Take them in order or jump to the one you need. Your progress is saved in this browser only.</p>
       </div>
       <ol class="course-grid">
           <li><a class="course-card" href="#lesson-1" data-course-card="1">
@@ -132,9 +132,45 @@
       <div class="course-done" data-course-done hidden>
         <div>
           <h3>You've finished Money &amp; Business Foundations.</h3>
-          <p>All six lessons complete. Want to go further? Come to an ABLE Business workshop.</p>
+          <p>All six lessons complete. Your certificate is ready below. Want to go further? Come to an ABLE Business workshop.</p>
         </div>
         <a href="get-involved.html" class="btn">Join ABLE Business</a>
+      </div>
+
+      <!-- CERTIFICATE. Unlocks when every lesson is passed; course.js draws it
+           on a canvas from the name typed here, so it can be downloaded as a
+           PNG or printed. Without JS none of this shows. -->
+      <div class="course-cert" id="certificate" data-course-cert hidden>
+        <div class="cert-locked" data-cert-locked>
+          <span class="cert-locked-icon" aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="M8.5 14 7 22l5-3 5 3-1.5-8"/></svg>
+          </span>
+          <div>
+            <h3>Earn your certificate</h3>
+            <p>Pass all six lesson quizzes and you'll get a certificate of completion with your name on it, to download or print. <strong data-cert-left>6 lessons</strong> to go.</p>
+          </div>
+        </div>
+        <div class="cert-ready" data-cert-ready hidden>
+          <div class="cert-ready-head">
+            <span class="eyebrow">Your certificate</span>
+            <h3>Put your name on it.</h3>
+            <p>Type your name the way you'd like it to appear. It stays in this browser; nothing is sent anywhere.</p>
+          </div>
+          <form class="cert-form" data-cert-form>
+            <label for="cert-name">Your name</label>
+            <div class="cert-form-row">
+              <input type="text" id="cert-name" maxlength="60" autocomplete="name" required placeholder="First and last name" data-cert-name>
+              <button type="submit" class="btn btn-primary">Make my certificate</button>
+            </div>
+          </form>
+          <figure class="cert-preview" data-cert-preview hidden>
+            <img src="data:," alt="" data-cert-img>
+          </figure>
+          <div class="cert-actions" data-cert-actions hidden>
+            <a class="btn btn-primary" href="#certificate" download="ABLE-Money-and-Business-Foundations-certificate.png" data-cert-download>Download image</a>
+            <button type="button" class="btn btn-outline" data-cert-print>Print or save as PDF</button>
+          </div>
+        </div>
       </div>
       <p class="course-note">This course teaches general ideas, not personal financial, tax or legal advice. The students and numbers in the examples are made up for illustration, and US rules are used throughout. <button type="button" data-course-reset>Reset my progress</button></p>
     </div>
@@ -1268,7 +1304,7 @@
   </div>
 </footer>
 
-<script src="assets/js/main.js?v=26"></script>
-<script src="assets/js/course.js?v=26"></script>
+<script src="assets/js/main.js?v=27"></script>
+<script src="assets/js/course.js?v=27"></script>
 </body>
 </html>

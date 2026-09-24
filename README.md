@@ -556,6 +556,17 @@ quiz; four right marks it complete. Lessons 1–5 each have a calculator.
   or changed lesson before it goes live.**
 - A course for another branch would be a new page with that branch's body
   class; the styles read the branch variables, so it retints on its own.
+- **Certificate.** Below the lesson cards, `#certificate` shows "Earn your
+  certificate" (with lessons left) until every quiz is passed, then asks for
+  a name and draws a 2000×1414 landscape certificate on a canvas: both logos,
+  the name, the course and its six topics, the completion date (the day the
+  last lesson was *first* passed, stored as `completedAt`) and the course
+  URL. It downloads as a PNG, or prints alone, landscape, via
+  `body.is-printing-cert`. The name is drawn only as canvas text, never
+  inserted as HTML, and stays in `localStorage`. There is no signature and
+  no certificate number on purpose: nothing is recorded server-side, so the
+  certificate can't be verified and shouldn't imply that it can. Changing a
+  lesson title means changing the topic lines in `drawCert` too.
 - **Where the course is linked:** the ABLE Business page (header button, the
   six-lesson list, and its launch card under "What we've been doing"), the
   timeline (launched September 24, 2026), and the homepage (the "Recently at

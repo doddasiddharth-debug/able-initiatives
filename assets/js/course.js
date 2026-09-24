@@ -62,7 +62,157 @@
     }
     const finished = root.querySelector("[data-course-done]");
     if (finished) finished.hidden = done < total;
+    // The date on the certificate is the day the last lesson was first
+    // passed, so re-taking a quiz later doesn't change it.
+    if (done === total && !state.completedAt) { state.completedAt = Date.now(); save(); }
+    renderCert(done);
   };
+
+  // ---------- certificate ----------
+  // Drawn on a canvas so it can be saved as an image or printed as-is. The
+  // name is only ever drawn as canvas text, never inserted as HTML.
+  const cert = root.querySelector("[data-course-cert]");
+  const q = (sel) => cert && cert.querySelector(sel);
+  const locked = q("[data-cert-locked]"), ready = q("[data-cert-ready]");
+  const form = q("[data-cert-form]"), nameIn = q("[data-cert-name]");
+  const preview = q("[data-cert-preview]"), img = q("[data-cert-img]");
+  const actions = q("[data-cert-actions]"), dl = q("[data-cert-download]");
+  let certURL = null;
+
+  function renderCert(done) {
+    if (!cert) return;
+    cert.hidden = false;
+    const complete = done === total;
+    locked.hidden = complete;
+    ready.hidden = !complete;
+    const left = q("[data-cert-left]");
+    if (left) left.textContent = `${total - done} lesson${total - done === 1 ? "" : "s"}`;
+    if (complete && state.name && nameIn && !nameIn.value) nameIn.value = state.name;
+  }
+
+  const loadImg = (src) => new Promise((res) => {
+    const im = new Image();
+    im.onload = () => res(im);
+    im.onerror = () => res(null);
+    im.src = src;
+  });
+
+  const drawCert = async (name) => {
+    const W = 2000, H = 1414;
+    const c = document.createElement("canvas");
+    c.width = W; c.height = H;
+    const x = c.getContext("2d");
+    const GREEN = "#177814", DEEP = "#125D0F", GOLD = "#E6B33F", INK = "#14143A", MUTED = "#5F6388";
+    const SANS = '"Outfit", "Segoe UI", Arial, sans-serif', SERIF = '"Libre Baskerville", Georgia, serif';
+    try {
+      await Promise.all([`800 90px ${SANS}`, `600 40px ${SANS}`, `400 30px ${SANS}`, `italic 400 40px ${SERIF}`].map((f) => document.fonts.load(f)));
+    } catch (e) { /* fall back to system fonts */ }
+    const [able, biz] = await Promise.all([loadImg("assets/images/logos/logo-main.png"), loadImg("assets/images/logos/logo-business.png")]);
+
+    // Paper, a deep-green swoosh in two corners, then the frame.
+    x.fillStyle = "#FFFFFF"; x.fillRect(0, 0, W, H);
+    // The swooshes are clipped to the inside of the frame.
+    x.save();
+    x.beginPath(); x.rect(57, 57, W - 114, H - 114); x.clip();
+    x.fillStyle = "#EEF8EC";
+    x.beginPath(); x.ellipse(W - 40, 20, 520, 340, -0.35, 0, Math.PI * 2); x.fill();
+    x.beginPath(); x.ellipse(40, H - 20, 520, 340, -0.35, 0, Math.PI * 2); x.fill();
+    x.restore();
+    x.lineWidth = 22; x.strokeStyle = GREEN; x.strokeRect(46, 46, W - 92, H - 92);
+    x.lineWidth = 4; x.strokeStyle = GOLD; x.strokeRect(84, 84, W - 168, H - 168);
+
+    const center = (text, y, font, color, maxW) => {
+      x.font = font; x.fillStyle = color; x.textAlign = "center"; x.textBaseline = "alphabetic";
+      x.fillText(text, W / 2, y, maxW);
+    };
+    const spaced = (text, y, font, color, gap) => {
+      x.font = font; x.fillStyle = color; x.textAlign = "left";
+      const chars = [...text];
+      const width = chars.reduce((w, ch) => w + x.measureText(ch).width, 0) + gap * (chars.length - 1);
+      let cx = W / 2 - width / 2;
+      chars.forEach((ch) => { x.fillText(ch, cx, y); cx += x.measureText(ch).width + gap; });
+    };
+
+    if (biz) x.drawImage(biz, W / 2 - 88, 150, 176, 176 * biz.height / biz.width);
+    spaced("ABLE INITIATIVES  ·  ABLE BUSINESS", 400, `700 26px ${SANS}`, GREEN, 6);
+    center("Certificate of Completion", 510, `800 96px ${SANS}`, INK);
+    center("This certifies that", 600, `italic 400 38px ${SERIF}`, MUTED);
+
+    // The name: as large as fits, up to 104px, on a gold rule.
+    let size = 104;
+    x.font = `italic 400 ${size}px ${SERIF}`;
+    while (x.measureText(name).width > 1440 && size > 44) { size -= 4; x.font = `italic 400 ${size}px ${SERIF}`; }
+    const ruleW = Math.min(1560, Math.max(1120, x.measureText(name).width + 120));
+    center(name, 735, x.font, DEEP);
+    x.fillStyle = GOLD; x.fillRect(W / 2 - ruleW / 2, 770, ruleW, 4);
+
+    center("has completed the free, self-paced course", 850, `400 34px ${SANS}`, MUTED);
+    center("Money & Business Foundations", 945, `800 72px ${SANS}`, GREEN);
+    center("Budgeting  ·  Paychecks and taxes  ·  Saving and investing", 1020, `400 28px ${SANS}`, INK);
+    center("Credit and debt  ·  How a business makes money  ·  Starting something, and careers in business", 1062, `400 28px ${SANS}`, INK);
+    center("Awarded for passing all six lesson quizzes.", 1118, `italic 400 26px ${SERIF}`, MUTED);
+
+    // Footer: date left, ABLE mark centre, where right.
+    const date = new Date(state.completedAt || Date.now()).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
+    const foot = (label, value, cx) => {
+      x.textAlign = "center";
+      x.fillStyle = INK; x.font = `600 32px ${SANS}`; x.fillText(value, cx, 1232);
+      x.fillStyle = "#C9C8CF"; x.fillRect(cx - 250, 1250, 500, 2);
+      x.fillStyle = MUTED; x.font = `400 22px ${SANS}`; x.fillText(label, cx, 1284);
+    };
+    foot("Date completed", date, 470);
+    foot("Online at", "ableinitiatives.com/business-course.html", W - 470);
+    if (able) {
+      x.fillStyle = "#FFFFFF"; x.beginPath(); x.arc(W / 2, 1230, 86, 0, Math.PI * 2); x.fill();
+      x.lineWidth = 3; x.strokeStyle = GREEN; x.stroke();
+      const s = 120; x.drawImage(able, W / 2 - s / 2, 1230 - (s * able.height / able.width) / 2, s, s * able.height / able.width);
+    }
+    return c;
+  };
+
+  if (form) {
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const name = nameIn.value.replace(/\s+/g, " ").trim().slice(0, 60);
+      if (!name) { nameIn.focus(); return; }
+      state.name = name;
+      save();
+      const c = await drawCert(name);
+      const blob = await new Promise((res) => c.toBlob(res, "image/png"));
+      if (certURL) URL.revokeObjectURL(certURL);
+      certURL = URL.createObjectURL(blob);
+      img.src = certURL;
+      img.alt = `Certificate of completion for ${name}, Money & Business Foundations, ABLE Business`;
+      dl.href = certURL;
+      dl.download = `ABLE-Money-and-Business-certificate-${name.replace(/[^A-Za-z0-9]+/g, "-").replace(/^-|-$/g, "") || "student"}.png`;
+      preview.hidden = false;
+      actions.hidden = false;
+      preview.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    });
+  }
+
+  // Print just the certificate, landscape, edge to edge.
+  q("[data-cert-print]")?.addEventListener("click", () => {
+    if (!certURL) return;
+    const sheet = document.createElement("img");
+    sheet.className = "cert-print-sheet";
+    sheet.src = certURL;
+    sheet.alt = "";
+    const page = document.createElement("style");
+    page.textContent = "@page { size: landscape; margin: 0; }";
+    document.head.append(page);
+    document.body.append(sheet);
+    document.body.classList.add("is-printing-cert");
+    const done = () => {
+      document.body.classList.remove("is-printing-cert");
+      sheet.remove();
+      page.remove();
+      window.removeEventListener("afterprint", done);
+    };
+    window.addEventListener("afterprint", done);
+    const go = () => window.print();
+    if (sheet.complete) go(); else sheet.onload = go;
+  });
 
   // ---------- routing: overview or one lesson ----------
   const show = (scroll) => {
@@ -77,6 +227,7 @@
       home.hidden = false;
       lessonsWrap.hidden = true;
       if (scroll && location.hash === "#lessons") home.scrollIntoView({ block: "start" });
+      if (scroll && location.hash === "#certificate") cert?.scrollIntoView({ block: "start" });
     }
   };
   root.classList.add("course-ready");
@@ -127,7 +278,14 @@
       if (score >= PASS) {
         const next = lessons[lessons.indexOf(lesson) + 1];
         result.className = "quiz-result is-pass";
-        result.textContent = `${score} of ${n} — lesson complete!` + (next ? " On to the next one." : " That's the whole course.");
+        result.textContent = `${score} of ${n} — lesson complete!` + (next ? " On to the next one." : "");
+        if (!next && lessons.every((l) => state.passed[l.dataset.lesson])) {
+          result.append(" That's the whole course. ");
+          const link = document.createElement("a");
+          link.href = "#certificate";
+          link.textContent = "Get your certificate →";
+          result.append(link);
+        }
       } else {
         result.className = "quiz-result is-fail";
         result.textContent = `${score} of ${n}. Read the explanations, change your answers and check again. You need ${PASS} to complete the lesson.`;
@@ -139,6 +297,8 @@
     btn.addEventListener("click", () => {
       if (!window.confirm("Clear your progress on this course?")) return;
       state = { passed: {}, best: {} };
+      if (preview) preview.hidden = true;
+      if (actions) actions.hidden = true;
       save();
       renderProgress();
     });
