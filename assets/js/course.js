@@ -165,7 +165,7 @@
     if (able) {
       x.fillStyle = "#FFFFFF"; x.beginPath(); x.arc(W / 2, 1230, 86, 0, Math.PI * 2); x.fill();
       x.lineWidth = 3; x.strokeStyle = GREEN; x.stroke();
-      const s = 120; x.drawImage(able, W / 2 - s / 2, 1230 - (s * able.height / able.width) / 2, s, s * able.height / able.width);
+      const s = 120; x.drawImage(able, W / 2 - s / 2, 1230 - (s * able.height / able.width) / 2 - 10, s, s * able.height / able.width); // lifted: the A looks low when box-centred
     }
     return c;
   };

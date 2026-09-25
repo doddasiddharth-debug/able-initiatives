@@ -384,9 +384,16 @@ a { color: inherit; text-decoration: none; }
      bounding box — the widest opaque pixels are the A's feet on the very last
      row. At 15% they land 27.2px from the centre of a 58px disc, inside its
      29px radius with a pixel to spare; at 13.8% the margin is 0.46px, which
-     antialiasing eats. Re-measure if the mark is ever replaced. */
+     antialiasing eats. Re-measure if the mark is ever replaced.
+
+     Centred by its box, the A still looks low: it's a triangle, so its
+     visual weight (the centroid of its opaque pixels) sits 61% of the way
+     down. Lifting it 6% of the disc (3.5px at 58px) centres it optically.
+     That also moves the feet towards the middle (25.4px from centre), and
+     the apex stays 6.7px inside the top of the disc. */
   padding: 15%;
   box-sizing: border-box;
+  transform: translateY(-6%);
 }
 .brand-mark-fallback {
   display: none;
