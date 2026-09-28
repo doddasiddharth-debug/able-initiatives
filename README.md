@@ -531,12 +531,13 @@ phrase normally rather than announcing four separate letters.
 ABLE Business's free, self-paced courses live on their own site,
 **https://business.ableinitiatives.com**, from the
 [`able-business`](https://github.com/doddasiddharth-debug/able-business) repo,
-like the SAT course at prep.ableinitiatives.com. There are four, each with its
+like the SAT course at prep.ableinitiatives.com. There are five, each with its
 own certificate: **Money &amp; Business Foundations** (launched September 24,
 2026; `#mbf`), **Financial Literacy: Money in Real Life** (launched September
 28, 2026; `#fl`), **Career Readiness: Landing Your First Job** (`#cr`) and
-**Marketing: How Businesses Win Customers** (`#mk`). The last two aren't on
-the timeline or in the "Recently at ABLE" strip yet. Lessons, calculators, certificates and
+**Marketing: How Businesses Win Customers** (`#mk`) and **Leadership &amp;
+Communication** (`#lc`). The last three aren't on the timeline or in the
+"Recently at ABLE" strip yet. Lessons, calculators, certificates and
 how to add a course are documented in that repo's README.
 
 This site links straight to it: the ABLE Business page (header button, the
@@ -550,9 +551,12 @@ ABLE Health and ABLE Engineering have course sites built the same way:
 **https://health.ableinitiatives.com** (`able-health` repo; *Health Literacy:
 Taking Charge of Your Health*) and **https://engineering.ableinitiatives.com**
 (`able-engineering` repo; *Engineering Foundations: How Things Get Designed and
-Built*). The health site has three courses: *Health Literacy*, *Fitness &amp;
-Nutrition: Fueling an Active Life* (`#fn`) and *Mental Health &amp; Wellbeing*
-(`#mh`).
+Built*). The health site has four courses: *Health Literacy*, *Fitness &amp;
+Nutrition: Fueling an Active Life* (`#fn`), *Mental Health &amp; Wellbeing*
+(`#mh`) and *Careers in Health Care* (`#hc`). The engineering site has two:
+*Engineering Foundations* and *Aerospace Engineering: How Things Fly* (`#ae`).
+`health.html` and `engineering.html` each list their site's courses under the
+page header.
 
 `health.html` carries Michelle Beyrle's testimonial from the Health Literacy
 Workshop under "What we've run so far", in the homepage's `.quote-feature`
