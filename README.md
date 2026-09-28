@@ -524,49 +524,25 @@ phrase normally rather than announcing four separate letters.
 
 ## Courses
 
-`business-course.html` is **Money &amp; Business Foundations**, ABLE Business's
-free, self-paced course: six lessons (budgeting; paychecks and taxes; saving and
-investing; credit and debt; how a business makes money; starting something and
-careers in business). Each lesson has a worked example, a common-mistake and a
-key-idea callout, key terms, a "try it yourself" activity, and a five-question
-quiz; four right marks it complete. Lessons 1–5 each have a calculator.
+**Money &amp; Business Foundations**, ABLE Business's free, self-paced course,
+lives in its own repository and site, like the SAT course:
+[`able-business`](https://github.com/doddasiddharth-debug/able-business),
+served at https://doddasiddharth-debug.github.io/able-business/ until the
+`business.ableinitiatives.com` DNS record is in place (after which GitHub
+redirects the github.io address there by itself). Its lessons, quizzes,
+calculators, glossary and certificate, and the rules for editing them, are
+documented in that repo's README.
 
-- **One page, no build step.** Every lesson is in the HTML, so without JS the
-  page is simply the whole course top to bottom (calculators hide; quiz
-  explanations show). `assets/js/course.js` turns it into an overview plus one
-  lesson at a time (`#lesson-N`), grades quizzes, and stores progress in
-  `localStorage` under `able.course.<data-course>.v1`. Nothing is sent anywhere.
-- **Editing a lesson** is editing its `<article class="lesson">`. The overview
-  card reads nothing from the article at runtime, so if you change a lesson's
-  title, summary or minutes, change its card (and the list on `business.html`)
-  too. A question is a `fieldset.quiz-q` with `data-answer="A"`–`"D"`; keep five
-  per lesson or change `PASS` in `course.js`.
-- **Calculators** are `.lesson-tool[data-tool=…]`: `budget`, `paycheck`,
-  `compound`, `payoff`, `breakeven`, defined in `TOOLS` in `course.js`. Inputs
-  are `[data-in]`, outputs `[data-out]`. Each tool's default inputs match its
-  lesson's worked example, so a student sees the same numbers in both; the
-  payoff tool rounds interest to the cent each month because lesson 4's table
-  does.
-- **Accuracy rules for the content**: every number is worked out, not
-  estimated; no year-specific figures that change annually (tax brackets, IRA
-  limits, wage caps); returns are described as historical, never promised; no
-  brands, products or specific investments; no views attributed to real people;
-  example students are made up. The page says it is general education, not
-  financial, tax or legal advice. **Have an ABLE Business officer read any new
-  or changed lesson before it goes live.**
-- A course for another branch would be a new page with that branch's body
-  class; the styles read the branch variables, so it retints on its own.
-- **Certificate.** Below the lesson cards, `#certificate` shows "Earn your
-  certificate" (with lessons left) until every quiz is passed, then asks for
-  a name and draws a 2000×1414 landscape certificate on a canvas: both logos,
-  the name, the course and its six topics, the completion date (the day the
-  last lesson was *first* passed, stored as `completedAt`) and the course
-  URL. It downloads as a PNG, or prints alone, landscape, via
-  `body.is-printing-cert`. The name is drawn only as canvas text, never
-  inserted as HTML, and stays in `localStorage`. There is no signature and
-  no certificate number on purpose: nothing is recorded server-side, so the
-  certificate can't be verified and shouldn't imply that it can. Changing a
-  lesson title means changing the topic lines in `drawCert` too.
+`business-course.html` here is now only a **forwarding page**. It started out
+as the course itself, so it is linked from the ABLE Business page, the
+homepage, the timeline and wherever people shared it. It forwards to the new
+site, keeping the `#lesson-N` / `#certificate` anchor, and passes along any
+progress that browser saved here (`?progress=`, merged by the new site) so
+nobody loses completed lessons. The course address is in three places in
+that file (canonical, meta refresh, `COURSE_URL`); change all three if it
+moves. The links elsewhere on this site keep pointing at
+`business-course.html`, so that file is the one place to update.
+
 - **Where the course is linked:** the ABLE Business page (header button, the
   six-lesson list, and its launch card under "What we've been doing"), the
   timeline (launched September 24, 2026), and the homepage (the "Recently at
