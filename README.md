@@ -546,7 +546,10 @@ Taking Charge of Your Health*) and **https://engineering.ableinitiatives.com**
 (`able-engineering` repo; *Engineering Foundations: How Things Get Designed and
 Built*). The homepage promotes them with the red `.section-health` and teal
 `.section-eng` bands after the guest speakers, and a "Take a free course"
-button in each branch's row. They are not on the timeline yet.
+button in each branch's row. `health.html` and `engineering.html` each have
+a "Take the free course" header button and a course section under the header
+(start, preview the certificate, and the six lessons). Every course site shows
+a sample certificate on its certificate view. They are not on the timeline yet.
 
 `business-course.html` is only a forwarding page now. It was the first
 course's original home, so it forwards to the course site keeping the
