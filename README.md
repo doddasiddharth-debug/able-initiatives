@@ -527,10 +527,12 @@ phrase normally rather than announcing four separate letters.
 ABLE Business's free, self-paced courses live on their own site,
 **https://business.ableinitiatives.com**, from the
 [`able-business`](https://github.com/doddasiddharth-debug/able-business) repo,
-like the SAT course at prep.ableinitiatives.com. There are two so far, each
-with its own certificate: **Money &amp; Business Foundations** (launched
-September 24, 2026; `#mbf`) and **Financial Literacy: Money in Real Life**
-(launched September 28, 2026; `#fl`). Lessons, calculators, certificates and
+like the SAT course at prep.ableinitiatives.com. There are four, each with its
+own certificate: **Money &amp; Business Foundations** (launched September 24,
+2026; `#mbf`), **Financial Literacy: Money in Real Life** (launched September
+28, 2026; `#fl`), **Career Readiness: Landing Your First Job** (`#cr`) and
+**Marketing: How Businesses Win Customers** (`#mk`). The last two aren't on
+the timeline or in the "Recently at ABLE" strip yet. Lessons, calculators, certificates and
 how to add a course are documented in that repo's README.
 
 This site links straight to it: the ABLE Business page (header button, the
@@ -544,7 +546,9 @@ ABLE Health and ABLE Engineering have course sites built the same way:
 **https://health.ableinitiatives.com** (`able-health` repo; *Health Literacy:
 Taking Charge of Your Health*) and **https://engineering.ableinitiatives.com**
 (`able-engineering` repo; *Engineering Foundations: How Things Get Designed and
-Built*). The homepage promotes them with the red `.section-health` and teal
+Built*). The health site has three courses: *Health Literacy*, *Fitness &amp;
+Nutrition: Fueling an Active Life* (`#fn`) and *Mental Health &amp; Wellbeing*
+(`#mh`). The homepage promotes them with the red `.section-health` and teal
 `.section-eng` bands after the guest speakers, and a "Take a free course"
 button in each branch's row. `health.html` and `engineering.html` each have
 a "Take the free course" header button and a course section under the header
