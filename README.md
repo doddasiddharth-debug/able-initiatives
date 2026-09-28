@@ -314,17 +314,21 @@ broken. Add new images with `width`, `height`, `loading="lazy"` and `decoding="a
 — the dimensions prevent the page from jumping as photos load.
 
 ### The icons
-`assets/favicon.png` (128×128) and `assets/apple-touch-icon.png` (180×180) are
-the monogram composited onto a **solid white square**, generated from
-`logos/logo-main.png` rather than drawn separately.
+`assets/favicon.png` (128×128) is the monogram on a **solid white circle**
+with transparent corners, and `assets/apple-touch-icon.png` (180×180) is the
+monogram on a **solid white square** (iOS rounds the corners itself). Both are
+generated from `logos/logo-main.png` rather than drawn separately. The pages
+link the favicon as `favicon.png?v=2`: bump that number when the icon changes,
+since browsers cache favicons hard.
 
-The white ground is deliberate and worth keeping. The mark is dark indigo on a
+The white ground (circle or square) is deliberate and worth keeping. The mark is dark indigo on a
 transparent background, which all but disappears in a dark browser tab strip;
 and iOS renders transparency in an apple-touch-icon as black, so the transparent
 logo was the wrong file for that slot regardless.
 
 To regenerate after a logo change: scale `logo-main.png` to ~80% of the target
-square, then alpha-composite it centred over white. `sips` cannot composite, so
+square (~66% of the circle, lifted a few percent), then alpha-composite it
+centred over white. `sips` cannot composite, so
 that step needs a real image tool or a few lines of Python. Don't just point
 these at `logo-main.png` again — that reintroduces both problems.
 
