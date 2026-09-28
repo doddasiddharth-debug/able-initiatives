@@ -2577,6 +2577,9 @@ a { color: inherit; text-decoration: none; }
   margin: 0;
   text-wrap: pretty;
 }
+/* A longer testimonial (a paragraph, not a line) steps the size down. */
+.quote-text.is-long { text-align: left; }
+.quote-text.is-long blockquote p { font-size: clamp(19px, 1.85vw, 25px); line-height: 1.42; }
 .quote-text figcaption { font-size: 15px; color: var(--muted); }
 .quote-text figcaption strong { display: block; color: var(--ink); font-weight: 700; }
 @media (max-width: 860px) {

@@ -548,7 +548,12 @@ Taking Charge of Your Health*) and **https://engineering.ableinitiatives.com**
 (`able-engineering` repo; *Engineering Foundations: How Things Get Designed and
 Built*). The health site has three courses: *Health Literacy*, *Fitness &amp;
 Nutrition: Fueling an Active Life* (`#fn`) and *Mental Health &amp; Wellbeing*
-(`#mh`). The homepage promotes them with the red `.section-health` and teal
+(`#mh`).
+
+`health.html` carries Michelle Beyrle's testimonial from the Health Literacy
+Workshop under "What we've run so far", in the homepage's `.quote-feature`
+layout with `.quote-text.is-long` (smaller, left-aligned) for a paragraph-length
+quote. The homepage promotes them with the red `.section-health` and teal
 `.section-eng` bands after the guest speakers, and a "Take a free course"
 button in each branch's row. `health.html` and `engineering.html` each have
 a "Take the free course" header button and a course section under the header
