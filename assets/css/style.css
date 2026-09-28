@@ -3035,11 +3035,43 @@ a { color: inherit; text-decoration: none; }
 .section-business .promo-stack-card .eyebrow { color: var(--business-ink); }
 /* Yellow ring on the last card: it shows on green, where blue would sink. */
 .section-business .promo-stack-card:nth-child(4) { border-color: var(--yellow); }
+/* The red ABLE Health and teal ABLE Engineering bands: the same promo layout
+   for their courses, in each branch page's band and deep colours (white on
+   the band 5.6:1; the yellow headline word 3.9:1, large text only). */
+.section-health, .section-eng { position: relative; isolation: isolate; overflow: hidden; color: #FFFFFF; }
+.section-health { background: #CF1111; }
+.section-eng { background: #09708D; }
+.section-health::before, .section-eng::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: -20%;
+  bottom: -20%;
+  right: -12%;
+  width: 58%;
+  border-radius: 48% 40% 44% 52%;
+  transform: rotate(-12deg);
+}
+.section-health::before { background: #A30D0D; }
+.section-eng::before { background: #07576D; }
+.section-health h2, .section-eng h2 { color: #FFFFFF; }
+.section-health h2 em, .section-eng h2 em { font-style: normal; color: var(--yellow); }
+.section-health .eyebrow, .section-eng .eyebrow { color: rgba(255, 255, 255, 0.92); }
+.section-health .promo .lede, .section-eng .promo .lede { color: rgba(255, 255, 255, 0.92); }
+.section-health .promo-note, .section-eng .promo-note { color: rgba(255, 255, 255, 0.85); }
+.section-health .btn-primary, .section-eng .btn-primary { background: #FFFFFF; border-color: #FFFFFF; }
+.section-health .btn-primary { color: #CF1111; }
+.section-eng .btn-primary { color: #09708D; }
+.section-health .btn-primary:hover, .section-eng .btn-primary:hover { background: var(--yellow); border-color: var(--yellow); color: var(--brand-darkest); }
+.section-health .promo-stack-card .eyebrow { color: var(--health-ink); }
+.section-eng .promo-stack-card .eyebrow { color: var(--eng-ink); }
+.section-health .promo-stack-card:nth-child(4), .section-eng .promo-stack-card:nth-child(4) { border-color: var(--yellow); }
 @media (max-width: 860px) {
   .promo { grid-template-columns: 1fr; }
   .promo-stack { margin: 12px auto 0; max-width: 360px; }
   .section-preps::before { top: auto; height: 60%; right: -30%; width: 90%; }
   .section-business::before { top: auto; height: 60%; right: -30%; width: 90%; }
+  .section-health::before, .section-eng::before { top: auto; height: 60%; right: -30%; width: 90%; }
 }
 
 /* ---------- inner-page numbers ---------- */

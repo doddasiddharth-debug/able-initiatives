@@ -540,6 +540,14 @@ the homepage (the "Recently at ABLE" strip, the Business row's "Take a free
 course" button, and the green `.section-business` promo band with a card per
 course). A new course means an entry in each of those.
 
+ABLE Health and ABLE Engineering have course sites built the same way:
+**https://health.ableinitiatives.com** (`able-health` repo; *Health Literacy:
+Taking Charge of Your Health*) and **https://engineering.ableinitiatives.com**
+(`able-engineering` repo; *Engineering Foundations: How Things Get Designed and
+Built*). The homepage promotes them with the red `.section-health` and teal
+`.section-eng` bands after the guest speakers, and a "Take a free course"
+button in each branch's row. They are not on the timeline yet.
+
 `business-course.html` is only a forwarding page now. It was the first
 course's original home, so it forwards to the course site keeping the
 `#lesson-N` / `#certificate` anchor and passing any progress that browser saved
