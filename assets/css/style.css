@@ -3273,3 +3273,6 @@ body[class*="branch-"] .section-alt { background: var(--accent-tint); }
   min-width: 36px;
 }
 .course-promo-list a:hover { border-color: var(--accent); transform: translateX(4px); }
+/* A course title with a one-line description under it. */
+.course-promo-list a > span { display: grid; gap: 3px; }
+.course-promo-list small { font-size: 14px; font-weight: 400; line-height: 1.4; color: var(--muted); }

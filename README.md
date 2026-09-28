@@ -524,31 +524,27 @@ phrase normally rather than announcing four separate letters.
 
 ## Courses
 
-**Money &amp; Business Foundations**, ABLE Business's free, self-paced course,
-lives in its own repository and site, like the SAT course:
-[`able-business`](https://github.com/doddasiddharth-debug/able-business),
-served at https://doddasiddharth-debug.github.io/able-business/ until the
-`business.ableinitiatives.com` DNS record is in place (after which GitHub
-redirects the github.io address there by itself). Its lessons, quizzes,
-calculators, glossary and certificate, and the rules for editing them, are
-documented in that repo's README.
+ABLE Business's free, self-paced courses live on their own site,
+**https://business.ableinitiatives.com**, from the
+[`able-business`](https://github.com/doddasiddharth-debug/able-business) repo,
+like the SAT course at prep.ableinitiatives.com. There are two so far, each
+with its own certificate: **Money &amp; Business Foundations** (launched
+September 24, 2026; `#mbf`) and **Financial Literacy: Money in Real Life**
+(launched September 28, 2026; `#fl`). Lessons, calculators, certificates and
+how to add a course are documented in that repo's README.
 
-`business-course.html` here is now only a **forwarding page**. It started out
-as the course itself, so it is linked from the ABLE Business page, the
-homepage, the timeline and wherever people shared it. It forwards to the new
-site, keeping the `#lesson-N` / `#certificate` anchor, and passes along any
-progress that browser saved here (`?progress=`, merged by the new site) so
-nobody loses completed lessons. The course address is in three places in
-that file (canonical, meta refresh, `COURSE_URL`); change all three if it
-moves. The links elsewhere on this site keep pointing at
-`business-course.html`, so that file is the one place to update.
+This site links straight to it: the ABLE Business page (header button, the
+"Free courses" list with one entry per course, and a launch card per course
+under "What we've been doing"), the timeline (a milestone per launch), and
+the homepage (the "Recently at ABLE" strip, the Business row's "Take a free
+course" button, and the green `.section-business` promo band with a card per
+course). A new course means an entry in each of those.
 
-- **Where the course is linked:** the ABLE Business page (header button, the
-  six-lesson list, and its launch card under "What we've been doing"), the
-  timeline (launched September 24, 2026), and the homepage (the "Recently at
-  ABLE" strip, a "Take the free course" button in the Business row, and the
-  green `.section-business` promo band under the gold SAT one). Retitling a
-  lesson means updating the lists on `business.html` and in that promo.
+`business-course.html` is only a forwarding page now. It was the first
+course's original home, so it forwards to the course site keeping the
+`#lesson-N` / `#certificate` anchor and passing any progress that browser saved
+here (`?progress=`, which the course site merges). The address is in three
+places in that file (canonical, meta refresh, `COURSE_URL`).
 
 ## Homepage sections that need updating as ABLE grows
 
