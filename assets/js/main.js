@@ -284,7 +284,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Pace the loop by width rather than by a fixed duration, so adding a
     // speaker makes the loop longer instead of making everything move faster.
-    const PX_PER_SECOND = 42;
+    // The speaker strip runs a little quicker than the chapter strip.
+    const PX_PER_SECOND = +marquee.dataset.marqueeSpeed || 42;
     const setSpeed = () => {
       const setWidth = track.scrollWidth / COPIES;
       if (setWidth > 0) track.style.animationDuration = setWidth / PX_PER_SECOND + "s";
@@ -323,7 +324,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Arrows (speaker strip only): step one card at a time instead of waiting
     // for the drift. A click takes the track off the CSS animation and sets
-    // its offset directly; after a few idle seconds the drift picks up again
+    // its offset directly; 2.5 idle seconds later the drift picks up again
     // from exactly that offset (a negative animation-delay), unless paused.
     if (!marquee.matches("[data-speaker-marquee]")) return;
     const n = originals.length;
@@ -365,7 +366,7 @@ document.addEventListener("DOMContentLoaded", () => {
       pos += dir;
       place(-pos * w, true);
       clearTimeout(idle);
-      idle = setTimeout(resume, 8000);
+      idle = setTimeout(resume, 2500);
     };
     const arrow = (dir, label, glyph) => {
       const b = document.createElement("button");

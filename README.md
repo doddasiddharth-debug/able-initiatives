@@ -603,11 +603,13 @@ say" on `impact.html` (all four); and a `.event-quote` under each speaker's
 event on `events.html`. A new testimonial should go on its speaker card first,
 then wherever it fits.
 
-**The speaker strip** drifts at 42px a second (measured once `.is-live` has
+**The speaker strip** drifts at 64px a second (`data-marquee-speed`; the
+chapter strip keeps the default 42) (measured once `.is-live` has
 switched it to the flex row; measuring earlier used the grid's width and ran
 several times too fast). Arrows at either side step one card at a time: they
-take the track off the CSS animation, and after 8 idle seconds the drift picks
-up again from the same spot via a negative `animation-delay`.
+take the track off the CSS animation, and after 2.5 idle seconds the drift
+picks up again from the same spot via a negative `animation-delay`. Hovering an
+arrow doesn't pause the drift the way hovering a card does.
 
 **Guest speakers** (`index.html`). Copy a `.speaker-card` block. With one speaker the
 card lays out horizontally on purpose; from two onward it becomes a normal grid,

@@ -1696,7 +1696,9 @@ figure.testimonial { margin: 0; padding-left: clamp(20px, 3vw, 32px); border-lef
 /* Autoplay with no way to stop it is a WCAG 2.2.2 failure, and hover-to-pause
    doesn't help a keyboard user, so the button is the real control; hover and
    focus-within are conveniences on top of it. */
-.speaker-marquee.is-live:hover .speaker-track,
+/* Hovering the arrows doesn't count: after clicking one the pointer is still
+   there, and the drift should pick up again rather than sit paused. */
+.speaker-marquee.is-live:hover:not(:has(.marquee-arrow:hover)) .speaker-track,
 .speaker-marquee.is-live:focus-within .speaker-track,
 .speaker-marquee.is-live.is-paused .speaker-track { animation-play-state: paused; }
 /* Once stopped, let the row be scrolled by hand so the cards that happen to be
