@@ -593,6 +593,22 @@ is hand-fed — drop the oldest), `events.html` (a `.gallery-event` group, with 
 `style="border-bottom:none;"`, so move that down), and a guest speaker card on
 `index.html` if the event had one.
 
+**Speaker testimonials.** The full quotes live in each `.speaker-quote` on the
+homepage cards. Their exact words (whole sentences, never reworded) are also
+used as: a `.quote-feature` on `business.html` (Clay Guillory) and
+`health.html` (Michelle Beyrle); `figure.testimonial` pull quotes on
+`business.html` (Ameya Yelne), `donate.html` (Mark Bittle), `get-involved.html`
+and `our-story.html` (Michelle Beyrle); the `.quote-grid` "What our speakers
+say" on `impact.html` (all four); and a `.event-quote` under each speaker's
+event on `events.html`. A new testimonial should go on its speaker card first,
+then wherever it fits.
+
+**The speaker strip** drifts at 42px a second (measured once `.is-live` has
+switched it to the flex row; measuring earlier used the grid's width and ran
+several times too fast). Arrows at either side step one card at a time: they
+take the track off the CSS animation, and after 8 idle seconds the drift picks
+up again from the same spot via a negative `animation-delay`.
+
 **Guest speakers** (`index.html`). Copy a `.speaker-card` block. With one speaker the
 card lays out horizontally on purpose; from two onward it becomes a normal grid,
 with no CSS change needed.

@@ -289,12 +289,15 @@ document.addEventListener("DOMContentLoaded", () => {
       const setWidth = track.scrollWidth / COPIES;
       if (setWidth > 0) track.style.animationDuration = setWidth / PX_PER_SECOND + "s";
     };
-    setSpeed();
     window.addEventListener("resize", setSpeed);
 
     // Hand the strip over to script control, now that the clones the loop needs
     // actually exist. Until this line the plain grid renders.
     marquee.classList.add("is-live");
+    // Measure only now: before is-live the track is the wrapping grid, whose
+    // width is the container's, which made the loop several times too fast
+    // (and fastest of all on a phone).
+    setSpeed();
 
     let userPaused = reduceMotion.matches;
     const toggle = document.createElement("button");
@@ -317,6 +320,72 @@ document.addEventListener("DOMContentLoaded", () => {
       userPaused = e.matches;
       syncToggle();
     });
+
+    // Arrows (speaker strip only): step one card at a time instead of waiting
+    // for the drift. A click takes the track off the CSS animation and sets
+    // its offset directly; after a few idle seconds the drift picks up again
+    // from exactly that offset (a negative animation-delay), unless paused.
+    if (!marquee.matches("[data-speaker-marquee]")) return;
+    const n = originals.length;
+    let pos = null, idle = null;
+    const step = () => {
+      const a = track.children[0], b = track.children[1];
+      // Layout positions, not bounding boxes: the cards are tilted.
+      return b ? b.offsetLeft - a.offsetLeft : a.offsetWidth;
+    };
+    const place = (x, animate) => {
+      track.style.transition = animate ? "transform 0.45s cubic-bezier(.2,.7,.2,1)" : "none";
+      track.style.transform = `translate3d(${x}px, 0, 0)`;
+    };
+    const resume = () => {
+      if (pos === null || userPaused) return;
+      const setW = n * step(), dur = parseFloat(track.style.animationDuration) || 48;
+      const into = ((pos * step()) % setW + setW) % setW;
+      track.style.transition = ""; track.style.transform = "";
+      track.style.animationDelay = `-${(into / setW) * dur}s`;
+      marquee.classList.remove("is-stepping");
+      pos = null;
+    };
+    const go = (dir) => {
+      const w = step();
+      if (pos === null) {
+        // Where the drift has got to right now, in cards.
+        const m = new DOMMatrixReadOnly(getComputedStyle(track).transform);
+        pos = Math.round(-m.m41 / w);
+        marquee.classList.add("is-stepping");
+        place(-pos * w, false);
+      }
+      // Keep the index in the middle copy's range so there's always a card
+      // on either side; jump by one whole set (invisible) when it drifts out.
+      if (pos + dir < 1 || pos + dir > 2 * n - 1) {
+        pos += dir > 0 ? -n : n;
+        place(-pos * w, false);
+        void track.offsetWidth;
+      }
+      pos += dir;
+      place(-pos * w, true);
+      clearTimeout(idle);
+      idle = setTimeout(resume, 8000);
+    };
+    const arrow = (dir, label, glyph) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = `marquee-arrow ${dir < 0 ? "prev" : "next"}`;
+      b.setAttribute("aria-label", label);
+      b.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${glyph}"/></svg>`;
+      // A mouse click drops focus afterwards, or :focus-within would keep the
+      // drift paused; keyboard users keep focus so they can press again.
+      b.addEventListener("click", (e) => { go(dir); if (e.detail) b.blur(); });
+      marquee.appendChild(b);
+    };
+    arrow(-1, "Previous speaker", "M15 5l-7 7 7 7");
+    arrow(1, "Next speaker", "M9 5l7 7-7 7");
+    marquee.addEventListener("keydown", (e) => {
+      if (!e.target.closest(".marquee-arrow")) return;
+      if (e.key === "ArrowLeft") { e.preventDefault(); go(-1); }
+      if (e.key === "ArrowRight") { e.preventDefault(); go(1); }
+    });
+    toggle.addEventListener("click", () => { if (!userPaused) { clearTimeout(idle); resume(); } });
   });
 
   // Photo hotspots (homepage quote feature).
