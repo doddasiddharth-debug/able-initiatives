@@ -38,7 +38,7 @@ COUNTRIES = "us,ca,pk"
 # How far a match found by name may land from the chapter's town before it is
 # treated as a namesake somewhere else and refused.
 NEAR_KM = 60
-USER_AGENT = "ABLE Initiatives website geocoder (https://ableinitiatives.com; ableinitiativespchs@gmail.com)"
+USER_AGENT = "ABLE Initiatives website geocoder (https://ableinitiatives.com; ableinitiatives@gmail.com)"
 CARD_RE = re.compile(r'<div class="chapter-card[^"]*"[^>]*>')
 ATTR_RE = re.compile(r'([a-zA-Z-]+)="([^"]*)"')
 

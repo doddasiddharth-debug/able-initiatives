@@ -708,9 +708,9 @@ that page and not its neighbour.
       the photo rather than her initials. It needs no `object-position`: the
       source is only 12% taller than square, so the default centre crop already
       lands her face where the other cards put theirs.
-- [ ] **Confirm the contact address.** Every contact link points at
-      `ableinitiativespchs@gmail.com`. Make sure that mailbox exists and is monitored
-      before sharing the site — it is the only way anyone can reach you.
+- [x] ~~Confirm the contact address~~ — every contact link points at
+      `ableinitiatives@gmail.com`, the organization's address (it replaced
+      `ableinitiativespchs@gmail.com` on this site and prep.ableinitiatives.com).
 - [x] ~~ABLE Preps logo~~ — in place; every logo on the site is now a real
       transparent PNG.
 - [x] ~~Team headshots~~ — all eight are in `assets/images/team/`.
