@@ -646,4 +646,78 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Gallery photo viewer: click (or Enter on) any gallery photo to see it
+  // big, then step through that event's photos with the arrows, the arrow
+  // keys or a swipe. Without script the photos are just photos.
+  const galleryImgs = Array.from(document.querySelectorAll(".gallery-grid .event-photo img"));
+  if (galleryImgs.length && typeof HTMLDialogElement === "function") {
+    const arrow = (d) =>
+      '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="' +
+      d + '" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    const box = document.createElement("dialog");
+    box.className = "lightbox";
+    box.setAttribute("aria-label", "Photo viewer");
+    box.innerHTML =
+      '<img alt=""><p class="lightbox-caption" aria-live="polite"></p>' +
+      '<button type="button" class="lightbox-prev" aria-label="Previous photo">' + arrow("M15 5l-7 7 7 7") + "</button>" +
+      '<button type="button" class="lightbox-next" aria-label="Next photo">' + arrow("M9 5l7 7-7 7") + "</button>" +
+      '<button type="button" class="lightbox-close" aria-label="Close">' + arrow("M6 6l12 12M18 6L6 18") + "</button>";
+    document.body.appendChild(box);
+    const big = box.querySelector("img");
+    const caption = box.querySelector(".lightbox-caption");
+    let group = [];
+    let index = 0;
+
+    const show = (i) => {
+      index = (i + group.length) % group.length;
+      const src = group[index];
+      big.src = src.currentSrc || src.src;
+      big.alt = src.alt;
+      caption.textContent = group.length > 1 ? src.alt + " (" + (index + 1) + " of " + group.length + ")" : src.alt;
+    };
+    const openAt = (img) => {
+      // Only the photos that actually loaded; a failed one shows its fallback.
+      group = Array.from(img.closest(".gallery-grid").querySelectorAll(".event-photo img"))
+        .filter((el) => !(el.complete && el.naturalWidth === 0));
+      box.dataset.count = group.length;
+      show(Math.max(0, group.indexOf(img)));
+      box.showModal();
+      requestAnimationFrame(() => box.classList.add("is-open"));
+    };
+
+    galleryImgs.forEach((img) => {
+      img.tabIndex = 0;
+      img.setAttribute("role", "button");
+      img.setAttribute("aria-label", "View larger: " + img.alt);
+      img.addEventListener("click", () => openAt(img));
+      img.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          openAt(img);
+        }
+      });
+    });
+
+    box.querySelector(".lightbox-prev").addEventListener("click", () => show(index - 1));
+    box.querySelector(".lightbox-next").addEventListener("click", () => show(index + 1));
+    box.querySelector(".lightbox-close").addEventListener("click", () => box.close());
+    box.addEventListener("close", () => box.classList.remove("is-open"));
+    // A click on the dark area around the photo closes it.
+    box.addEventListener("click", (e) => {
+      if (e.target === box) box.close();
+    });
+    box.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowLeft") show(index - 1);
+      if (e.key === "ArrowRight") show(index + 1);
+    });
+    let touchX = null;
+    box.addEventListener("touchstart", (e) => { touchX = e.touches[0].clientX; }, { passive: true });
+    box.addEventListener("touchend", (e) => {
+      if (touchX === null) return;
+      const dx = e.changedTouches[0].clientX - touchX;
+      touchX = null;
+      if (Math.abs(dx) > 50 && group.length > 1) show(index + (dx < 0 ? 1 : -1));
+    });
+  }
+
 });

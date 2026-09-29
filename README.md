@@ -128,8 +128,8 @@ python3 -m http.server 8000
   the cached script never made the clones. Both now set `.is-live` from inside
   the block that does the work.
 
-  The Aug 3 entry has no photo and carries a dashed placeholder tile. Give it a
-  real one when the photos arrive.
+  The Aug 3 entry has no photo, so it shows a tinted "In-person panel" tile
+  (`.photo-none`) instead of an empty box. Swap in a real photo if one turns up.
 
 - `impact.html`: Impact. Chapters, the people reached, and a map.
 
@@ -219,7 +219,12 @@ python3 -m http.server 8000
 
 - `preps.html` / `health.html` / `business.html` / `engineering.html`: One page per branch
 - `get-involved.html`: Students, members, and chapter leads
-- `events.html`: Photo gallery (grouped by event)
+- `events.html`: Photo gallery (grouped by event). Clicking a photo opens it
+  large in a viewer (`.lightbox` in main.js) that steps through that event's
+  photos with the arrows, arrow keys or a swipe. An event with one or two photos
+  shows them bigger; call screenshots keep their own shape (list their
+  `data-event` in the CSS next to the existing ones). An event with no photos
+  gets a one-line `.gallery-none` note rather than an empty tile.
 - `donate.html`: Donate
 - `404.html`: Not-found page
 
@@ -303,9 +308,16 @@ assets/images/
                                branch marks, also transparent
   photos/     hero.jpg — the homepage hero banner background
   speakers/   cropped headshots for the guest-speaker cards
-  gallery/    health-workshop/, preps-webinar/, business-workshop/, preps-workshop/
+  gallery/    health-workshop/, preps-webinar/, business-workshop/,
+              engineering-gliders/, business-webinar/, business-interview/
   team/       one headshot per director
 ```
+
+Keep files about as big as they are shown, and no bigger: the branch logos are
+400px wide (sharp at 2x in the largest slot they fill), headshots are 480px on
+their short side at JPEG quality ~82, and gallery photos are 1280px wide (they
+open full-size in the gallery viewer). A phone downloads every one of these, so
+a 3000px straight-off-the-camera photo costs real seconds on a slow connection.
 
 Every `<img>` that can be missing carries `data-fallback`, paired with a
 `[data-fallback-el]` sibling. If the file 404s, the image hides and the fallback

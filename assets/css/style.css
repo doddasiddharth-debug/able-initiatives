@@ -3358,3 +3358,165 @@ body[class*="branch-"] .section-alt { background: var(--accent-tint); }
 /* A course title with a one-line description under it. */
 .course-promo-list a > span { display: grid; gap: 3px; }
 .course-promo-list small { font-size: 14px; font-weight: 400; line-height: 1.4; color: var(--muted); }
+
+/* ==========================================================================
+   Polish pass
+   ========================================================================== */
+
+/* Page-to-page fades. Browsers that support cross-document view transitions
+   cross-fade between pages instead of flashing white; everyone else gets a
+   normal page load. Off for anyone who asks for less motion. */
+@view-transition { navigation: auto; }
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: 0.22s; }
+@media (prefers-reduced-motion: reduce) {
+  @view-transition { navigation: none; }
+}
+
+/* An event with no photos: a tinted tile with an icon, so the card still has
+   a top instead of an empty "coming soon" box. The branch class picks the
+   tint (only Preps uses it so far). */
+.photo-none {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: linear-gradient(140deg, var(--bg-alt), #FFFFFF);
+  color: var(--muted);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+}
+.photo-none.sat { background: linear-gradient(140deg, var(--sat-tint), #FFFFFF 85%); color: var(--sat-ink); }
+.photo-none svg { opacity: 0.85; }
+.gallery-none {
+  margin: 0;
+  padding: 18px 22px;
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius-md);
+  color: var(--muted);
+  font-size: 15px;
+}
+
+/* The gallery lines up with the event titles above it instead of floating in
+   the middle of the page, and an event with only one or two photos shows
+   them bigger rather than as a lone thumbnail. */
+.gallery-grid { justify-content: start; }
+.gallery-grid:has(> .event-photo:only-child) { grid-template-columns: minmax(0, 620px); }
+.gallery-grid:has(> .event-photo:first-child:nth-last-child(2)) { grid-template-columns: repeat(auto-fit, minmax(240px, 460px)); }
+/* Call screenshots keep their own shape (no letterbox bars inside a 4:3
+   tile); the inline 4:3 on the tile is for photos. */
+.gallery-grid[data-event="preps-webinar"] .event-photo,
+.gallery-grid[data-event="business-interview"] .event-photo,
+.gallery-grid[data-event="business-webinar"] .event-photo { aspect-ratio: auto !important; background: #111; }
+.gallery-grid[data-event="preps-webinar"] .event-photo img,
+.gallery-grid[data-event="business-interview"] .event-photo img,
+.gallery-grid[data-event="business-webinar"] .event-photo img { position: static; height: auto; display: block; }
+/* Photos open in the viewer (main.js), so they look clickable. */
+.gallery-grid .event-photo img { cursor: zoom-in; transition: transform 0.35s ease; }
+.gallery-grid .event-photo:hover img { transform: scale(1.03); }
+
+/* Photo viewer for the gallery: a modal <dialog> built by main.js, so focus,
+   Escape and the page behind it being inert all come for free. */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  border: 0;
+  padding: 56px 16px;
+  background: rgba(12, 12, 40, 0.94);
+  color: #FFFFFF;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.lightbox[open] { display: grid; place-items: center; }
+.lightbox::backdrop { background: transparent; }
+.lightbox.is-open { opacity: 1; }
+.lightbox img {
+  max-width: min(1200px, 100%);
+  max-height: calc(100vh - 140px);
+  width: auto;
+  height: auto;
+  border-radius: var(--radius-md);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+  transform: scale(0.97);
+  transition: transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.lightbox.is-open img { transform: none; }
+.lightbox-caption {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 18px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 14.5px;
+}
+.lightbox button {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.08);
+  color: #FFFFFF;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.lightbox button:hover { background: rgba(255, 255, 255, 0.2); }
+.lightbox-close { top: 14px; right: 14px; }
+.lightbox-prev { left: 14px; top: 50%; transform: translateY(-50%); }
+.lightbox-next { right: 14px; top: 50%; transform: translateY(-50%); }
+.lightbox[data-count="1"] .lightbox-prev, .lightbox[data-count="1"] .lightbox-next { display: none; }
+@media (max-width: 640px) {
+  .lightbox-prev, .lightbox-next { top: auto; bottom: 10px; transform: none; }
+  .lightbox-caption { bottom: 64px; }
+}
+
+/* The join / volunteer / donate cards: a deeper shade behind the words at the
+   bottom, so they stay readable over a bright photo. */
+.action-card::after {
+  background: linear-gradient(to bottom, rgba(18, 18, 79, 0.55) 0%, rgba(18, 18, 79, 0.08) 35%, rgba(18, 18, 79, 0.55) 60%, rgba(18, 18, 79, 0.92) 100%);
+}
+
+/* Phones: the homepage course cards go from an overlapping fan, which cut
+   off each other's descriptions, to a tidy two-by-two grid that still leans
+   a little. */
+@media (max-width: 600px) {
+  .promo-stack {
+    aspect-ratio: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    max-width: none;
+    margin-top: 8px;
+  }
+  .promo-stack-card,
+  .promo-stack-card:nth-child(n) {
+    position: relative;
+    inset: auto;
+    width: auto;
+    padding: 16px 15px 17px;
+  }
+  .promo-stack-card:nth-child(odd) { transform: rotate(-1.5deg); }
+  .promo-stack-card:nth-child(even) { transform: rotate(1.5deg) translateY(10px); }
+  .promo-stack-card strong { font-size: 16.5px; }
+  .promo-stack-card span { font-size: 13px; }
+  .promo-stack-card .eyebrow { font-size: 10.5px; }
+}
+
+/* Phones: the footer's intro takes the full width, so the link columns get
+   room and "ABLE Business" stays on one line. */
+@media (max-width: 560px) {
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px 24px; }
+  .footer-brand { grid-column: 1 / -1; }
+  .footer-brand p { max-width: none; }
+  .footer-col a { white-space: nowrap; }
+}

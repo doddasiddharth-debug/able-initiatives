@@ -22,7 +22,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Libre+Baskerville:ital@1&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=35">
+<link rel="stylesheet" href="assets/css/style.css?v=36">
 <noscript><style>
   /* Scroll-reveal hides content until JS marks it in-view. If JS never runs,
      the page would render blank, so opt out of the animation entirely. */
@@ -165,8 +165,11 @@
           </div>
         </article>
         <article class="session-card">
-          <div class="session-photo">
-            <div class="session-photo-fallback" style="display:flex"><span>Photos coming soon</span></div>
+          <!-- No photos from this panel. If some turn up, swap this block for a
+               .session-photo with an <img>, like the card above. -->
+          <div class="session-photo photo-none sat">
+            <svg width="34" height="34" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3" stroke="currentColor" stroke-width="1.6"/><path d="M6 11a6 6 0 0 0 12 0M12 17v4M8.5 21h7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            <span>In-person panel</span>
           </div>
           <div class="session-body">
             <div class="session-date"><time datetime="2026-08-03">August 3, 2026</time></div>
@@ -176,7 +179,7 @@
         </article>
         <article class="session-card">
           <div class="session-photo is-mark">
-            <img src="assets/images/logos/logo-preps.png" width="706" height="610" loading="lazy" decoding="async" alt="The ABLE Preps logo" data-fallback>
+            <img src="assets/images/logos/logo-preps.png" width="400" height="346" loading="lazy" decoding="async" alt="The ABLE Preps logo" data-fallback>
             <div data-fallback-el class="session-photo-fallback"><span>ABLE Preps</span></div>
           </div>
           <div class="session-body">
@@ -202,7 +205,7 @@
       <div class="officer-grid reveal">
         <div class="officer">
           <div class="officer-photo">
-            <img src="assets/images/team/helen-wan.jpg" width="1000" height="555" loading="lazy" decoding="async" alt="Helen Wan" data-fallback style="object-position:center 30%;">
+            <img src="assets/images/team/helen-wan.jpg" width="865" height="480" loading="lazy" decoding="async" alt="Helen Wan" data-fallback style="object-position:center 30%;">
             <span data-fallback-el class="logo-slot-fallback">HW</span>
           </div>
           <div class="officer-name">Helen Wan</div>
@@ -210,7 +213,7 @@
         </div>
         <div class="officer">
           <div class="officer-photo">
-            <img src="assets/images/team/advait-jadhav.jpg" width="800" height="800" loading="lazy" decoding="async" alt="Advait Jadhav" data-fallback>
+            <img src="assets/images/team/advait-jadhav.jpg" width="480" height="480" loading="lazy" decoding="async" alt="Advait Jadhav" data-fallback>
             <span data-fallback-el class="logo-slot-fallback">AJ</span>
           </div>
           <div class="officer-name">Advait Jadhav</div>
@@ -218,7 +221,7 @@
         </div>
         <div class="officer">
           <div class="officer-photo">
-            <img src="assets/images/team/farah-tibin.jpg" width="675" height="900" loading="lazy" decoding="async" alt="Farah Tibin" data-fallback style="object-position:center 22%;">
+            <img src="assets/images/team/farah-tibin.jpg" width="480" height="640" loading="lazy" decoding="async" alt="Farah Tibin" data-fallback style="object-position:center 22%;">
             <span data-fallback-el class="logo-slot-fallback">FT</span>
           </div>
           <div class="officer-name">Farah Tibin</div>
@@ -226,7 +229,7 @@
         </div>
         <div class="officer">
           <div class="officer-photo">
-            <img src="assets/images/team/angelina-wan.jpg" width="700" height="700" loading="lazy" decoding="async" alt="Angelina Wan" data-fallback>
+            <img src="assets/images/team/angelina-wan.jpg" width="480" height="480" loading="lazy" decoding="async" alt="Angelina Wan" data-fallback>
             <span data-fallback-el class="logo-slot-fallback">AW</span>
           </div>
           <div class="officer-name">Angelina Wan</div>
@@ -295,7 +298,7 @@
   </div>
 </footer>
 
-<script src="assets/js/main.js?v=35"></script>
-<script src="assets/js/analytics.js?v=35" defer></script>
+<script src="assets/js/main.js?v=36"></script>
+<script src="assets/js/analytics.js?v=36" defer></script>
 </body>
 </html>
