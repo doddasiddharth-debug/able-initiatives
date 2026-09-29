@@ -536,16 +536,17 @@ own certificate: **Money &amp; Business Foundations** (launched September 24,
 2026; `#mbf`), **Financial Literacy: Money in Real Life** (launched September
 28, 2026; `#fl`), **Career Readiness: Landing Your First Job** (`#cr`) and
 **Marketing: How Businesses Win Customers** (`#mk`) and **Leadership &amp;
-Communication** (`#lc`). The last three aren't on the timeline or in the
-"Recently at ABLE" strip yet. Lessons, calculators, certificates and
-how to add a course are documented in that repo's README.
+Communication** (`#lc`). Lessons, calculators, certificates and how to add
+a course are documented in that repo's README.
 
 This site links straight to it: the ABLE Business page (header button, the
-"Free courses" list with one entry per course, and a launch card per course
-under "What we've been doing"), the timeline (a milestone per launch), and
-the homepage (the "Recently at ABLE" strip, the Business row's "Take a free
-course" button, and the green `.section-business` promo band with a card per
-course). A new course means an entry in each of those.
+"Free courses" list with one entry per course), the homepage (the Business
+row's "Take a free course" button and the green `.section-business` promo
+band) and, once, the timeline. **The timeline announces course sites, not
+courses:** one milestone per branch when its course site launched (Business on
+September 24, 2026; Health on September 29, 2026), with a matching launch card
+on that branch page and a card in "Recently at ABLE" while it's recent. A new
+course only needs an entry in the branch page's list and the promo band.
 
 ABLE Health and ABLE Engineering have course sites built the same way:
 **https://health.ableinitiatives.com** (`able-health` repo; *Health Literacy:
@@ -566,7 +567,8 @@ quote. The homepage promotes them with the red `.section-health` and teal
 button in each branch's row. `health.html` and `engineering.html` each have
 a "Take the free course" header button and a course section under the header
 (start, preview the certificate, and the six lessons). Every course site shows
-a sample certificate on its certificate view. They are not on the timeline yet.
+a sample certificate on its certificate view. The Health course site's launch
+is on the timeline (September 29, 2026); Engineering's is not yet.
 
 `business-course.html` is only a forwarding page now. It was the first
 course's original home, so it forwards to the course site keeping the
