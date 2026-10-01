@@ -2843,7 +2843,9 @@ figure.testimonial { margin: 0; padding-left: clamp(20px, 3vw, 32px); border-lef
   min-height: clamp(280px, 26vw, 380px);
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
   padding: clamp(28px, 3.4vw, 48px);
   color: #FFFFFF;
   overflow: hidden;
@@ -2861,7 +2863,7 @@ figure.testimonial { margin: 0; padding-left: clamp(20px, 3vw, 32px); border-lef
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: linear-gradient(to top, rgba(18, 18, 79, 0.55), rgba(18, 18, 79, 0) 60%), var(--brand);
+  background: radial-gradient(ellipse at center, rgba(18, 18, 79, 0.5), rgba(18, 18, 79, 0) 70%), var(--brand);
   mix-blend-mode: multiply;
   opacity: 0.88;
 }
