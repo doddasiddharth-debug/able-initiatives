@@ -2828,19 +2828,19 @@ figure.testimonial { margin: 0; padding-left: clamp(20px, 3vw, 32px); border-lef
 /* Edge to edge, no gaps, no radii: three photographs multiplied to blue with
    a number sitting on each. The number is the whole point, so it is set as
    big as the tile allows and the label under it stays small. */
-/* Three across, one column on a phone. The numeral scales with the column:
-   "50,000+" is the widest figure and is what these sizes are set against —
-   it has to stay on one line at every width, so re-measure if a longer
-   figure or a fourth tile goes in. */
+/* Four tiles, two by two, one column on a phone. The numeral scales with the
+   column: "100,000+" is the widest figure and is what these sizes are set
+   against — it has to stay on one line at every width, so re-measure if a
+   longer figure goes in. */
 .stat-mosaic {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   background: var(--brand-deep);
 }
 .stat-tile {
   position: relative;
   isolation: isolate;
-  min-height: clamp(300px, 34vw, 460px);
+  min-height: clamp(280px, 26vw, 380px);
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -2867,7 +2867,7 @@ figure.testimonial { margin: 0; padding-left: clamp(20px, 3vw, 32px); border-lef
 }
 .stat-num {
   font-family: var(--font-display);
-  font-size: clamp(64px, 7.6vw, 104px);
+  font-size: clamp(56px, 6.6vw, 104px);
   font-weight: 800;
   line-height: 0.9;
   letter-spacing: -0.05em;

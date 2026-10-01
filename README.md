@@ -419,8 +419,12 @@ a rounded photo with hotspot dots beside a serif pull quote (`.quote-feature`,
 `.hotspot`); alternating text/photo rows for the four branches (`.feature-row`);
 a scrolling strip of chapter schools and cities (`.chapter-marquee`, cloned by
 the same code as the speaker marquee — add an `<li>` per new chapter); the
-stats mosaic (`.stat-mosaic`, three tiles — people reached, chapters,
-educational posts — keep the numbers in step with `impact.html`); the green promo (`.section-green`, `.promo`); the speaker
+stats mosaic (`.stat-mosaic`, four tiles, two by two — people reached, people
+directly impacted, student leaders, chapters — keep the numbers in step with
+`impact.html`, which also carries the educational-posts count). Student
+leaders = 4 per chapter + the officers on `our-team.html` + the Global Youth
+Ambassadors (10 as of Oct 2026): 13 × 4 + 23 + 10 = 85. Recount when a
+chapter or officer is added; the green promo (`.section-green`, `.promo`); the speaker
 marquee; and the three tilted action cards (`.action-section`, `.action-cards`).
 
 **Nav** is a 100px solid blue bar. The monogram is turned white with
