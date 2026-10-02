@@ -713,11 +713,6 @@ that page and not its neighbour.
       since he serves ABLE Health and this is ABLE's site; nothing else was
       altered beyond punctuation. If "Apex" is a name the team actually uses,
       put them back.
-- [ ] **Melonie's last name.** She joined ABLE Health as Co-VP of Outreach in
-      October 2026 (replacing Ayaan Tencheri, who moved up to Vice President
-      when Chelsea Ogden left) and is listed by first name only on
-      `our-team.html` and `health.html`, with "M" as her fallback initials,
-      because her last name wasn't sent. Add it to both pages when it arrives.
 - [ ] **Angelina Wan's branch name** read "ABLE Prep's VP of Public Relations"
       and "helping ABLE Prep grow"; both became "ABLE Preps", the branch's
       actual name.
