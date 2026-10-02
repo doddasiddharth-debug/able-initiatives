@@ -708,13 +708,16 @@ that page and not its neighbour.
       shows it at roughly 2.8× upscale. This was shipped knowingly rather than
       by accident. The original off his camera roll would fix it with no markup
       change: same filename, same crop treatment as the others.
-- [ ] **"Apex" appeared in two submitted bios**, Chelsea Ogden's ("acting as
-      Apex Health's VP", "give back to the community through Apex") and Neerav
-      Shrestha's ("Apex Health's VP of Outreach", "what Apex has to offer").
-      Every instance was changed to ABLE, since both serve ABLE Health and this
-      is ABLE's site. Nothing else in either paragraph was invented or altered
-      beyond punctuation — but if "Apex" is a name the team actually uses, all
-      four instances should go back.
+- [ ] **"Apex" appeared in Neerav Shrestha's submitted bio** ("Apex Health's
+      VP of Outreach", "what Apex has to offer"). Both were changed to ABLE,
+      since he serves ABLE Health and this is ABLE's site; nothing else was
+      altered beyond punctuation. If "Apex" is a name the team actually uses,
+      put them back.
+- [ ] **Melonie's last name.** She joined ABLE Health as Co-VP of Outreach in
+      October 2026 (replacing Ayaan Tencheri, who moved up to Vice President
+      when Chelsea Ogden left) and is listed by first name only on
+      `our-team.html` and `health.html`, with "M" as her fallback initials,
+      because her last name wasn't sent. Add it to both pages when it arrives.
 - [ ] **Angelina Wan's branch name** read "ABLE Prep's VP of Public Relations"
       and "helping ABLE Prep grow"; both became "ABLE Preps", the branch's
       actual name.
@@ -722,10 +725,6 @@ that page and not its neighbour.
       wording and was kept as written — but the team cards deliberately stopped
       listing "Pine Creek HS", so it is worth deciding whether a student's
       school belongs on a public page at all.
-- [x] ~~A headshot for Chelsea Ogden~~ — in place, and her bio dialog now uses
-      the photo rather than her initials. It needs no `object-position`: the
-      source is only 12% taller than square, so the default centre crop already
-      lands her face where the other cards put theirs.
 - [x] ~~Confirm the contact address~~ — every contact link points at
       `ableinitiatives@gmail.com`, the organization's address (it replaced
       `ableinitiativespchs@gmail.com` on this site and prep.ableinitiatives.com).
