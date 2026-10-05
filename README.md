@@ -419,7 +419,8 @@ a rounded photo with hotspot dots beside a serif pull quote (`.quote-feature`,
 `.hotspot`); alternating text/photo rows for the four branches (`.feature-row`);
 a scrolling strip of chapter schools and cities (`.chapter-marquee`, cloned by
 the same code as the speaker marquee — add an `<li>` per new chapter); the
-stats mosaic (`.stat-mosaic`, four tiles, two by two — people reached, people
+stats mosaic (`.stat-mosaic`, four tiles, two by two — people reached (through
+the 200+ educational posts on Instagram, TikTok, LinkedIn and Facebook), people
 directly impacted, student leaders, chapters — keep the numbers in step with
 `impact.html`, which also carries the educational-posts count). Student
 leaders = 4 per chapter + the officers on `our-team.html` + the Global Youth
