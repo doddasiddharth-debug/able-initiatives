@@ -584,7 +584,7 @@ button in each branch's row. `health.html` and `engineering.html` each have
 a "Take the free course" header button and a course section under the header
 (start, preview the certificate, and the six lessons). Every course site shows
 a sample certificate on its certificate view. The Health course site's launch
-is on the timeline (September 29, 2026); Engineering's is not yet.
+is on the timeline (September 29, 2026), and so is Engineering's (October 5, 2026).
 
 `business-course.html` is only a forwarding page now. It was the first
 course's original home, so it forwards to the course site keeping the
