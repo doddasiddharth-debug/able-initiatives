@@ -34,7 +34,7 @@ PAGE = "impact.html"
 # ISO 3166-1 alpha-2 codes Nominatim may return results from. Restricting it is
 # what stops "Hyderabad" resolving to the one in India, or "Vancouver" to the
 # one in Washington.
-COUNTRIES = "us,ca,pk"
+COUNTRIES = "us,ca,pk,eg"
 # How far a match found by name may land from the chapter's town before it is
 # treated as a namesake somewhere else and refused.
 NEAR_KM = 60

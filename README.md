@@ -180,14 +180,15 @@ python3 -m http.server 8000
   to be typed in. It also tries shorter and alternative spellings of the name
   in that town ("Stargate" for "Stargate High School", "Government" for
   "Govt"), since OpenStreetMap often lists a school differently. The Denver,
-  Broomfield, Cupertino and Vancouver chapters have only a city on file, so
+  Broomfield, Cupertino, Vancouver and Mansoura (Dakahlia, Egypt; opened
+  October 2026) chapters have only a city on file, so
   their pins are the city centre until they get one. A school with chapters in
   more than one branch (Discovery Canyon and Rampart run Business and Health)
   gets one split pin, and its popup shows the school once with a badge per
   branch.
 
   **Lookups are limited to the countries in `COUNTRIES`** at the top of the
-  script (currently `us,ca,pk`) — add the country's ISO code there when a
+  script (currently `us,ca,pk,eg`) — add the country's ISO code there when a
   chapter opens somewhere new, or the lookup comes back empty. **A match found
   by name is only accepted within `NEAR_KM` (60 km) of the chapter's town.**
   School names repeat — "Allama Iqbal" is one of the most common in Pakistan —
@@ -424,7 +425,7 @@ the 200+ educational posts on Instagram, TikTok, LinkedIn and Facebook), people
 directly impacted, student leaders, chapters — keep the numbers in step with
 `impact.html`, which also carries the educational-posts count). Student
 leaders = 4 per chapter + the officers on `our-team.html` + the Global Youth
-Ambassadors (10 as of Oct 2026): 13 × 4 + 23 + 10 = 85. Recount when a
+Ambassadors (10 as of Oct 2026): 14 × 4 + 23 + 10 = 89. Recount when a
 chapter or officer is added; the green promo (`.section-green`, `.promo`); the speaker
 marquee; and the three tilted action cards (`.action-section`, `.action-cards`).
 
