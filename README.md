@@ -796,6 +796,7 @@ in `events.html` and point its `<img src>` at a file under
 | How to Build a $tartup Workshop | ABLE Business | July 22 | 8 |
 | College Admissions Journey Panel | ABLE Preps | August 3 | 0 — placeholder tile, photos still needed |
 | Exploring Business Majors Webinar | ABLE Business | August 15 | 2 |
+| An Interview with Sanavi Pillai | ABLE Health | August 31 | 1 |
 | An Interview with Jamie Nau | ABLE Business | September 19 | 1 |
 
 The Exploring Business Majors Webinar and the Jamie Nau interview both ran on Google

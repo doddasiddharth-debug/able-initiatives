@@ -2519,6 +2519,7 @@ figure.testimonial { margin: 0; padding-left: clamp(20px, 3vw, 32px); border-lef
    the interview capture is 2.6:1, where cover would have shown half of it. */
 .gallery-grid[data-event="preps-webinar"] .event-photo img,
 .gallery-grid[data-event="business-interview"] .event-photo img,
+.gallery-grid[data-event="health-interview"] .event-photo img,
 .gallery-grid[data-event="business-webinar"] .event-photo img { object-fit: contain; }
 
 @media (max-width: 640px) {
@@ -3411,9 +3412,11 @@ body[class*="branch-"] .section-alt { background: var(--accent-tint); }
    tile); the inline 4:3 on the tile is for photos. */
 .gallery-grid[data-event="preps-webinar"] .event-photo,
 .gallery-grid[data-event="business-interview"] .event-photo,
+.gallery-grid[data-event="health-interview"] .event-photo,
 .gallery-grid[data-event="business-webinar"] .event-photo { aspect-ratio: auto !important; background: #111; }
 .gallery-grid[data-event="preps-webinar"] .event-photo img,
 .gallery-grid[data-event="business-interview"] .event-photo img,
+.gallery-grid[data-event="health-interview"] .event-photo img,
 .gallery-grid[data-event="business-webinar"] .event-photo img { position: static; height: auto; display: block; }
 /* Photos open in the viewer (main.js), so they look clickable. */
 .gallery-grid .event-photo img { cursor: zoom-in; transition: transform 0.35s ease; }
