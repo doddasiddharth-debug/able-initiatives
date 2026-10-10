@@ -798,6 +798,9 @@ in `events.html` and point its `<img src>` at a file under
 | Exploring Business Majors Webinar | ABLE Business | August 15 | 2 |
 | An Interview with Sanavi Pillai | ABLE Health | August 31 | 1 |
 | An Interview with Jamie Nau | ABLE Business | September 19 | 1 |
+| Aerodynamics & Glider Workshop | ABLE Engineering | September 24 | 2 |
+| Cool Science Festival Day at UCCS | ABLE Engineering | October 3 | 3 photos + 2 silent video loops (`.event-video`) |
+| The MythBusters Interleaved Textbook Challenge | ABLE Engineering | October 10 | 2 |
 
 The Exploring Business Majors Webinar and the Jamie Nau interview both ran on Google
 Meet, so their photos are screenshots of the call, showing the attendees as well as

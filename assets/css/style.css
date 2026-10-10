@@ -3525,3 +3525,9 @@ body[class*="branch-"] .section-alt { background: var(--accent-tint); }
   .footer-brand p { max-width: none; }
   .footer-col a { white-space: nowrap; }
 }
+
+/* Silent looping clips in the gallery (the smoke tunnel). They fill their
+   tile like a photo; main.js plays them only while on screen, and the poster
+   frame stands in for anyone who prefers reduced motion. */
+.event-video { background: #111; }
+.event-video video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }

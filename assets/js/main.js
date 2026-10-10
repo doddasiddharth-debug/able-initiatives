@@ -720,4 +720,25 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Gallery video loops: muted, so browsers allow them to play inline. Play
+  // only while at least half on screen, pause otherwise to save battery and
+  // data, and never start them for visitors who prefer reduced motion (the
+  // poster frame shows instead).
+  const loops = Array.from(document.querySelectorAll("video[data-autoplay]"));
+  if (loops.length && !reduceMotion.matches && "IntersectionObserver" in window) {
+    const watch = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        const v = e.target;
+        if (e.isIntersecting) {
+          if (v.preload === "none") v.preload = "auto";
+          const p = v.play();
+          if (p && p.catch) p.catch(() => {});
+        } else {
+          v.pause();
+        }
+      });
+    }, { threshold: 0.5 });
+    loops.forEach((v) => watch.observe(v));
+  }
+
 });
