@@ -3531,3 +3531,60 @@ body[class*="branch-"] .section-alt { background: var(--accent-tint); }
    frame stands in for anyone who prefers reduced motion. */
 .event-video { background: #111; }
 .event-video video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* Upcoming event: the ABLE Business Startup Pitch Challenge. Poster beside the
+   details, tilted a little like the homepage's photo cards. */
+.pitch-challenge { align-items: center; gap: clamp(36px, 5vw, 72px); }
+.pitch-poster { max-width: 420px; justify-self: center; }
+.pitch-poster img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-photo);
+  box-shadow: var(--shadow-lg);
+  transform: rotate(-2deg);
+}
+.pitch-facts { list-style: none; padding: 0; margin: 4px 0 28px; display: grid; gap: 10px; }
+.pitch-facts li { position: relative; padding-left: 22px; }
+.pitch-facts li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.pitch-note { font-size: 14px; color: var(--muted); }
+@media (prefers-reduced-motion: reduce) { .pitch-poster img { transform: none; } }
+
+/* Homepage announcement bar: one line, yellow, between the hero and the
+   "Recently at ABLE" band. */
+.announce-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding: 14px 20px;
+  background: var(--yellow);
+  color: var(--ink);
+  font-size: 15.5px;
+  line-height: 1.35;
+  text-align: center;
+  text-decoration: none;
+}
+.announce-bar:hover .announce-cta, .announce-bar:focus-visible .announce-cta { text-decoration: underline; }
+.announce-tag {
+  font-family: var(--font-display);
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: var(--ink);
+  color: var(--yellow);
+  padding: 4px 9px;
+  border-radius: 999px;
+}
+.announce-cta { font-weight: 700; white-space: nowrap; }
