@@ -804,6 +804,7 @@ in `events.html` and point its `<img src>` at a file under
 | Engineering Workshop at Chinook Middle School | ABLE Engineering | October 12 | 9 |
 | An Interview with Shweta Bele | ABLE Health | October 15 | 1 (title card) |
 | Model Rocket Build | ABLE Engineering | October 22–23 | 7 |
+| Cards and Bracelets for Breast Cancer Patients | ABLE Health | October 25 | 5 |
 
 The Exploring Business Majors Webinar and the Jamie Nau interview both ran on Google
 Meet, so their photos are screenshots of the call, showing the attendees as well as
