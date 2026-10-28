@@ -149,37 +149,6 @@ document.addEventListener("DOMContentLoaded", () => {
     revealEls.forEach((el) => el.classList.add("in-view"));
   }
 
-  // Donate amount chips. The selected amount is written into the mailto so the
-  // team receives it, rather than only being recorded in a dataset nothing reads.
-  const chips = document.querySelectorAll(".amount-chip[data-amount]");
-  const donateBtn = document.querySelector("[data-donate-link]");
-  if (chips.length && donateBtn) {
-    const email = donateBtn.dataset.donateEmail || "";
-    const applyAmount = (amount) => {
-      const subject = `Donation of $${amount} to ABLE Initiatives`;
-      const body =
-        `Hi ABLE team,\n\nI'd like to donate $${amount}.\n\n` +
-        `Please send me a secure way to give.\n\nName: \nThanks!`;
-      donateBtn.href =
-        `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    };
-
-    chips.forEach((chip) => {
-      chip.addEventListener("click", () => {
-        chips.forEach((c) => {
-          c.classList.remove("selected");
-          c.setAttribute("aria-pressed", "false");
-        });
-        chip.classList.add("selected");
-        chip.setAttribute("aria-pressed", "true");
-        applyAmount(chip.dataset.amount);
-      });
-    });
-
-    const preselected = document.querySelector(".amount-chip.selected[data-amount]");
-    if (preselected) applyAmount(preselected.dataset.amount);
-  }
-
   // Footer year
   document.querySelectorAll("[data-year]").forEach((el) => {
     el.textContent = new Date().getFullYear();

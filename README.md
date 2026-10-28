@@ -759,9 +759,10 @@ that page and not its neighbour.
       of which was ever added, so every visit fired two 404s. Drop the real files
       into `assets/images/gallery/preps-workshop/` and replace the placeholder with
       `event-photo` blocks copied from the $tartup Workshop above.
-- [ ] **Payment processor.** The "Donate now" button is a `mailto:`. Once a processor is
-      set up (Zeffy is 0% for nonprofits; Givebutter and Stripe also work), swap the
-      `href` in `donate.html` and delete the "online giving is being set up" footnote.
+- [x] ~~**Payment processor.**~~ "Donate now" on `donate.html` opens ABLE's HCB
+      donation page (hcb.hackclub.com/donations/start/able-initiatives) in a new
+      tab. The $25/$50/$100 chips went with the old `mailto:`, since HCB's form
+      takes the amount itself.
 - [ ] **EIN and tax-deductibility notice** on `donate.html`. Donors look for it, and the
       site claims 501(c)(3) status on every page.
 - [x] ~~**Canonical URLs, `og:image`, and `sitemap.xml`**~~ — all in place; see
