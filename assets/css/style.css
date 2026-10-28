@@ -3588,3 +3588,10 @@ body[class*="branch-"] .section-alt { background: var(--accent-tint); }
   border-radius: 999px;
 }
 .announce-cta { font-weight: 700; white-space: nowrap; }
+
+/* Donate page: a funder's logo beside the line crediting their award. The logo
+   has a white ground, so it sits on a white tile rather than the page grey. */
+.funder-note { display: flex; align-items: center; gap: 18px; margin: 4px 0 24px; padding: 14px 18px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-md); }
+.funder-note img { width: 150px; height: auto; flex: none; }
+.funder-note p { margin: 0; font-size: 15px; }
+@media (max-width: 480px) { .funder-note { flex-direction: column; align-items: flex-start; } }

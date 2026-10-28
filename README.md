@@ -312,6 +312,9 @@ assets/images/
   gallery/    health-workshop/, preps-webinar/, business-workshop/,
               engineering-gliders/, business-webinar/, business-interview/
   team/       one headshot per director
+  partners/   funders' logos, used with their award: edmondson-foundation.png
+              (Joseph Henry Edmondson Foundation, white ground, on the
+              timeline's October 27 entry and the Donate page)
 ```
 
 Keep files about as big as they are shown, and no bigger: the branch logos are
