@@ -182,7 +182,9 @@ python3 -m http.server 8000
   "Govt"), since OpenStreetMap often lists a school differently. The Denver,
   Broomfield, Cupertino, Vancouver and Mansoura (Dakahlia, Egypt; opened
   October 2026) chapters have only a city on file, so
-  their pins are the city centre until they get one. A school with chapters in
+  their pins are the city centre until they get one. The Ethiopia ABLE Health
+  chapter (November 2026) has only the country on file; its pin is set by hand
+  to the middle of Ethiopia until a city or school goes in its data-address. A school with chapters in
   more than one branch (Discovery Canyon and Rampart run Business and Health)
   gets one split pin, and its popup shows the school once with a badge per
   branch.
@@ -428,7 +430,7 @@ the 200+ educational posts on Instagram, TikTok, LinkedIn and Facebook), people
 directly impacted, student leaders, chapters — keep the numbers in step with
 `impact.html`, which also carries the educational-posts count). Student
 leaders = 4 per chapter + the officers on `our-team.html` + the Global Youth
-Ambassadors (10 as of Oct 2026): 15 × 4 + 29 + 10 = 99 (Nov 2026). Recount when a
+Ambassadors (10 as of Oct 2026): 16 × 4 + 29 + 10 = 103 (Nov 2026). Recount when a
 chapter or officer is added; the green promo (`.section-green`, `.promo`); the speaker
 marquee; and the three tilted action cards (`.action-section`, `.action-cards`).
 
