@@ -618,8 +618,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // Gallery photo viewer: click (or Enter on) any gallery photo to see it
   // big, then step through that event's photos with the arrows, the arrow
   // keys or a swipe. Without script the photos are just photos.
+  // The photo strips under timeline entries open in the same viewer.
   const galleryImgs = Array.from(document.querySelectorAll(".gallery-grid .event-photo img"));
-  if (galleryImgs.length && typeof HTMLDialogElement === "function") {
+  const thumbLinks = Array.from(document.querySelectorAll(".entry-thumbs a"));
+  if ((galleryImgs.length || thumbLinks.length) && typeof HTMLDialogElement === "function") {
     const arrow = (d) =>
       '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="' +
       d + '" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
@@ -646,7 +648,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
     const openAt = (img) => {
       // Only the photos that actually loaded; a failed one shows its fallback.
-      group = Array.from(img.closest(".gallery-grid").querySelectorAll(".event-photo img"))
+      group = Array.from(img.closest(".gallery-grid, .entry-thumbs").querySelectorAll(".event-photo img, a img"))
         .filter((el) => !(el.complete && el.naturalWidth === 0));
       box.dataset.count = group.length;
       show(Math.max(0, group.indexOf(img)));
@@ -664,6 +666,18 @@ document.addEventListener("DOMContentLoaded", () => {
           e.preventDefault();
           openAt(img);
         }
+      });
+    });
+
+    // Thumbnails are links to the full photo; with the viewer they open it
+    // instead of leaving the page.
+    thumbLinks.forEach((a) => {
+      const img = a.querySelector("img");
+      if (!img) return;
+      a.setAttribute("aria-label", "View larger: " + img.alt);
+      a.addEventListener("click", (e) => {
+        e.preventDefault();
+        openAt(img);
       });
     });
 

@@ -108,6 +108,13 @@ python3 -m http.server 8000
   a central spine, each with a photo. The spine's filled portion tracks scroll
   position and lights each marker as it passes.
 
+  An entry whose event has more photos in the Gallery (`events.html`) shows
+  the rest in a strip of square thumbnails under its text (`.entry-thumbs`),
+  every photo from that event's `.gallery-grid` except the one on top. Each
+  thumbnail is a link to the full photo; `main.js` opens it in the gallery's
+  photo viewer instead, stepping through that strip. Add the photos to the
+  Gallery and the strip together.
+
   The spine is a **sibling** of the `<ol>`, not a child — only `<li>` may be a
   direct child of a list, and an earlier version nested the positioning div
   inside it.

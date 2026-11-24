@@ -1940,6 +1940,14 @@ figure.testimonial { margin: 0; padding-left: clamp(20px, 3vw, 32px); border-lef
 }
 .entry-photo-empty { border-bottom: 1px dashed var(--line-strong); }
 .entry-body { padding: 22px 24px 24px; }
+/* The rest of the event's photos, in a strip under the text. Each opens in the
+   gallery's photo viewer (main.js), or as the plain image without script. */
+.entry-thumbs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 16px; }
+.entry-thumbs a { display: block; border-radius: var(--radius-sm); overflow: hidden; }
+.entry-thumbs img { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; transition: transform 0.3s ease; }
+.entry-thumbs a:hover img { transform: scale(1.05); }
+@media (max-width: 480px) { .entry-thumbs { gap: 6px; } }
+@media (prefers-reduced-motion: reduce) { .entry-thumbs a:hover img { transform: none; } }
 .entry-meta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 10px; }
 .entry-meta .event-branch { margin-bottom: 0; }
 .entry-date {
