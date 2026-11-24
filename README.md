@@ -4,7 +4,7 @@
 
 ABLE Initiatives makes **educational resources free and open to every student**.
 It delivers that through workshops, webinars, and guest speaker sessions across
-four branches: ABLE Preps (college and test prep), ABLE Health, ABLE Business, and ABLE Engineering.
+five branches: ABLE Preps (college and test prep), ABLE Health, ABLE Business, ABLE Engineering, and ABLE Law.
 
 **ABLE does not match students one-on-one with mentors.** The site's original copy
 described a mentor-matching service in detail across all ten pages — "we match you
@@ -103,7 +103,7 @@ python3 -m http.server 8000
   branch colours themselves, which fail badly on their own tints. The `-ink`
   values land at 5.1:1, 5.1:1 and 5.3:1. Use them for any text on a branch
   tint, and as the ground under any white text.
-- `programs.html`: All four branches on one page
+- `programs.html`: All five branches on one page
 - `timeline.html`: Timeline. Every event as an alternating card either side of
   a central spine, each with a photo. The spine's filled portion tracks scroll
   position and lights each marker as it passes.
@@ -218,7 +218,7 @@ python3 -m http.server 8000
   licence — leave it in. If traffic ever grows a lot, switch the tile URL in
   `chapter-map.js` to a hosted provider.
 
-- `preps.html` / `health.html` / `business.html` / `engineering.html`: One page per branch
+- `preps.html` / `health.html` / `business.html` / `engineering.html` / `law.html`: One page per branch
 - `get-involved.html`: Students, members, and chapter leads
 - `events.html`: Photo gallery (grouped by event). Clicking a photo opens it
   large in a viewer (`.lightbox` in main.js) that steps through that event's

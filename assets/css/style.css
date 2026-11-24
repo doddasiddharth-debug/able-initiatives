@@ -82,6 +82,8 @@
   --business-tint: #E0F7DE;
   --eng: #1791B6;
   --eng-tint: #D9F0F7;
+  --law: #8E24AA;
+  --law-tint: #F3E5F8;
   /* Darkened branch colours, for text sitting on the matching tint, and as the
      ground under white text. Same hue, dark enough to clear 5:1 on the tint
      and 4.5:1 with white. */
@@ -89,6 +91,7 @@
   --health-ink: #BC0606;
   --business-ink: #1E7217;
   --eng-ink: #0A6B87;
+  --law-ink: #6A1B8A;
 
   /* Rounder than before, across the board. --radius-photo is the big one:
      photographs in light sections are cut to it, which is most of what gives
@@ -839,6 +842,7 @@ a { color: inherit; text-decoration: none; }
 .program-card.health .program-tag { color: var(--health-ink); }
 .program-card.business .program-tag { color: var(--business-ink); }
 .program-card.eng .program-tag { color: var(--eng-ink); }
+.program-card.law .program-tag { color: var(--law-ink); }
 
 /* logo slot (upload area for branch logos) */
 .logo-slot {
@@ -889,6 +893,7 @@ a { color: inherit; text-decoration: none; }
 .branch-logo-plate.health .logo-slot-fallback { background: var(--health-ink); color: #FFFFFF; }
 .branch-logo-plate.business .logo-slot-fallback { background: var(--business-ink); color: #FFFFFF; }
 .branch-logo-plate.eng .logo-slot-fallback { background: var(--eng-ink); color: #FFFFFF; }
+.branch-logo-plate.law .logo-slot-fallback { background: var(--law-ink); color: #FFFFFF; }
 
 /* The branch logos are full-colour transparent PNGs (indigo, red, green), so
    the chip needs a neutral ground: a red Health mark on a green tile clashes.
@@ -911,6 +916,7 @@ a { color: inherit; text-decoration: none; }
 .logo-slot.health .logo-slot-fallback { background: var(--health-ink); color: #FFFFFF; }
 .logo-slot.business .logo-slot-fallback { background: var(--business-ink); color: #FFFFFF; }
 .logo-slot.eng .logo-slot-fallback { background: var(--eng-ink); color: #FFFFFF; }
+.logo-slot.law .logo-slot-fallback { background: var(--law-ink); color: #FFFFFF; }
 .logo-slot img {
   width: 100%; height: 100%; object-fit: contain; padding: 4px;
   position: absolute; inset: 0;
@@ -975,6 +981,7 @@ a { color: inherit; text-decoration: none; }
 .branch-section.health .dot { background: var(--health); }
 .branch-section.business .dot { background: var(--business); }
 .branch-section.eng .dot { background: var(--eng); }
+.branch-section.law .dot { background: var(--law); }
 
 @media (max-width: 900px) {
   .branch-section, .branch-section.reverse { grid-template-columns: 1fr; direction: ltr; }
@@ -1035,6 +1042,7 @@ a { color: inherit; text-decoration: none; }
 .avatar-initials.health { background: var(--health-tint); color: var(--health-ink); }
 .avatar-initials.business { background: var(--business-tint); color: var(--business-ink); }
 .avatar-initials.eng { background: var(--eng-tint); color: var(--eng-ink); }
+.avatar-initials.law { background: var(--law-tint); color: var(--law-ink); }
 .team-subhead {
   font-size: 13px;
   text-transform: uppercase;
@@ -1355,6 +1363,7 @@ a { color: inherit; text-decoration: none; }
 .event-branch.health { background: var(--health-tint); color: var(--health-ink); }
 .event-branch.business { background: var(--business-tint); color: var(--business-ink); }
 .event-branch.eng { background: var(--eng-tint); color: var(--eng-ink); }
+.event-branch.law { background: var(--law-tint); color: var(--law-ink); }
 /* Organisation-wide milestones (the founding), not tied to one branch. */
 .event-branch.able { background: var(--brand-tint); color: var(--brand); }
 
@@ -1860,6 +1869,7 @@ figure.testimonial { margin: 0; padding-left: clamp(20px, 3vw, 32px); border-lef
 .timeline-entry.health.is-reached .entry-marker { border-color: var(--health); box-shadow: 0 0 0 7px var(--health-tint); }
 .timeline-entry.business.is-reached .entry-marker { border-color: var(--business); box-shadow: 0 0 0 7px var(--business-tint); }
 .timeline-entry.eng.is-reached .entry-marker { border-color: var(--eng); box-shadow: 0 0 0 7px var(--eng-tint); }
+.timeline-entry.law.is-reached .entry-marker { border-color: var(--law); box-shadow: 0 0 0 7px var(--law-tint); }
 .timeline-entry.able.is-reached .entry-marker { border-color: var(--brand); box-shadow: 0 0 0 7px var(--brand-tint); }
 .timeline-entry.is-reached .entry-marker { transform: scale(1.18); }
 /* The card's own edge picks up the branch colour once the line reaches it, so
@@ -1868,6 +1878,7 @@ figure.testimonial { margin: 0; padding-left: clamp(20px, 3vw, 32px); border-lef
 .timeline-entry.health.is-reached .entry-card { border-color: var(--health); }
 .timeline-entry.business.is-reached .entry-card { border-color: var(--business); }
 .timeline-entry.eng.is-reached .entry-card { border-color: var(--eng); }
+.timeline-entry.law.is-reached .entry-card { border-color: var(--law); }
 .timeline-entry.able.is-reached .entry-card { border-color: var(--brand); }
 
 .entry-card {
@@ -2068,6 +2079,7 @@ figure.testimonial { margin: 0; padding-left: clamp(20px, 3vw, 32px); border-lef
 .timeline-entry.health.is-reached .entry-ghost { -webkit-text-stroke-color: var(--health); opacity: 0.4; }
 .timeline-entry.business.is-reached .entry-ghost { -webkit-text-stroke-color: var(--business); opacity: 0.45; }
 .timeline-entry.eng.is-reached .entry-ghost { -webkit-text-stroke-color: var(--eng); opacity: 0.5; }
+.timeline-entry.law.is-reached .entry-ghost { -webkit-text-stroke-color: var(--law); opacity: 0.5; }
 .timeline-entry.able.is-reached .entry-ghost { -webkit-text-stroke-color: var(--brand); opacity: 0.4; }
 /* Safari and Firefox both support -webkit-text-stroke; anything that doesn't
    would paint a solid block of colour, so the fallback is no ghost at all. */
@@ -2170,6 +2182,7 @@ figure.testimonial { margin: 0; padding-left: clamp(20px, 3vw, 32px); border-lef
 .chapter-pin.health { background: var(--health); }
 .chapter-pin.business { background: var(--business); }
 .chapter-pin.eng { background: var(--eng); }
+.chapter-pin.law { background: var(--law); }
 .chapter-pin-core {
   position: absolute;
   inset: 7px;
@@ -2723,6 +2736,9 @@ figure.testimonial { margin: 0; padding-left: clamp(20px, 3vw, 32px); border-lef
   box-shadow: var(--shadow-md);
 }
 .feature-media .logo-chip img { position: static; width: 100%; height: 100%; object-fit: contain; }
+/* A branch with no photos yet: its logo on a soft tint instead of a photo. */
+.feature-media.is-mark { display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--law-tint), #FFFFFF); }
+.feature-media.is-mark img { position: static; width: 46%; height: auto; object-fit: contain; }
 .feature-copy h3 { font-size: clamp(26px, 3vw, 34px); font-weight: 600; letter-spacing: -0.03em; margin-bottom: 14px; }
 .feature-copy .eyebrow { margin-bottom: 14px; }
 .feature-copy p { font-size: 17px; }
@@ -3166,6 +3182,15 @@ body.branch-eng {
   --accent-tint: var(--eng-tint);
   --header-bg: #09708D;
 }
+body.branch-law {
+  --branch: var(--law);
+  --branch-band: #6A1B8A;
+  --branch-deep: #4A1162;
+  --accent: #6A1B8A;
+  --accent-dark: #4A1162;
+  --accent-tint: var(--law-tint);
+  --header-bg: #6A1B8A;
+}
 /* Depth: the bands run from the branch colour to its deep shade, top left to
    bottom right, the way the homepage hero gets depth from its photograph.
    The footer takes the deep shade, so the page is bracketed like the
@@ -3292,6 +3317,8 @@ body[class*="branch-"] .section-alt { background: var(--accent-tint); }
   border: 3px solid var(--branch, var(--line-strong));
 }
 .officer-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+/* An officer with no headshot yet: show the initials disc outright. */
+.officer-photo.no-photo .logo-slot-fallback { display: flex; }
 .officer-photo .logo-slot-fallback {
   position: absolute;
   inset: 0;
