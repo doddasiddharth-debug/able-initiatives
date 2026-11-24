@@ -428,7 +428,7 @@ the 200+ educational posts on Instagram, TikTok, LinkedIn and Facebook), people
 directly impacted, student leaders, chapters — keep the numbers in step with
 `impact.html`, which also carries the educational-posts count). Student
 leaders = 4 per chapter + the officers on `our-team.html` + the Global Youth
-Ambassadors (10 as of Oct 2026): 14 × 4 + 23 + 10 = 89. Recount when a
+Ambassadors (10 as of Oct 2026): 15 × 4 + 29 + 10 = 99 (Nov 2026). Recount when a
 chapter or officer is added; the green promo (`.section-green`, `.promo`); the speaker
 marquee; and the three tilted action cards (`.action-section`, `.action-cards`).
 
