@@ -157,7 +157,8 @@ python3 -m http.server 8000
   `data-address`. The **Geocode chapter addresses** workflow
   (`.github/workflows/geocode.yml`, running `scripts/geocode-chapters.py`)
   looks up every card whose address differs from its `data-geocoded`, writes
-  the exact coordinates in, commits the result, and re-runs the Pages deploy.
+  the exact coordinates in, and commits the result, which GitHub Pages then
+  publishes like any other push.
 
   It runs by itself on any push to `main` that touches `impact.html`, so the
   usual flow is: edit the address, commit, wait a minute, and the pin lands on

@@ -6,8 +6,8 @@
 #
 # Runs on its own whenever a push to main changes impact.html, and can be run
 # by hand from the Actions tab (workflow_dispatch) on any branch. If it changes
-# the page it commits the result and re-runs the Pages deploy, since a commit
-# made with the workflow token doesn't trigger other workflows by itself.
+# the page it commits the result to the branch; on main, GitHub Pages (set to
+# deploy from the branch) publishes that commit by itself.
 name: Geocode chapter addresses
 
 on:
@@ -18,7 +18,6 @@ on:
 
 permissions:
   contents: write
-  actions: write
 
 concurrency:
   group: geocode-${{ github.ref }}
@@ -36,8 +35,6 @@ jobs:
 
       - name: Commit the coordinates and redeploy
         if: always()
-        env:
-          GH_TOKEN: ${{ github.token }}
         run: |
           if git diff --quiet -- impact.html; then
             echo "No coordinates changed; nothing to commit."
@@ -48,7 +45,3 @@ jobs:
           git add impact.html
           git commit -m "Geocode chapter addresses"
           git push
-          # The deploy workflow only listens for pushes to main.
-          if [ "$GITHUB_REF_NAME" = "main" ]; then
-            gh workflow run static.yml --ref main
-          fi
